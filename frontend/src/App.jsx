@@ -23,7 +23,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [currentLang, setCurrentLang] = useState('English');
   const [selectedDestination, setSelectedDestination] = useState(null);
-  
+
   // User Authentication State
   const [currentUser, setCurrentUser] = useState(() => {
     try {
@@ -154,7 +154,7 @@ export default function App() {
         {/* HOME TAB: Storytelling Journey */}
         {activeTab === 'home' && (
           <div>
-            
+
             {/* SECTION 1: Hero */}
             <Hero
               onStartPlanner={() => setActiveTab('planner')}
@@ -170,11 +170,11 @@ export default function App() {
                   <Landmark className="w-3.5 h-3.5 text-[#E87516]" />
                   <span>Cultural Heritage Highlights</span>
                 </div>
-                
+
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-[#741C35] font-heritage">
                   Explore <span className="text-[#E87516]">India's Living Heritage</span>
                 </h2>
-                
+
                 <p className="text-[#6F625D] text-base leading-relaxed font-medium">
                   From Maratha fortresses in Pune to imperial palaces in Jaipur and ancient ghats in Varanasi — Atithya AI brings India's cultural stories to life with AI trip planning and multilingual narration.
                 </p>
@@ -185,11 +185,10 @@ export default function App() {
                     <button
                       key={city}
                       onClick={() => setSelectedCity(city)}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                        selectedCity === city
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${selectedCity === city
                           ? 'bg-[#741C35] text-white shadow-md'
                           : 'bg-[#FFF8EC] text-[#6F625D] border border-[#E8DCCB] hover:text-[#741C35]'
-                      }`}
+                        }`}
                     >
                       {city} {city === 'Pune' ? '🏰' : city === 'Jaipur' ? '🕌' : '🕉️'}
                     </button>
@@ -226,7 +225,7 @@ export default function App() {
             <section className="py-16 bg-[#FFF8EC] border-y border-[#E8DCCB]">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                  
+
                   <div className="space-y-4">
                     <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#E87516]/10 border border-[#E87516]/30 text-[#E87516] text-xs font-bold">
                       <Compass className="w-3.5 h-3.5" />
@@ -255,7 +254,7 @@ export default function App() {
 
                   <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#E8DCCB] h-96">
                     <img
-                      src="https://images.unsplash.com/photo-1627894483216-2138af692e32?q=80&w=1000&auto=format&fit=crop"
+                      src="https://i.pinimg.com/1200x/00/20/f4/0020f4e245d76730d68e169947d412b4.jpg"
                       alt="Shaniwar Wada Pune"
                       className="w-full h-full object-cover"
                     />
@@ -404,7 +403,7 @@ export default function App() {
         {/* SAVED TRIPS & FAVORITES TAB */}
         {activeTab === 'saved' && (
           <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 font-sans">
-            
+
             {currentUser ? (
               /* LOGGED IN USER SAVED VIEW */
               <>

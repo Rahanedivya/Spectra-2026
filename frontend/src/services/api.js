@@ -28,9 +28,9 @@ export const planTrip = async (params) => {
   }
 };
 
-export const askAi = async (prompt, destinationContext = null, language = 'English') => {
+export const askAi = async (prompt, destinationContext = null, language = 'English', history = []) => {
   try {
-    const response = await api.post('/ask-ai', { prompt, context: destinationContext, language });
+    const response = await api.post('/ask-ai', { prompt, context: destinationContext, language, history });
     if (response.data && response.data.answer) {
       return response.data.answer;
     }

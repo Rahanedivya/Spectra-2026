@@ -232,46 +232,208 @@ Format your response STRICTLY as valid JSON:
 
 // POST /api/ask-ai — Natural Language Assistant
 router.post("/ask-ai", async (req, res) => {
-  const { prompt, context, language = "English" } = req.body;
-  const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY;
+  const { prompt, context, language = "English", history = [] } = req.body;
+  let rawKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || "";
+  let apiKey = rawKey.trim();
+  if (apiKey.startsWith("PAQ.")) {
+    apiKey = apiKey.substring(1);
+  }
 
-  if (apiKey && prompt) {
+  if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
+    return res.status(400).json({ success: false, error: "Prompt is required." });
+  }
+
+  if (apiKey) {
     try {
-      const promptText = `You are HeritageAI, an expert cultural tourism guide for Pune, Maharashtra, India.
-Respond politely and knowledgeably in ${language} to the following question:
-"${prompt}"
-${context ? `Context destination: ${JSON.stringify(context)}` : ""}
-Keep the answer engaging, accurate, and under 120 words.`;
+      const systemInstructionText = `You are HeritageAI, an expert cultural tourism guide and intelligent conversational assistant for Pune and Maharashtra, India.
+Key instructions:
+- Understand the user's specific question, intent, and nuance, and provide a direct, relevant, and engaging response.
+- Answer specifically to what the user asked without repeating canned or generic introductions.
+- Use previous conversation messages to understand follow-up questions and preserve context seamlessly.
+- Always respond in the exact same language as the user or requested language (${language}) — supporting English, Marathi (मराठी), and Hindi (हिंदी) fluently.
+- If information is unknown or you are uncertain, honestly say so rather than inventing details.
+- Provide accurate, practical, and helpful facts about heritage, timings, entry tickets, history, food, transport, and travel tips.`;
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+      // Build Gemini contents array from conversation history
+      const contents = [];
+
+      if (Array.isArray(history) && history.length > 0) {
+        // Take recent history up to 10 messages
+        const recentHistory = history.slice(-10);
+        for (const item of recentHistory) {
+          const role = item.sender === "user" || item.role === "user" ? "user" : "model";
+          const text = item.text || item.content || "";
+          if (text && typeof text === "string" && text.trim()) {
+            // First item in Gemini contents must be user role
+            if (contents.length === 0 && role === "model") {
+              continue;
+            }
+            contents.push({
+              role: role,
+              parts: [{ text: text.trim() }]
+            });
+          }
+        }
+      }
+
+      // Add context if provided
+      let currentPrompt = prompt.trim();
+      if (context) {
+        currentPrompt = `[Context destination: ${typeof context === 'object' ? JSON.stringify(context) : context}]\n${currentPrompt}`;
+      }
+
+      // Append current user prompt
+      contents.push({
+        role: "user",
+        parts: [{ text: currentPrompt }]
       });
 
-      const data = await response.json();
-      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+      const GEMINI_MODELS = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-1.5-flash"];
+      let answerText = null;
+
+      for (const model of GEMINI_MODELS) {
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              systemInstruction: {
+                parts: [{ text: systemInstructionText }]
+              },
+              contents: contents
+            })
+          });
+
+          const data = await response.json();
+          if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+            answerText = data.candidates[0].content.parts[0].text;
+            break;
+          }
+
+          if (data.error) {
+            console.warn(`Model ${model} returned error:`, data.error.message || data.error);
+          }
+        } catch (mErr) {
+          console.warn(`Model ${model} call exception:`, mErr.message);
+        }
+      }
+
+      if (answerText) {
         return res.json({
           success: true,
-          answer: data.candidates[0].content.parts[0].text
+          answer: answerText
         });
       }
     } catch (err) {
-      console.warn("Ask-AI call exception, using fallback response:", err.message);
+      console.warn("Ask-AI Gemini call exception:", err.message);
     }
   }
 
-  // Fallback response
-  let answer = `HeritageAI Pune: Pune is rich in Maratha history, Sahyadri fortresses, and delicious Maharashtrian cuisine! For "${prompt}", we recommend visiting Shaniwar Wada in the morning and tasting authentic Puneri Misal.`;
-  
-  if (language === "Marathi") {
-    answer = `HeritageAI पुणे: पुणे हे मराठा साम्राज्य, छत्रपती शिवाजी महाराज, पेशवेकालीन संस्कृती आणि स्वादिष्ट पुणेरी खाद्यान्नाचे केंद्र आहे! आपल्याला "${prompt}" बद्दल अधिक माहिती हवी असल्यास शनिवार वाडा आणि लाल महाल नक्की पहा.`;
-  } else if (language === "Hindi") {
-    answer = `HeritageAI पुणे: पुणे भारत की मराठा धरोहर और संस्कृति का केंद्र है। आपके प्रश्न "${prompt}" के लिए, हम शनिवार वाड़ा और सिंहगढ़ किले के भ्रमण की सलाह देते हैं।`;
-  }
-
+  // Smart Contextual Fallback Response Engine
+  const answer = generateSmartAiAnswer(prompt, context, language);
   return res.json({ success: true, answer });
 });
+
+function generateSmartAiAnswer(prompt = "", context = null, language = "English") {
+  const query = (prompt || "").toLowerCase().trim();
+  const isMarathi = language === "Marathi";
+  const isHindi = language === "Hindi";
+
+  // Greetings
+  if (query.match(/^(hi|hello|hey|namaste|नमस्कार|नमस्ते|hola|greetings)/i)) {
+    if (isMarathi) {
+      return "नमस्कार! मी तुमचा HeritageAI सांस्कृतिक पर्यटन सहाय्यक आहे. शनिवार वाडा, सिंहगड, किंवा पुणेरी खाद्यान्नाबद्दल मला काहीही विचारा!";
+    }
+    if (isHindi) {
+      return "नमस्ते! मैं आपका HeritageAI सांस्कृतिक पर्यटन सहायक हूँ। शनिवार वाड़ा, सिंहगढ़ किले या पुणे के व्यंजनों के बारे में कुछ भी पूछें!";
+    }
+    return "Hello! I am your HeritageAI Cultural Tourism Assistant. Ask me anything about Indian heritage sites, Peshwa history, Sahyadri forts, or local cuisine!";
+  }
+
+  // Shaniwar Wada
+  if (query.includes("shaniwar") || query.includes("शनिवार")) {
+    if (query.includes("time") || query.includes("hour") || query.includes("open") || query.includes("वेळ") || query.includes("समय")) {
+      if (isMarathi) return "शनिवार वाडा सकाळी ८:०० ते संध्याकाळी ६:३० वाजेपर्यंत उघडा असतो. सकाळी ८ ते १० दरम्यान भेट देणे सर्वोत्तम मानले जाते.";
+      if (isHindi) return "शनिवार वाड़ा सुबह 8:00 बजे से शाम 6:30 बजे तक खुला रहता है। सुबह 8 से 10 बजे के बीच जाना सबसे अच्छा रहता है।";
+      return "Shaniwar Wada is open daily from 8:00 AM to 6:30 PM. The best time to visit is early morning (8 AM - 10 AM) or near sunset.";
+    }
+    if (query.includes("ticket") || query.includes("cost") || query.includes("price") || query.includes("fee") || query.includes("तिकीट") || query.includes("शुल्क")) {
+      if (isMarathi) return "शनिवार वाड्याचे प्रवेश शुल्क भारतीय नागरिकांसाठी ₹२५ आणि परदेशी पर्यटकांसाठी ₹३०० आहे.";
+      if (isHindi) return "शनिवार वाड़ा का प्रवेश शुल्क भारतीय नागरिकों के लिए ₹25 और विदेशी पर्यटकों के लिए ₹300 है।";
+      return "Entry fee for Shaniwar Wada is ₹25 for Indian nationals and ₹300 for foreign tourists. Children under 15 enter free.";
+    }
+    if (query.includes("history") || query.includes("who built") || query.includes("built") || query.includes("इतिहास") || query.includes("कोणी बांधला")) {
+      if (isMarathi) return "शनिवार वाडा हा १७३२ मध्ये पेशवे प्रथम बाजीराव यांनी बांधलेला मराठा साम्राज्याचा ७ मजली ऐतिहासिक वाडा आहे. हा वाडा पेशव्यांच्या सत्तेचे मुख्य केंद्र होता.";
+      if (isHindi) return "शनिवार वाड़ा 1732 में पेशवा प्रथम बाजीराव द्वारा निर्मित मराठा साम्राज्य का ऐतिहासिक मुख्यालय है। इसका दिल्ली दरवाजा मराठा शौर्य का प्रतीक है।";
+      return "Shaniwar Wada was built in 1732 by Peshwa Baji Rao I as the 7-story seat of Peshwa rulers in the Maratha Empire. Its massive Dilli Darwaza (Delhi Gate) remains a masterpiece of Maratha fort architecture.";
+    }
+    if (isMarathi) return "शनिवार वाडा हा १७३२ मधील पेशवेकालीन वाडा आहे. येथे दिल्ली दरवाजा, कमळ तलाव आणि कारंजे अवश्य पहा. जवळच प्रसिद्ध बेडेकर मिसळ आहे!";
+    if (isHindi) return "शनिवार वाड़ा पुणे का दिल और पेशवाओं का ऐतिहासिक केंद्र है। यहाँ दिल्ली दरवाजा और प्रांगण अवश्य देखें।";
+    return "Shaniwar Wada is the 1732 historic seat of the Peshwas in Pune. Key features include the massive Dilli Darwaza, lotus fountains, and expansive gardens. Entry is ₹25 and visiting hours are 8 AM - 6:30 PM.";
+  }
+
+  // Sinhagad Fort
+  if (query.includes("sinhagad") || query.includes("sinhgad") || query.includes("सिंहगड")) {
+    if (query.includes("kid") || query.includes("family") || query.includes("easy") || query.includes("child") || query.includes("मुले") || query.includes("बच्चे")) {
+      if (isMarathi) return "होय! सिंहगड किल्ल्यावर जाण्यासाठी वरच्या पार्किंगपर्यंत पक्का रस्ता आहे. तेथून केवळ १५ मिनिटांच्या सोप्या दगडी पायऱ्या आहेत, ज्यामुळे मुलांसाठी आणि कुटुंबासाठी हा प्रवास अत्यंत सोपा आहे.";
+      if (isHindi) return "हाँ! सिंहगढ़ किले के शीर्ष पार्किंग तक पक्की सड़क उपलब्ध है। वहाँ से केवल 15 मिनट की आसान सीढ़ियाँ हैं, जो बच्चों और परिवारों के लिए आरामदायक हैं।";
+      return "Yes! Sinhagad Fort is very family and kid-friendly. A paved vehicle road goes all the way to the top parking lot, followed by a gentle 15-minute stone staircase walk.";
+    }
+    if (query.includes("food") || query.includes("eat") || query.includes("जेवण") || query.includes("खाद्य")) {
+      if (isMarathi) return "सिंहगडावर गरम पिठलं भाकरी, दही हंडी, कांदा भजी आणि ताजे ताक नक्की चाखा! हा गडावरील खाद्यसंस्कृतीचा अतिशय लोकप्रिय भाग आहे.";
+      if (isHindi) return "सिंहगढ़ किले पर मिट्टी के मटके का ताजा दही, पिठला भाकरी और कांदा भजी अवश्य खाएं!";
+      return "At Sinhagad Fort, don't miss the legendary mountain cuisine: hot Pithla Bhakri, fresh earthen-pot Matka Curd, and crispy Kanda Bhaji!";
+    }
+    if (isMarathi) return "सिंहगड किल्ला (४,३०० फूट) हा नरवीर तानाजी मालुसरे यांच्या १६७० मधील पराक्रमाची अमर भूमी आहे. गडावर गरमागरम पिठलं भाकरी आणि कांदा भजी नक्की आस्वादा!";
+    if (isHindi) return "सिंहगढ़ किला (4,300 फीट) 1670 के तानाजी मालुसरे के पराक्रम की ऐतिहासिक भूमि है।";
+    return "Sinhagad Fort is a historic 1670 Maratha cliff fortress at 4,300 ft elevation. Famous for its Tanaji Malusare memorial, Sahyadri views, and authentic Pithla Bhakri.";
+  }
+
+  // Food / Misal / Mastani / Snacks
+  if (query.includes("misal") || query.includes("food") || query.includes("eat") || query.includes("mastani") || query.includes("मिसळ") || query.includes("खाद्य") || query.includes("भोजन")) {
+    if (isMarathi) return "पुण्यातील प्रसिद्ध खाद्यपदार्थ: १) बेडेकर मिसळ (शनिवार पेठ), २) कट्टाकिर्र मिसळ, ३) सुजाता मस्तानी (मँगो मस्तानी), ४) चितळे बाकरवडी, ५) सिंहगड पिठलं भाकरी!";
+    if (isHindi) return "पुणे के प्रसिद्ध व्यंजन: 1) बेडेकर मिसळ (शनिवार पेठ), 2) सुजाता मैंगो मस्तानी, 3) चितले बाकरवड़ी, 4) सिंहगढ़ का पिठला भाकरी!";
+    return "Top Pune culinary experiences: 1) Fiery Puneri Misal Pav at Bedekar / Kattakirr, 2) Refreshing Mango Mastani at Sujata Mastani on FC Road, 3) Crispy Chitale Bakarwadi, 4) Mountain Pithla Bhakri at Sinhagad Fort!";
+  }
+
+  // Aga Khan Palace
+  if (query.includes("aga khan") || query.includes("आगाखान")) {
+    if (isMarathi) return "आगाखान पॅलेस हे १८९२ मध्ये उभारलेले इटालियन कमानींचे भव्य स्मारक आहे. १९४२ मधील भारत छोडो आंदोलनादरम्यान महात्मा गांधी आणि कस्तुरबा गांधी येथे नजरकैदेत होते.";
+    if (isHindi) return "आगा खान पैलेस 1892 में निर्मित भारत के स्वतंत्रता संग्राम का राष्ट्रीय स्मारक है, जहाँ महात्मा गांधी को नजरबंद रखा गया था।";
+    return "Aga Khan Palace (built in 1892) is a national monument deeply tied to India's Freedom Movement. Mahatma Gandhi and Kasturba Gandhi were interned here during the 1942 Quit India Movement.";
+  }
+
+  // Pataleshwar Cave / Rock Temple
+  if (query.includes("pataleshwar") || query.includes("cave") || query.includes("पाताळेश्वर")) {
+    if (isMarathi) return "पाताळेश्वर गुंफा मंदिर हे ८ व्या शतकातील राष्ट्रकूट काळातील एकाच कातळात कोरलेले दगडी मंदिर आहे. हे मंदिर जंगली महाराज रोडवर असून मोफत प्रवेश आहे.";
+    if (isHindi) return "पातालेश्वर गुफा मंदिर 8वीं शताब्दी का राष्ट्रकूट काल का अखंड चट्टान से तराशा गया मंदिर है।";
+    return "Pataleshwar Cave Temple is an 8th-century Rashtrakuta-period monolithic basalt rock-cut cave shrine located on JM Road. Entry is completely free.";
+  }
+
+  // Kelkar Museum
+  if (query.includes("kelkar") || query.includes("museum") || query.includes("केळकर")) {
+    if (isMarathi) return "राजा दिनकर केळकर संग्रहालयात २०,००० पेक्षा जास्त दुर्मिळ भारतीय वस्तू, वाद्ये आणि हुबेहूब पुनर्रचित मस्तानी महाल आहे. प्रवेश शुल्क: ₹१०० (प्रौढ) / ₹३० (मुले).";
+    if (isHindi) return "राजा दिनकर केलकर संग्रहालय में 20,000 से अधिक दुर्लभ भारतीय एंटीक वस्तुएं और पुनर्निर्मित मस्तानी महल प्रदर्शित है।";
+    return "Raja Dinkar Kelkar Museum houses a remarkable collection of 20,000+ Indian antiques, musical instruments, and the reconstructed Mastani Mahal. Ticket is ₹100 for adults.";
+  }
+
+  // Best Places to Visit / Itinerary / Plan
+  if (query.includes("best place") || query.includes("visit") || query.includes("top") || query.includes("plan") || query.includes("ठिकाणे") || query.includes("स्थल")) {
+    if (isMarathi) return "पुण्यातील प्रमुख ५ ऐतिहासिक ठिकाणे: १) शनिवार वाडा, २) सिंहगड किल्ला, ३) आगाखान पॅलेस, ४) पाताळेश्वर लेणी, ५) राजा दिनकर केळकर संग्रहालय. तुम्ही ✨ AI Trip Planner वापरून २ ते ७ दिवसांचा प्लॅन आखा!";
+    if (isHindi) return "पुणे के 5 प्रमुख स्थल: 1) शनिवार वाड़ा, 2) सिंहगढ़ किला, 3) आगा खान पैलेस, 4) पातालबालेश्वर गुफा, 5) केलकर संग्रहालय।";
+    return "Top 5 must-visit heritage spots in Pune: 1) Shaniwar Wada, 2) Sinhagad Fort, 3) Aga Khan Palace, 4) Pataleshwar Cave Temple, 5) Raja Dinkar Kelkar Museum. Use our ✨ AI Trip Planner for a customized multi-day itinerary!";
+  }
+
+  // General Fallback
+  if (isMarathi) {
+    return `HeritageAI पुणे: "${prompt}" बद्दल अधिक माहितीसाठी आपण शनिवार वाडा, सिंहगड किल्ला किंवा आगाखान पॅलेसला भेट देऊ शकता. तुम्हाला आणखी काय जाणून घ्यायचे आहे?`;
+  }
+  if (isHindi) {
+    return `HeritageAI पुणे: "${prompt}" के संदर्भ में आप शनिवार वाड़ा या सिंहगढ़ किले का भ्रमण कर सकते हैं। आप अन्य क्या जानना चाहते हैं?`;
+  }
+
+  return `HeritageAI Pune: Regarding "${prompt}", Pune offers rich Maratha history, Sahyadri fortresses, and vibrant culinary experiences like Misal Pav and Mastani. Feel free to ask about timings, ticket fees, history, or food!`;
+}
 
 function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Family", interests = [], language = "English" }) {
   const isMarathi = language === "Marathi";

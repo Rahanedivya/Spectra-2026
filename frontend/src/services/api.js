@@ -15,7 +15,11 @@ export const planTrip = async (params) => {
   try {
     const response = await api.post('/plan-trip', params);
     if (response.data && response.data.success) {
-      return response.data;
+      // Ensure budget property is set to user requested budget if missing
+      return {
+        ...response.data,
+        budget: response.data.budget || params.budget || 5000
+      };
     }
     throw new Error('API request succeeded but returned non-success payload');
   } catch (error) {
@@ -143,18 +147,19 @@ function generateFallbackItinerary(params) {
     });
   }
 
-  const estFood = numDays * 600;
-  const estTransport = numDays * 400;
-  const estEntry = numDays * 200;
-  const estActivities = numDays * 200;
-  const estShopping = numDays * 300;
+  const estFood = Math.round(numericBudget * 0.35);
+  const estTransport = Math.round(numericBudget * 0.25);
+  const estEntry = Math.round(numericBudget * 0.10);
+  const estActivities = Math.round(numericBudget * 0.15);
+  const estShopping = Math.round(numericBudget * 0.15);
   const totalCost = estFood + estTransport + estEntry + estActivities + estShopping;
 
   return {
     success: true,
     isFallback: true,
     fallbackNotice: "AI is temporarily unavailable. Showing a curated Pune itinerary.",
-    summary: `Customized ${numDays}-day cultural and heritage itinerary for Pune for ${travelType} group within a ₹${numericBudget} budget.`,
+    summary: `Customized ${numDays}-day cultural and heritage itinerary for Pune for ${travelType} group within a ₹${numericBudget.toLocaleString()} budget.`,
+    budget: numericBudget,
     daysCount: numDays,
     days: itineraryDays,
     itinerary: itineraryDays,
@@ -164,7 +169,9 @@ function generateFallbackItinerary(params) {
       entryFees: estEntry,
       activities: estActivities,
       shopping: estShopping,
-      total: totalCost
+      total: totalCost,
+      totalCost: totalCost,
+      remainingBudget: Math.max(0, numericBudget - totalCost)
     },
     travelTips: [
       "Start early in the morning to avoid afternoon heat.",

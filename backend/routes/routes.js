@@ -156,6 +156,7 @@ IMPORTANT: You MUST generate EXACTLY ${numDays} day objects in the "days" array 
 Format your response STRICTLY as valid JSON:
 {
   "summary": "High-level summary in ${language}",
+  "budget": ${numericBudget},
   "daysCount": ${numDays},
   "days": [
     {
@@ -213,6 +214,7 @@ Format your response STRICTLY as valid JSON:
             ...parsed,
             success: true,
             isFallback: false,
+            budget: numericBudget,
             daysCount: numDays,
             days: parsedDays,
             itinerary: parsedDays
@@ -275,12 +277,13 @@ function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Fami
   const isMarathi = language === "Marathi";
   const isHindi = language === "Hindi";
   const numDays = Math.max(1, parseInt(days, 10) || 2);
+  const numericBudget = Math.max(500, parseInt(budget, 10) || 5000);
 
   const summary = isMarathi
-    ? `पुणे शहरासाठी ${numDays} दिवसांची विशेष सांस्कृतिक व ऐतिहासिक सफर (${travelType} प्रवास). एकूण अंदाजपत्रक ₹${budget}.`
+    ? `पुणे शहरासाठी ${numDays} दिवसांची विशेष सांस्कृतिक व ऐतिहासिक सफर (${travelType} प्रवास). एकूण अंदाजपत्रक ₹${numericBudget.toLocaleString()}.`
     : isHindi
-    ? `पुणे शहर के लिए ${numDays} दिवसीय सांस्कृतिक और ऐतिहासिक यात्रा (${travelType} समूह)। कुल बजट ₹${budget}।`
-    : `Customized ${numDays}-day cultural and heritage itinerary for Pune designed for ${travelType} travelers within a ₹${budget} budget.`;
+    ? `पुणे शहर के लिए ${numDays} दिवसीय सांस्कृतिक और ऐतिहासिक यात्रा (${travelType} समूह)। कुल बजट ₹${numericBudget.toLocaleString()}।`
+    : `Customized ${numDays}-day cultural and heritage itinerary for Pune designed for ${travelType} travelers within a ₹${numericBudget.toLocaleString()} budget.`;
 
   const sitePool = [
     {
@@ -380,11 +383,11 @@ function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Fami
     });
   }
 
-  const estFood = numDays * 550;
-  const estTrans = numDays * 450;
-  const estEntry = numDays * 150;
-  const estAct = numDays * 200;
-  const estShop = numDays * 250;
+  const estFood = Math.round(numericBudget * 0.35);
+  const estTrans = Math.round(numericBudget * 0.25);
+  const estEntry = Math.round(numericBudget * 0.10);
+  const estAct = Math.round(numericBudget * 0.15);
+  const estShop = Math.round(numericBudget * 0.15);
   const total = estFood + estTrans + estEntry + estAct + estShop;
 
   return {
@@ -392,6 +395,7 @@ function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Fami
     isFallback: true,
     fallbackNotice: "AI is temporarily unavailable. Showing a curated Pune itinerary.",
     summary,
+    budget: numericBudget,
     daysCount: numDays,
     days: daysArr,
     itinerary: daysArr,
@@ -401,7 +405,9 @@ function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Fami
       entryFees: estEntry,
       activities: estAct,
       shopping: estShop,
-      total: total
+      total: total,
+      totalCost: total,
+      remainingBudget: Math.max(0, numericBudget - total)
     },
     travelTips: [
       isMarathi ? "सकाळी ०८:०० वाजेपूर्वी सिंहगड किल्ल्याची यात्रा सुरू करा." : "Start early in the morning to avoid afternoon heat.",

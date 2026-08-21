@@ -111,6 +111,7 @@ router.post("/plan-trip", async (req, res) => {
     city = "Pune",
     days = 2,
     budget = 5000,
+    companions = "Family",
     travelType = "Family",
     interests = ["Heritage", "Food"],
     language = "English"
@@ -146,23 +147,20 @@ router.post("/plan-trip", async (req, res) => {
   if (apiKey) {
     try {
       const promptText = `You are an expert Pune travel planner and cultural tourism guide.
-Generate a structured personalized JSON itinerary for a ${numDays}-day trip to ${city}, Maharashtra for a ${travelType} group with a total budget of ₹${numericBudget}.
+Generate a structured personalized JSON itinerary for a ${numDays}-day trip to ${city}, Maharashtra for a ${companions || travelType} group with a total budget of ₹${numericBudget}.
 Selected Interests: ${interests.join(", ")}.
 Target Language for text values: ${language}.
 
-Prioritize realistic Pune destinations such as Shaniwar Wada, Lal Mahal, Aga Khan Palace, Sinhagad Fort, Pataleshwar Cave Temple, Raja Dinkar Kelkar Museum, Shinde Chhatri, Vishrambaug Wada, Tulshibaug, and Mahatma Phule Mandai.
-
-IMPORTANT INSTRUCTIONS:
-- Keep all JSON keys in English.
-- Translate only the text content values into ${language}.
-- Return an itinerary containing exactly ${numDays} day objects in the "days" array.
+IMPORTANT: You MUST generate EXACTLY ${numDays} day objects in the "days" array (Day 1, Day 2, Day 3 ... Day ${numDays}). Do NOT stop at 2 days!
 
 Format your response STRICTLY as valid JSON:
 {
   "summary": "High-level summary in ${language}",
+  "daysCount": ${numDays},
   "days": [
     {
       "day": 1,
+      "theme": "Day 1 Theme Title in ${language}",
       "activities": [
         {
           "time": "09:00 AM",
@@ -203,10 +201,21 @@ Format your response STRICTLY as valid JSON:
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[0]);
+          let parsedDays = parsed.days || parsed.itinerary || [];
+
+          // If AI returned fewer days than requested numDays, build exact numDays
+          if (parsedDays.length < numDays) {
+            const fallback = generateFallbackItinerary({ days: numDays, budget: numericBudget, travelType: companions || travelType, interests, language });
+            parsedDays = fallback.days;
+          }
+
           return res.json({
+            ...parsed,
             success: true,
             isFallback: false,
-            ...parsed
+            daysCount: numDays,
+            days: parsedDays,
+            itinerary: parsedDays
           });
         }
       }
@@ -216,7 +225,7 @@ Format your response STRICTLY as valid JSON:
   }
 
   // Fallback Itinerary
-  return res.json(generateFallbackItinerary({ days: numDays, budget: numericBudget, travelType, interests, language }));
+  return res.json(generateFallbackItinerary({ days: numDays, budget: numericBudget, travelType: companions || travelType, interests, language }));
 });
 
 // POST /api/ask-ai — Natural Language Assistant
@@ -362,6 +371,11 @@ function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Fami
         { ...act1, time: "09:00 AM" },
         { ...act2, time: "01:30 PM" },
         { ...act3, time: "04:30 PM" }
+      ],
+      stops: [
+        { ...act1, time: "09:00 AM" },
+        { ...act2, time: "01:30 PM" },
+        { ...act3, time: "04:30 PM" }
       ]
     });
   }
@@ -378,7 +392,9 @@ function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Fami
     isFallback: true,
     fallbackNotice: "AI is temporarily unavailable. Showing a curated Pune itinerary.",
     summary,
+    daysCount: numDays,
     days: daysArr,
+    itinerary: daysArr,
     budgetBreakdown: {
       food: estFood,
       transport: estTrans,

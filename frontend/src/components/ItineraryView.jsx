@@ -6,23 +6,18 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
   const [activeDay, setActiveDay] = useState(1);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
-  const {
-    city = 'Pune',
-    daysCount = 2,
-    budget = 5000,
-    language = 'English',
-    sustainabilityScore = 89,
-    experienceScore = 94,
-    budgetBreakdown = {},
-    sustainabilityPerks = [],
-    itinerary = []
-  } = itineraryData;
+  // Normalize days list whether backend returns 'days' or 'itinerary'
+  const daysList = itineraryData.days || itineraryData.itinerary || [];
+  const daysCount = itineraryData.daysCount || daysList.length || 1;
+  const budget = itineraryData.budget || 5000;
+  const language = itineraryData.language || 'English';
+  const budgetBreakdown = itineraryData.budgetBreakdown || {};
 
-  const currentDayData = itinerary.find(d => d.day === activeDay) || itinerary[0];
+  const currentDayData = daysList.find(d => d.day === activeDay) || daysList[0];
 
   // Map stops for route polylines
   const currentStops = currentDayData?.activities || currentDayData?.stops || [];
-  const allStopsForMap = itinerary.flatMap(d => d.activities || d.stops || []);
+  const allStopsForMap = daysList.flatMap(d => d.activities || d.stops || []);
 
   const handleSave = () => {
     if (onSave) onSave(itineraryData);
@@ -51,11 +46,11 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Your Personalized <span className="font-heritage text-gradient-gold">Pune Journey</span>
+            Your Personalized <span className="font-heritage text-gradient-gold">{daysCount}-Day Pune Journey</span>
           </h1>
 
           <p className="text-slate-300 text-xs sm:text-sm mt-1">
-            {daysCount} Days • Total Budget: ₹{budget.toLocaleString()}
+            {daysCount} {daysCount === 1 ? 'Day' : 'Days'} • Total Budget: ₹{budget.toLocaleString()}
           </p>
         </div>
 
@@ -122,7 +117,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           
           {/* Day Tabs */}
           <div className="flex items-center space-x-2 border-b border-slate-800 pb-4 overflow-x-auto">
-            {itinerary.map((dayItem) => (
+            {daysList.map((dayItem) => (
               <button
                 key={dayItem.day}
                 onClick={() => setActiveDay(dayItem.day)}

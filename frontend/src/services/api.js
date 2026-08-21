@@ -137,8 +137,9 @@ function generateFallbackItinerary(params) {
 
     itineraryDays.push({
       day: d,
-      theme: d === 1 ? "Imperial Peshwa Heritage & Classic Flavors" : "Fortresses, Museums & Local Artisans",
-      activities: dayActivities
+      theme: d === 1 ? "Imperial Peshwa Heritage & Classic Flavors" : `Day ${d}: Heritage, Fortresses & Local Culture`,
+      activities: dayActivities,
+      stops: dayActivities
     });
   }
 
@@ -154,7 +155,9 @@ function generateFallbackItinerary(params) {
     isFallback: true,
     fallbackNotice: "AI is temporarily unavailable. Showing a curated Pune itinerary.",
     summary: `Customized ${numDays}-day cultural and heritage itinerary for Pune for ${travelType} group within a ₹${numericBudget} budget.`,
+    daysCount: numDays,
     days: itineraryDays,
+    itinerary: itineraryDays,
     budgetBreakdown: {
       food: estFood,
       transport: estTransport,

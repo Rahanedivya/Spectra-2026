@@ -306,7 +306,7 @@ export const PUNE_FOOD_EXPERIENCES = [
     marathiName: "पुणेरी मिसळ पाव",
     spiciness: "🌶️🌶️🌶️ High",
     approxPrice: "₹100 – ₹160",
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop",
+    image: "https://i.pinimg.com/1200x/20/84/33/208433112dcc181a6aeb634aae601ff8.jpg",
     description: "Fiery sprouted moth bean curry (Rassa) topped with crispy farsan, fresh onions, coriander, and served with soft Ladi Pav & lemon wedge.",
     whereToTry: "Bedekar Misal (Shaniwar Peth), Kattakirrr (Erandwane), Vaidya Uphar Griha",
     culturalStory: "Misal in Pune is an emotion! Unlike Kolhapuri misal, Puneri misal has a subtle tanginess mixed with potato pooha and homemade spicy cut."
@@ -328,7 +328,7 @@ export const PUNE_FOOD_EXPERIENCES = [
     marathiName: "चितळे बाकरवडी",
     spiciness: "🌶️ Spicy & Sweet",
     approxPrice: "₹180 / 500g",
-    image: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?q=80&w=800&auto=format&fit=crop",
+    image: "https://i.pinimg.com/736x/9b/ad/23/9bad23c0c7f3531383d8e2568b9b9940.jpg",
     description: "Spiral fried rolls of gram flour stuffed with coconut, poppy seeds, sesame seeds, and signature Marathi spice blend.",
     whereToTry: "Chitale Bandhu Mithaiwale (Deccan Gymkhana & Laxmi Road)",
     culturalStory: "The definitive savory takeaway souvenir from Pune. People queue up around the block every day for fresh crispy batches!"
@@ -339,7 +339,7 @@ export const PUNE_FOOD_EXPERIENCES = [
     marathiName: "पिठलं भाकरी",
     spiciness: "🌶️🌶️ Medium-High",
     approxPrice: "₹120 / thali",
-    image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=800&auto=format&fit=crop",
+    image: "https://www.myindianproducts.com/images/travel/food/pithla-bhakri-maharashtra.webp",
     description: "Hot savory gram flour curry seasoned with garlic & green chillies, served with rustic Jowar/Bajra Bhakri, raw onion, and chulha-cooked Thecha.",
     whereToTry: "Sinhagad Fort Village Stalls",
     culturalStory: "Eaten on mountain tops by Maratha soldiers for centuries, this simple dish embodies the rugged spirit of the Sahyadri ranges."
@@ -350,7 +350,7 @@ export const PUNE_FOOD_EXPERIENCES = [
     marathiName: "पुरणपोळी",
     spiciness: "🍯 Sweet & Aromatic",
     approxPrice: "₹80 – ₹150",
-    image: "https://images.unsplash.com/photo-1605888969139-42ca4d04847e?q=80&w=800&auto=format&fit=crop",
+    image: "https://i.pinimg.com/736x/f6/89/8c/f6898caca38ea45daa7f1a3aa3524608.jpg",
     description: "Soft wheat flatbread stuffed with sweet cooked chana dal, jaggery, cardamom, and nutmeg, served drenched in melted Pure Desi Ghee (Katachi Amti optional).",
     whereToTry: "Poona Boarding House, Sukanta Thali",
     culturalStory: "The festival dish of Maharashtra, cooked during Holi and Diwali to celebrate prosperity and warmth."

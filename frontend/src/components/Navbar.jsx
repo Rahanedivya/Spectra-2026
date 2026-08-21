@@ -15,17 +15,17 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
 
   const navItems = [
     { id: 'home', label: t('navHome', currentLang), icon: Compass },
-    { id: 'explore', label: t('navExplore', currentLang), icon: MapPin, color: 'text-[#087F7B]' },
+    { id: 'explore', label: t('navExplore', currentLang), icon: MapPin },
     { id: 'planner', label: t('navPlanner', currentLang), icon: Sparkles, isSpecial: true },
-    { id: 'food', label: t('navTaste', currentLang), icon: Utensils, color: 'text-[#E87516]' },
-    { id: 'guides', label: 'Local Guides', icon: Users, color: 'text-[#087F7B]' },
-    { id: 'safety', label: t('navSafety', currentLang), icon: ShieldAlert, color: 'text-[#667A3A]' }
+    { id: 'food', label: t('navTaste', currentLang), icon: Utensils },
+    { id: 'guides', label: 'Local Guides', icon: Users },
+    { id: 'safety', label: t('navSafety', currentLang), icon: ShieldAlert }
   ];
 
   return (
     <header className="sticky top-0 z-50 font-sans shadow-md">
       
-      {/* Top Heritage Micro Bar */}
+      {/* Top Micro Heritage Bar */}
       <div className="bg-[#741C35] text-[#FFF8EC] text-[11px] py-1 px-4 text-center font-serif tracking-wider font-semibold border-b border-[#D4A72C]/40 flex items-center justify-between">
         <div className="hidden sm:flex items-center space-x-2">
           <span>🚩</span>
@@ -34,26 +34,26 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
 
         <div className="mx-auto sm:mx-0 font-sans font-bold flex items-center space-x-3 text-[10px]">
           <span className="text-[#D4A72C]">EN • MR • HI Audio Storytelling</span>
-          <span className="text-[#FAF1E4]">|</span>
+          <span className="text-[#FAF1E4]/40">|</span>
           <span className="text-white">Spectra 2026 AI Innovation</span>
         </div>
 
-        <div className="hidden md:block text-[#D4A72C] text-[10px]">
+        <div className="hidden md:block text-[#D4A72C] text-[10px] font-bold">
           Atithi Devo Bhava
         </div>
       </div>
 
-      {/* Main Glassmorphic Sticky Header */}
+      {/* Main Glassmorphic Header */}
       <div className="bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E8DCCB] text-[#332A27]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             
-            {/* Logo & Brand Identity */}
+            {/* Brand Logo & Name */}
             <div 
               onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
-              className="flex items-center space-x-3 cursor-pointer group"
+              className="flex items-center space-x-3 cursor-pointer group flex-shrink-0"
             >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#741C35] via-[#881337] to-[#E87516] p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-300">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#741C35] via-[#881337] to-[#E87516] p-0.5 shadow-md group-hover:scale-105 transition-transform duration-300">
                 <div className="w-full h-full bg-[#FFF8EC] rounded-[14px] flex items-center justify-center border border-[#E8DCCB]">
                   <Landmark className="w-6 h-6 text-[#741C35] group-hover:text-[#E87516] transition-colors" />
                 </div>
@@ -73,8 +73,8 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               </div>
             </div>
 
-            {/* Nav Links (Desktop Navigation Bar) */}
-            <nav className="hidden xl:flex items-center space-x-1.5 bg-[#FAF1E4] p-1.5 rounded-2xl border border-[#E8DCCB] shadow-inner">
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center space-x-1 bg-[#FAF1E4] p-1.5 rounded-2xl border border-[#E8DCCB] shadow-inner">
               {navItems.map((item) => {
                 const IconComponent = item.icon;
                 const isActive = activeTab === item.id;
@@ -84,9 +84,9 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                     <button
                       key={item.id}
                       onClick={() => setActiveTab(item.id)}
-                      className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-300 flex items-center space-x-1.5 cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-300 flex items-center space-x-1.5 cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-r from-[#E87516] to-[#c2410c] text-white shadow-lg shadow-[#E87516]/30 scale-105'
+                          ? 'bg-[#E87516] text-white shadow-md scale-105'
                           : 'bg-[#E87516]/15 text-[#E87516] border border-[#E87516]/30 hover:bg-[#E87516] hover:text-white'
                       }`}
                     >
@@ -100,23 +100,23 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
                       isActive
                         ? 'bg-[#741C35] text-white shadow-md'
                         : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#FFF8EC]'
                     }`}
                   >
-                    <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'text-white' : item.color || 'text-[#741C35]'}`} />
+                    <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-[#741C35]'}`} />
                     <span>{item.label}</span>
                   </button>
                 );
               })}
             </nav>
 
-            {/* Right Action Bar */}
-            <div className="flex items-center space-x-3">
+            {/* Right Action Items */}
+            <div className="flex items-center space-x-2.5">
               
-              {/* Saved Trips & Favorites Counter */}
+              {/* Bookmarks Counter Button */}
               <button
                 onClick={() => setActiveTab('saved')}
                 className={`relative p-2.5 rounded-xl border transition-all cursor-pointer shadow-sm ${
@@ -124,11 +124,11 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                     ? 'bg-[#741C35] text-white border-[#741C35]'
                     : 'bg-[#FAF1E4] border-[#E8DCCB] text-[#741C35] hover:border-[#E87516]'
                 }`}
-                title="Saved Trips & Favorites"
+                title="Saved Trips & Bookmarks"
               >
                 <Bookmark className="w-4 h-4" />
                 {savedCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#E87516] text-white font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#E87516] text-white font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md">
                     {savedCount}
                   </span>
                 )}
@@ -146,7 +146,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                 </button>
 
                 {langDropdown && (
-                  <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-[#FFF8EC] border border-[#E8DCCB] shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="absolute right-0 mt-2 w-44 rounded-2xl bg-[#FFF8EC] border border-[#E8DCCB] shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2">
                     <div className="px-3 py-1 text-[10px] font-bold text-[#6F625D] uppercase tracking-wider border-b border-[#E8DCCB]">
                       Select Language
                     </div>
@@ -171,7 +171,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                 )}
               </div>
 
-              {/* Account / User Profile Badge */}
+              {/* User Profile Badge / Sign In Button */}
               {currentUser ? (
                 <div className="relative">
                   <button
@@ -179,7 +179,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                     className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-[#741C35] text-white text-xs font-bold shadow-md cursor-pointer hover:bg-[#581427] transition-colors"
                   >
                     <User className="w-3.5 h-3.5 text-[#E87516]" />
-                    <span className="max-w-[100px] truncate">{currentUser.name}</span>
+                    <span className="max-w-[90px] truncate">{currentUser.name}</span>
                     <ChevronDown className="w-3 h-3 text-[#F8D8AD]" />
                   </button>
 
@@ -217,19 +217,19 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               ) : (
                 <button
                   onClick={onOpenAuth}
-                  className="flex items-center space-x-1.5 px-4 py-2 rounded-xl btn-teal text-white text-xs font-bold shadow-md cursor-pointer"
+                  className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl btn-teal text-white text-xs font-bold shadow-md cursor-pointer"
                 >
                   <User className="w-3.5 h-3.5 text-white" />
                   <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
                 </button>
               )}
 
-              {/* Mobile Menu Button */}
+              {/* Mobile Hamburger Toggle */}
               <button
                 onClick={() => setMobileMenu(!mobileMenu)}
-                className="xl:hidden p-2 rounded-xl bg-[#FAF1E4] border border-[#E8DCCB] text-[#741C35]"
+                className="lg:hidden p-2 rounded-xl bg-[#FAF1E4] border border-[#E8DCCB] text-[#741C35]"
               >
-                {mobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
 
             </div>
@@ -239,7 +239,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
 
         {/* Mobile Navigation Drawer */}
         {mobileMenu && (
-          <div className="xl:hidden bg-[#FFF8EC] border-b border-[#E8DCCB] px-4 pt-2 pb-6 space-y-2 text-xs font-bold animate-in slide-in-from-top-3">
+          <div className="lg:hidden bg-[#FFF8EC] border-b border-[#E8DCCB] px-4 pt-2 pb-6 space-y-2 text-xs font-bold animate-in slide-in-from-top-3">
             {navItems.map((item) => {
               const IconComponent = item.icon;
               const isActive = activeTab === item.id;
@@ -249,7 +249,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                   <button
                     key={item.id}
                     onClick={() => { setActiveTab(item.id); setMobileMenu(false); }}
-                    className="w-full text-left py-3 px-4 rounded-xl bg-gradient-to-r from-[#E87516] to-[#c2410c] text-white font-extrabold flex items-center space-x-2"
+                    className="w-full text-left py-3 px-4 rounded-xl bg-[#E87516] text-white font-extrabold flex items-center space-x-2"
                   >
                     <Sparkles className="w-4 h-4 fill-white" />
                     <span>{item.label}</span>
@@ -265,7 +265,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                     isActive ? 'bg-[#741C35] text-white' : 'text-[#332A27] hover:bg-[#FAF1E4]'
                   }`}
                 >
-                  <IconComponent className={`w-4 h-4 ${isActive ? 'text-white' : item.color || 'text-[#741C35]'}`} />
+                  <IconComponent className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#741C35]'}`} />
                   <span>{item.label}</span>
                 </button>
               );

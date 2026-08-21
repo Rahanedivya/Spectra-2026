@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Sparkles, Calendar, IndianRupee, Users, Heart, Globe, ArrowRight, ArrowLeft, Check, Compass, Plus, Minus } from 'lucide-react';
 import ItineraryView from '../components/ItineraryView';
 import { planTrip } from '../services/api';
+import { t } from '../data/translations';
 
-export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, setCurrentLang }) {
+export default function Planner({ initialPrompt = '', onSaveTrip, currentLang = 'English', setCurrentLang }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [generatedItinerary, setGeneratedItinerary] = useState(null);
@@ -82,23 +83,23 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
       <div className="text-center mb-10">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
           <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
-          <span>AI Multi-Step Travel Engine</span>
+          <span>{t('plannerBadge', currentLang)}</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] mb-2 font-heritage">
-          Build Your <span className="text-[#ea580c]">Pune Journey</span>
+          {t('plannerTitle', currentLang)}
         </h1>
         <p className="text-[#5c4a4e] text-sm font-medium">
-          Tell us what you love. HeritageAI will plan the rest.
+          {t('plannerSub', currentLang)}
         </p>
       </div>
 
       {/* Progress Indicator */}
       <div className="bg-white p-4 rounded-2xl border border-[#e2d7c7] shadow-sm mb-8">
         <div className="flex items-center justify-between text-xs font-bold text-[#5c4a4e] mb-2">
-          <span>Step {step} of 6</span>
+          <span>{t('stepLabel', currentLang)} {step} / 6</span>
           <span className="text-[#701a28]">
             {step === 1 && "City Destination"}
-            {step === 2 && "Duration (Select Any Days)"}
+            {step === 2 && "Duration"}
             {step === 3 && "Estimated Budget"}
             {step === 4 && "Travel Companions"}
             {step === 5 && "Heritage Interests"}
@@ -119,9 +120,9 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
         {/* STEP 1: City Destination */}
         {step === 1 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <Compass className="w-5 h-5 text-[#ea580c]" />
-              <span>Step 1: Destination</span>
+              <span>{t('step1Title', currentLang)}</span>
             </h3>
 
             <div className="p-6 rounded-2xl bg-[#faf6f0] border border-[#e2d7c7] text-center">
@@ -139,9 +140,9 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
         {/* STEP 2: Duration */}
         {step === 2 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <Calendar className="w-5 h-5 text-[#ea580c]" />
-              <span>Step 2: How many days will you spend in Pune?</span>
+              <span>{t('step2Title', currentLang)}</span>
             </h3>
 
             {/* Quick Pick Preset Buttons */}
@@ -165,8 +166,8 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
             {/* Custom Day Stepper Input */}
             <div className="bg-[#faf6f0] p-5 rounded-2xl border border-[#e2d7c7] flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <span className="text-sm font-bold text-[#701a28] block">Custom Trip Duration</span>
-                <span className="text-xs text-[#5c4a4e]">Select any number of days for your Pune vacation</span>
+                <span className="text-sm font-bold text-[#701a28] block">{t('customDuration', currentLang)}</span>
+                <span className="text-xs text-[#5c4a4e]">{t('customDurationSub', currentLang)}</span>
               </div>
 
               <div className="flex items-center space-x-3">
@@ -198,14 +199,14 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
         {/* STEP 3: Budget */}
         {step === 3 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <IndianRupee className="w-5 h-5 text-emerald-700" />
-              <span>Step 3: What is your estimated total budget?</span>
+              <span>{t('step3Title', currentLang)}</span>
             </h3>
 
             <div className="space-y-4">
               <div className="flex items-center justify-between text-lg font-bold text-[#701a28] bg-[#faf6f0] p-4 rounded-xl border border-[#e2d7c7]">
-                <span>Selected Budget:</span>
+                <span>{t('selectedBudgetLabel', currentLang)}</span>
                 <span className="text-emerald-700 text-2xl font-extrabold">₹{budget.toLocaleString()}</span>
               </div>
 
@@ -231,9 +232,9 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
         {/* STEP 4: Companions */}
         {step === 4 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <Users className="w-5 h-5 text-[#ea580c]" />
-              <span>Step 4: Who are you travelling with?</span>
+              <span>{t('step4Title', currentLang)}</span>
             </h3>
 
             <div className="grid grid-cols-2 gap-4">
@@ -261,9 +262,9 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
         {/* STEP 5: Interests */}
         {step === 5 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <Heart className="w-5 h-5 text-[#ea580c]" />
-              <span>Step 5: What experiences do you love?</span>
+              <span>{t('step5Title', currentLang)}</span>
             </h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -291,9 +292,9 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
         {/* STEP 6: Language */}
         {step === 6 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <Globe className="w-5 h-5 text-[#ea580c]" />
-              <span>Step 6: Preferred Itinerary Language</span>
+              <span>{t('step6Title', currentLang)}</span>
             </h3>
 
             <div className="grid grid-cols-3 gap-4">
@@ -331,7 +332,7 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
               className="px-5 py-2.5 rounded-xl bg-[#faf6f0] hover:bg-[#e2d7c7] text-[#701a28] font-bold text-xs border border-[#e2d7c7] flex items-center space-x-2 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back</span>
+              <span>{t('backBtn', currentLang)}</span>
             </button>
           ) : <div />}
 
@@ -340,7 +341,7 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
               onClick={() => setStep(step + 1)}
               className="px-6 py-2.5 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white font-bold text-xs flex items-center space-x-2 shadow-md cursor-pointer"
             >
-              <span>Next Step</span>
+              <span>{t('nextStepBtn', currentLang)}</span>
               <ArrowRight className="w-4 h-4 text-[#ea580c]" />
             </button>
           ) : (
@@ -350,7 +351,7 @@ export default function Planner({ initialPrompt = '', onSaveTrip, currentLang, s
               className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#701a28] via-[#881337] to-[#ea580c] text-white font-extrabold text-sm hover:brightness-110 transition-all flex items-center space-x-2 shadow-xl shadow-[#701a28]/30 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 fill-white" />
-              <span>{loading ? `Generating ${days}-Day AI Journey...` : `✨ Generate My Pune Trip`}</span>
+              <span>{loading ? t('generatingBtn', currentLang) : t('generateBtn', currentLang)}</span>
             </button>
           )}
         </div>

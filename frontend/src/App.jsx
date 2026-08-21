@@ -13,6 +13,7 @@ import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 
 import { PUNE_DESTINATIONS } from './data/puneData';
+import { t } from './data/translations';
 import { Sparkles, MapPin, Heart, Bookmark, Trash2, ArrowRight, Compass, ShieldAlert, Globe, IndianRupee, Utensils, HeartHandshake } from 'lucide-react';
 
 export default function App() {
@@ -77,6 +78,7 @@ export default function App() {
               onStartPlanner={() => setActiveTab('planner')}
               onExplore={() => setActiveTab('explore')}
               onSearchPrompt={handleHeroSearchPrompt}
+              currentLang={currentLang}
             />
 
             {/* SECTION 2: Why Pune? */}
@@ -84,15 +86,15 @@ export default function App() {
               <div className="max-w-4xl mx-auto text-center space-y-4">
                 <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold">
                   <Compass className="w-3.5 h-3.5 text-[#ea580c]" />
-                  <span>Cultural & Historic Heart of Maharashtra</span>
+                  <span>{t('whyPuneBadge', currentLang)}</span>
                 </div>
                 
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
-                  Why <span className="text-[#ea580c]">Pune?</span>
+                  {t('whyPuneTitle', currentLang)}
                 </h2>
                 
                 <p className="text-[#5c4a4e] text-base leading-relaxed font-medium">
-                  Built in 1732 as the seat of the Peshwas, Pune is India's cultural capital — where 300-year-old Maratha fortresses, 8th-century monolithic cave temples, vibrant street food, and traditional artisan guilds meet state-of-the-art AI tourism.
+                  {t('whyPuneDesc', currentLang)}
                 </p>
               </div>
             </section>
@@ -103,10 +105,10 @@ export default function App() {
                 <div>
                   <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
                     <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
-                    <span>Peshwa Imperial Sites & Fortresses</span>
+                    <span>{t('featuredBadge', currentLang)}</span>
                   </div>
                   <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
-                    Explore <span className="text-[#ea580c]">Pune's Heritage</span>
+                    {t('featuredTitle', currentLang)}
                   </h2>
                 </div>
 
@@ -114,7 +116,7 @@ export default function App() {
                   onClick={() => setActiveTab('explore')}
                   className="px-5 py-2.5 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white font-bold text-xs flex items-center space-x-2 cursor-pointer shadow-md self-start sm:self-auto"
                 >
-                  <span>Explore All Monuments</span>
+                  <span>{t('viewAllBtn', currentLang)}</span>
                   <ArrowRight className="w-4 h-4 text-[#ea580c]" />
                 </button>
               </div>
@@ -140,13 +142,13 @@ export default function App() {
                 <div className="space-y-4 max-w-2xl">
                   <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28] border border-[#881337] text-[#ea580c] text-xs font-bold">
                     <Sparkles className="w-4 h-4 fill-[#ea580c]" />
-                    <span>AI-Powered Itinerary Engine</span>
+                    <span>{t('aiSectionBadge', currentLang)}</span>
                   </div>
                   <h2 className="text-3xl sm:text-4xl font-extrabold font-heritage">
-                    Let AI Plan Your <span className="text-[#ea580c]">Pune Journey</span>
+                    {t('aiSectionTitle', currentLang)}
                   </h2>
                   <p className="text-[#d6c7b2] text-sm leading-relaxed font-normal">
-                    Select your custom days, budget, interests, and language. HeritageAI generates dynamic routes, cost breakdowns, and authentic cultural stops in seconds.
+                    {t('aiSectionDesc', currentLang)}
                   </p>
                 </div>
 
@@ -155,7 +157,7 @@ export default function App() {
                   className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#701a28] via-[#881337] to-[#ea580c] text-white font-extrabold text-sm hover:brightness-110 transition-all flex items-center space-x-3 shadow-xl cursor-pointer flex-shrink-0"
                 >
                   <Sparkles className="w-5 h-5 fill-white" />
-                  <span>✨ Build Your Pune Journey</span>
+                  <span>{t('aiSectionBtn', currentLang)}</span>
                 </button>
               </div>
             </section>
@@ -168,61 +170,61 @@ export default function App() {
               <div className="text-center max-w-3xl mx-auto mb-12">
                 <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
                   <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
-                  <span>Integrated Digital Tourism Stack</span>
+                  <span>{t('travelSmarterBadge', currentLang)}</span>
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage mb-4">
-                  Travel <span className="text-[#ea580c]">Smarter</span>
+                  {t('travelSmarterTitle', currentLang)}
                 </h2>
                 <p className="text-[#5c4a4e] text-sm sm:text-base leading-relaxed font-medium">
-                  Designed to solve the complete end-to-end heritage tourism workflow for travelers in India.
+                  {t('travelSmarterDesc', currentLang)}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
                   <Globe className="w-8 h-8 text-[#ea580c] mb-3" />
-                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">Multilingual Narration</h3>
+                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">{t('feat1Title', currentLang)}</h3>
                   <p className="text-xs text-[#5c4a4e] leading-relaxed">
-                    Read and listen to Pune history in English, Marathi, and Hindi with Web Speech API audio stories.
+                    {t('feat1Desc', currentLang)}
                   </p>
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
                   <IndianRupee className="w-8 h-8 text-emerald-700 mb-3" />
-                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">Smart Travel Budget</h3>
+                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">{t('feat2Title', currentLang)}</h3>
                   <p className="text-xs text-[#5c4a4e] leading-relaxed">
-                    Dynamic category breakdowns for Food, Transport, Monument Entry Fees, and Experiences.
+                    {t('feat2Desc', currentLang)}
                   </p>
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
                   <ShieldAlert className="w-8 h-8 text-emerald-700 mb-3" />
-                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">Smart Safety & Helplines</h3>
+                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">{t('feat3Title', currentLang)}</h3>
                   <p className="text-xs text-[#5c4a4e] leading-relaxed">
-                    Fort terrain advisories, weather guidelines, and verified 1-click emergency contacts.
+                    {t('feat3Desc', currentLang)}
                   </p>
                 </div>
               </div>
             </section>
 
             {/* SECTION 7: Support Local Pune */}
-            <LocalCommerce />
+            <LocalCommerce currentLang={currentLang} />
 
             {/* SECTION 8: Final CTA */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
               <div className="bg-white p-10 sm:p-14 rounded-3xl border border-[#e2d7c7] shadow-xl space-y-6">
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
-                  Your Pune Story <span className="text-[#ea580c]">Starts Here.</span>
+                  {t('finalCtaTitle', currentLang)}
                 </h2>
                 <p className="text-[#5c4a4e] text-base max-w-2xl mx-auto font-medium">
-                  Experience Peshwa heritage, Sahyadri fortresses, authentic misal, and local craft culture with HeritageAI Pune.
+                  {t('finalCtaDesc', currentLang)}
                 </p>
                 <button
                   onClick={() => setActiveTab('planner')}
                   className="px-8 py-4 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white font-extrabold text-sm shadow-xl transition-all inline-flex items-center space-x-3 cursor-pointer"
                 >
                   <Sparkles className="w-5 h-5 text-[#ea580c]" />
-                  <span>✨ Plan My Pune Trip Now</span>
+                  <span>{t('finalCtaBtn', currentLang)}</span>
                 </button>
               </div>
             </section>
@@ -257,7 +259,7 @@ export default function App() {
 
         {/* SAFETY TAB */}
         {activeTab === 'safety' && (
-          <SafetySection />
+          <SafetySection currentLang={currentLang} />
         )}
 
         {/* SAVED TRIPS & FAVORITES TAB */}
@@ -265,10 +267,10 @@ export default function App() {
           <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 font-sans">
             <div>
               <h1 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] mb-2 font-heritage">
-                My Saved <span className="text-[#ea580c]">Trips & Favorites</span>
+                {t('savedTitle', currentLang)}
               </h1>
               <p className="text-[#5c4a4e] text-sm font-medium">
-                Bookmark your preferred Pune monuments and AI journeys for easy reference.
+                {t('savedSub', currentLang)}
               </p>
             </div>
 
@@ -276,7 +278,7 @@ export default function App() {
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
                 <Heart className="w-5 h-5 text-[#ea580c] fill-current" />
-                <span>Bookmarked Heritage Sites ({favorites.length})</span>
+                <span>{t('bookmarkedSites', currentLang)} ({favorites.length})</span>
               </h3>
 
               {favorites.length > 0 ? (
@@ -294,7 +296,7 @@ export default function App() {
                 </div>
               ) : (
                 <div className="bg-white p-8 rounded-2xl border border-[#e2d7c7] text-center text-[#5c4a4e] text-xs font-medium">
-                  No bookmarked heritage sites yet. Browse <button onClick={() => setActiveTab('explore')} className="text-[#701a28] font-bold underline cursor-pointer">Explore Sites</button> to add your favorites!
+                  {t('noBookmarks', currentLang)} Browse <button onClick={() => setActiveTab('explore')} className="text-[#701a28] font-bold underline cursor-pointer">Explore Sites</button> to add your favorites!
                 </div>
               )}
             </div>
@@ -303,7 +305,7 @@ export default function App() {
             <div className="space-y-4 pt-6 border-t border-[#e2d7c7]">
               <h3 className="text-lg font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
                 <Bookmark className="w-5 h-5 text-[#ea580c]" />
-                <span>Saved AI Itineraries ({savedTrips.length})</span>
+                <span>{t('savedItineraries', currentLang)} ({savedTrips.length})</span>
               </h3>
 
               {savedTrips.length > 0 ? (
@@ -330,7 +332,7 @@ export default function App() {
                 </div>
               ) : (
                 <div className="bg-white p-8 rounded-2xl border border-[#e2d7c7] text-center text-[#5c4a4e] text-xs font-medium">
-                  No saved AI itineraries yet. Use the <button onClick={() => setActiveTab('planner')} className="text-[#701a28] font-bold underline cursor-pointer">✨ AI Trip Planner</button> to create a customized itinerary!
+                  {t('noSavedTrips', currentLang)} Use the <button onClick={() => setActiveTab('planner')} className="text-[#701a28] font-bold underline cursor-pointer">✨ AI Trip Planner</button> to create a customized itinerary!
                 </div>
               )}
             </div>
@@ -367,7 +369,7 @@ export default function App() {
       />
 
       {/* Footer */}
-      <Footer setActiveTab={setActiveTab} />
+      <Footer setActiveTab={setActiveTab} currentLang={currentLang} />
 
     </div>
   );

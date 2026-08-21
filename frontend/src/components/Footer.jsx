@@ -1,7 +1,8 @@
 import React from 'react';
 import { Compass, Sparkles, MapPin, Heart, Shield } from 'lucide-react';
+import { t } from '../data/translations';
 
-export default function Footer({ setActiveTab }) {
+export default function Footer({ setActiveTab, currentLang = 'English' }) {
   return (
     <footer className="bg-[#181112] border-t border-[#3a1d23] text-[#d6c7b2] py-12 px-4 sm:px-6 lg:px-8 mt-16 font-sans">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -18,7 +19,7 @@ export default function Footer({ setActiveTab }) {
             </div>
           </div>
           <p className="text-xs leading-relaxed text-[#d6c7b2]">
-            Discover Pune. Experience Its Heritage. Reimagining Indian cultural tourism through digital AI innovation.
+            {t('footerDesc', currentLang)}
           </p>
           <div className="text-xs text-[#a89582] flex items-center space-x-1">
             <span>Crafted with</span>
@@ -65,14 +66,14 @@ export default function Footer({ setActiveTab }) {
           </p>
           <div className="p-3 rounded-xl bg-[#231417] border border-[#3a1d23] text-[11px] text-[#ea580c] font-semibold flex items-center space-x-2">
             <Sparkles className="w-4 h-4 text-[#ea580c] flex-shrink-0" />
-            <span>Built for Spectra 2026 AI Innovation</span>
+            <span>{t('builtFor', currentLang)}</span>
           </div>
         </div>
 
       </div>
 
       <div className="max-w-7xl mx-auto pt-8 mt-8 border-t border-[#3a1d23] text-center text-xs text-[#a89582]">
-        © 2026 HeritageAI Pune. Discover Pune. Experience Its Heritage.
+        {t('copyright', currentLang)}
       </div>
     </footer>
   );

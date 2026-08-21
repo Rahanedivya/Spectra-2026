@@ -3,8 +3,9 @@ import { PUNE_DESTINATIONS } from '../data/puneData';
 import DestinationCard from '../components/DestinationCard';
 import MapComponent from '../components/MapComponent';
 import { Search, Filter, SlidersHorizontal, Grid, MapPin, Sparkles } from 'lucide-react';
+import { t } from '../data/translations';
 
-export default function Explore({ onSelectDestination, onFavorite, favorites = [], currentLang }) {
+export default function Explore({ onSelectDestination, onFavorite, favorites = [], currentLang = 'English' }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('Popular');
@@ -39,13 +40,13 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
         <div>
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
             <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
-            <span>Discover Pune's Imperial Heritage</span>
+            <span>{t('exploreBadge', currentLang)}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
-            Explore <span className="text-[#ea580c]">Pune Heritage</span>
+            {t('exploreTitle', currentLang)}
           </h1>
           <p className="text-[#5c4a4e] text-sm mt-1 font-medium">
-            Search fortresses, ancient rock caves, Peshwa wadas, and iconic museums.
+            {t('exploreSub', currentLang)}
           </p>
         </div>
 
@@ -60,7 +61,7 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
             }`}
           >
             <Grid className="w-4 h-4" />
-            <span>Cards Grid</span>
+            <span>{t('cardsGrid', currentLang)}</span>
           </button>
           <button
             onClick={() => setViewMode('map')}
@@ -71,7 +72,7 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
             }`}
           >
             <MapPin className="w-4 h-4" />
-            <span>Interactive Map</span>
+            <span>{t('interactiveMap', currentLang)}</span>
           </button>
         </div>
       </div>
@@ -88,7 +89,7 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Shaniwar Wada, Forts, Misal, Museums..."
+              placeholder={t('searchPlaceholder', currentLang)}
               className="w-full pl-10 pr-4 py-3 bg-[#faf6f0] rounded-xl border border-[#e2d7c7] text-[#1c1214] placeholder-[#8a7679] text-xs font-medium focus:outline-none focus:border-[#701a28]"
             />
           </div>
@@ -101,9 +102,9 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
               onChange={(e) => setSortBy(e.target.value)}
               className="w-full md:w-48 px-3 py-3 bg-[#faf6f0] border border-[#e2d7c7] text-[#1c1214] text-xs font-bold rounded-xl focus:outline-none focus:border-[#701a28]"
             >
-              <option value="Popular">Most Popular</option>
-              <option value="Highest Rated">Highest Rated ⭐</option>
-              <option value="Budget Friendly">Budget Friendly ₹</option>
+              <option value="Popular">{t('mostPopular', currentLang)}</option>
+              <option value="Highest Rated">{t('highestRated', currentLang)}</option>
+              <option value="Budget Friendly">{t('budgetFriendly', currentLang)}</option>
             </select>
           </div>
 
@@ -113,7 +114,7 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
         <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#e2d7c7]">
           <span className="text-xs font-bold text-[#701a28] mr-2 flex items-center gap-1">
             <Filter className="w-3.5 h-3.5 text-[#ea580c]" />
-            Categories:
+            {t('categoriesLabel', currentLang)}
           </span>
           {categories.map((cat) => (
             <button
@@ -149,12 +150,12 @@ export default function Explore({ onSelectDestination, onFavorite, favorites = [
           </div>
         ) : (
           <div className="text-center py-16 bg-white rounded-2xl border border-[#e2d7c7]">
-            <p className="text-[#5c4a4e] text-sm font-medium">No Pune heritage sites found matching your search.</p>
+            <p className="text-[#5c4a4e] text-sm font-medium">{t('noSitesFound', currentLang)}</p>
             <button
               onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
               className="mt-3 px-4 py-2 rounded-xl bg-[#701a28] text-white text-xs font-bold cursor-pointer"
             >
-              Reset Filters
+              {t('resetFilters', currentLang)}
             </button>
           </div>
         )

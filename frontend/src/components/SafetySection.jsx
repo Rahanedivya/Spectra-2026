@@ -1,8 +1,9 @@
 import React from 'react';
 import { EMERGENCY_NUMBERS } from '../data/puneData';
 import { ShieldAlert, PhoneCall, AlertTriangle, CheckCircle, Compass, Thermometer, Shield } from 'lucide-react';
+import { t } from '../data/translations';
 
-export default function SafetySection() {
+export default function SafetySection({ currentLang = 'English' }) {
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#e2d7c7] font-sans">
       
@@ -10,13 +11,13 @@ export default function SafetySection() {
       <div className="text-center max-w-3xl mx-auto mb-12">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
           <ShieldAlert className="w-3.5 h-3.5 text-[#ea580c]" />
-          <span>Verified Visitor Guidelines & Emergency Support</span>
+          <span>{t('safetyBadge', currentLang)}</span>
         </div>
         <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage mb-4">
-          Smart <span className="text-[#ea580c]">Safety</span> & Tourist Care
+          {t('safetyTitle', currentLang)}
         </h2>
         <p className="text-[#5c4a4e] text-sm sm:text-base leading-relaxed font-medium">
-          Traverse Pune with complete peace of mind. Verified helpline access, fort trekking advisories, and monument guidelines.
+          {t('safetyDesc', currentLang)}
         </p>
       </div>
 
@@ -29,7 +30,7 @@ export default function SafetySection() {
           <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
             <h3 className="text-lg font-bold text-[#701a28] flex items-center space-x-2 mb-3 font-heritage">
               <Compass className="w-5 h-5 text-[#ea580c]" />
-              <span>Before You Explore Pune — Checklist</span>
+              <span>{t('checklistTitle', currentLang)}</span>
             </h3>
             <ul className="space-y-3 text-xs text-[#3c2b2e] font-medium">
               <li className="flex items-start space-x-2">
@@ -75,7 +76,7 @@ export default function SafetySection() {
           <div>
             <div className="flex items-center space-x-2 mb-4 pb-3 border-b border-[#3a1d23]">
               <PhoneCall className="w-5 h-5 text-[#ea580c] animate-pulse" />
-              <h3 className="text-lg font-bold text-[#faf6f0]">Emergency Quick Access</h3>
+              <h3 className="text-lg font-bold text-[#faf6f0]">{t('emergencyPanelTitle', currentLang)}</h3>
             </div>
             
             <p className="text-xs text-[#d6c7b2] mb-6 font-normal">
@@ -94,7 +95,7 @@ export default function SafetySection() {
                     </div>
                     <div>
                       <span className="text-xs font-bold text-white block">{item.label}</span>
-                      <span className="text-[11px] text-[#d6c7b2]">Verified Helpline</span>
+                      <span className="text-[11px] text-[#d6c7b2]">{t('verifiedHelpline', currentLang)}</span>
                     </div>
                   </div>
                   <a

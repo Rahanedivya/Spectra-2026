@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X } from 'lucide-react';
+import { t } from '../data/translations';
 
 export default function Navbar({ activeTab, setActiveTab, currentLang, setCurrentLang, onOpenAuth, savedCount = 0 }) {
   const [langDropdown, setLangDropdown] = useState(false);
@@ -12,7 +13,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#181112]/95 backdrop-blur-md border-b border-[#3a1d23] text-[#faf6f0] shadow-xl">
+    <header className="sticky top-0 z-50 bg-[#181112]/95 backdrop-blur-md border-b border-[#3a1d23] text-[#faf6f0] shadow-xl font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -34,7 +35,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                 </span>
               </div>
               <p className="text-[11px] text-[#d6c7b2] font-medium tracking-tight">
-                Discover Pune. Experience Its Heritage.
+                {t('tagline', currentLang)}
               </p>
             </div>
           </div>
@@ -49,7 +50,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                   : 'text-[#d6c7b2] hover:text-[#fffdfa] hover:bg-[#28181b]'
               }`}
             >
-              Home
+              {t('navHome', currentLang)}
             </button>
             <button
               onClick={() => setActiveTab('explore')}
@@ -60,7 +61,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               }`}
             >
               <MapPin className="w-4 h-4 text-[#ea580c]" />
-              <span>Explore</span>
+              <span>{t('navExplore', currentLang)}</span>
             </button>
             <button
               onClick={() => setActiveTab('planner')}
@@ -71,7 +72,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               }`}
             >
               <Sparkles className="w-4 h-4" />
-              <span>✨ AI Trip Planner</span>
+              <span>{t('navPlanner', currentLang)}</span>
             </button>
             <button
               onClick={() => setActiveTab('food')}
@@ -82,7 +83,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               }`}
             >
               <Utensils className="w-4 h-4 text-[#ea580c]" />
-              <span>Taste Pune</span>
+              <span>{t('navTaste', currentLang)}</span>
             </button>
             <button
               onClick={() => setActiveTab('safety')}
@@ -93,7 +94,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               }`}
             >
               <ShieldAlert className="w-4 h-4 text-emerald-400" />
-              <span>Smart Safety</span>
+              <span>{t('navSafety', currentLang)}</span>
             </button>
           </nav>
 
@@ -153,7 +154,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white text-xs font-semibold shadow-md transition-colors cursor-pointer"
             >
               <User className="w-4 h-4 text-[#ea580c]" />
-              <span className="hidden sm:inline">Sign In</span>
+              <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
             </button>
 
             {/* Mobile Hamburger Toggle */}
@@ -176,31 +177,31 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
             onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
             className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'home' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
           >
-            Home
+            {t('navHome', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('explore'); setMobileMenu(false); }}
             className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'explore' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
           >
-            Explore Sites
+            {t('navExplore', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('planner'); setMobileMenu(false); }}
             className={`w-full text-left py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#ea580c] to-[#c2410c] text-white font-bold`}
           >
-            ✨ AI Trip Planner
+            {t('navPlanner', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('food'); setMobileMenu(false); }}
             className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'food' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
           >
-            Taste Pune
+            {t('navTaste', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('safety'); setMobileMenu(false); }}
             className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'safety' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
           >
-            Smart Safety
+            {t('navSafety', currentLang)}
           </button>
         </div>
       )}

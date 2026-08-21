@@ -1,8 +1,9 @@
 import React from 'react';
 import { LOCAL_COMMERCE } from '../data/puneData';
 import { HeartHandshake, MapPin, PhoneCall, ShieldCheck, Sparkles } from 'lucide-react';
+import { t } from '../data/translations';
 
-export default function LocalCommerce() {
+export default function LocalCommerce({ currentLang = 'English' }) {
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#e2d7c7] font-sans">
       
@@ -10,13 +11,13 @@ export default function LocalCommerce() {
       <div className="text-center max-w-3xl mx-auto mb-12">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
           <HeartHandshake className="w-3.5 h-3.5 text-[#ea580c]" />
-          <span>Sustainable Tourism & Fair Commerce</span>
+          <span>{t('localBadge', currentLang)}</span>
         </div>
         <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage mb-4">
-          Support Local <span className="text-[#ea580c]">Pune</span>
+          {t('localTitle', currentLang)}
         </h2>
         <p className="text-[#5c4a4e] text-sm sm:text-base leading-relaxed font-medium">
-          Directly empower 400-year-old coppersmith guilds in Kasba Peth, master Puneri Pagadi weavers, local youth heritage narrators, and micro-merchants in Tulshibaug.
+          {t('localDesc', currentLang)}
         </p>
       </div>
 

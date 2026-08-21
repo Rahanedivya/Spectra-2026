@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MapComponent from './MapComponent';
 import { Calendar, Clock, IndianRupee, MapPin, Leaf, Star, Sparkles, Bookmark, RotateCcw, Printer, Car, Utensils, ShieldAlert } from 'lucide-react';
+import { t } from '../data/translations';
 
 export default function ItineraryView({ itineraryData, onReset, onSave }) {
   const [activeDay, setActiveDay] = useState(1);
@@ -50,7 +51,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
         <div className="relative z-10">
           <div className="flex items-center space-x-2 mb-2">
             <span className="bg-[#701a28] text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider border border-[#881337]">
-              ✨ AI Generated Itinerary
+              {t('aiGeneratedItinerary', language)}
             </span>
             <span className="bg-[#231417] border border-[#ea580c]/40 text-[#ea580c] text-xs px-3 py-1 rounded-full font-semibold">
               {language} Output
@@ -58,11 +59,11 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#faf6f0]">
-            Your Personalized <span className="font-heritage text-[#ea580c]">{daysCount}-Day Pune Journey</span>
+            {t('personalizedJourney', language)}: <span className="font-heritage text-[#ea580c]">{daysCount} Days</span>
           </h1>
 
           <p className="text-[#d6c7b2] text-xs sm:text-sm mt-1">
-            {daysCount} {daysCount === 1 ? 'Day' : 'Days'} • Total Budget: ₹{totalBudget.toLocaleString()}
+            {daysCount} Days • {t('totalBudgetLabel', language)}: ₹{totalBudget.toLocaleString()}
           </p>
         </div>
 
@@ -73,7 +74,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
             className="px-4 py-2.5 rounded-xl bg-[#231417] hover:bg-[#2e1a1e] text-[#d6c7b2] font-bold text-xs border border-[#3a1d23] flex items-center space-x-2 cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Modify Plan</span>
+            <span>{t('modifyPlanBtn', language)}</span>
           </button>
 
           <button
@@ -85,7 +86,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
             }`}
           >
             <Bookmark className="w-3.5 h-3.5 text-[#ea580c]" />
-            <span>{savedSuccess ? 'Saved! ✓' : 'Save Itinerary'}</span>
+            <span>{savedSuccess ? t('savedBtn', language) : t('saveItineraryBtn', language)}</span>
           </button>
 
           <button
@@ -102,19 +103,19 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
       {/* Metrics Row: Budget Breakdown Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm">
-          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">Your Total Budget</span>
+          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">{t('totalBudgetLabel', language)}</span>
           <span className="text-2xl font-extrabold text-[#701a28]">₹{totalBudget.toLocaleString()}</span>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm">
-          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">Estimated Cost</span>
+          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">{t('estimatedCostLabel', language)}</span>
           <span className="text-2xl font-extrabold text-[#ea580c]">
             ₹{totalEstCost.toLocaleString()}
           </span>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm">
-          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">Remaining Budget</span>
+          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">{t('remainingBudgetLabel', language)}</span>
           <span className="text-2xl font-extrabold text-emerald-700">
             ₹{remainingBudget.toLocaleString()}
           </span>
@@ -123,7 +124,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
         {/* Sustainability Score Widget */}
         <div className="bg-[#14231a] p-5 rounded-2xl border border-emerald-800/40 text-white shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs text-emerald-300 font-semibold block">Sustainable Travel Score</span>
+            <span className="text-xs text-emerald-300 font-semibold block">{t('sustainableScoreTitle', language)}</span>
             <div className="flex items-center space-x-1 mt-0.5">
               <span className="text-2xl font-extrabold text-emerald-400">91</span>
               <span className="text-xs text-emerald-300">/ 100</span>
@@ -211,17 +212,17 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
                   {/* Activity Information Grid */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 text-[11px] border-t border-[#e2d7c7]">
                     <div>
-                      <span className="text-[#8a7679] block font-medium">🕐 Visit Duration</span>
+                      <span className="text-[#8a7679] block font-medium">🕐 {t('visitDuration', language)}</span>
                       <span className="font-bold text-[#1c1214]">{item.duration || "1.5 hours"}</span>
                     </div>
 
                     <div>
-                      <span className="text-[#8a7679] block font-medium">💰 Estimated Cost</span>
+                      <span className="text-[#8a7679] block font-medium">💰 {t('estCost', language)}</span>
                       <span className="font-bold text-emerald-700">₹{costVal !== undefined ? costVal : 25}</span>
                     </div>
 
                     <div>
-                      <span className="text-[#8a7679] block font-medium">🚗 Suggested Transport</span>
+                      <span className="text-[#8a7679] block font-medium">🚗 {t('suggestedTransport', language)}</span>
                       <span className="font-bold text-[#1c1214]">{item.transport || "Auto / Cab / Public Transport"}</span>
                     </div>
                   </div>
@@ -230,7 +231,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
                   {item.foodSuggestion && (
                     <div className="text-[11px] text-[#c2410c] flex items-center space-x-1.5 pt-1 font-semibold">
                       <Utensils className="w-3.5 h-3.5 text-[#ea580c] flex-shrink-0" />
-                      <span>Recommended Food: <strong>{item.foodSuggestion}</strong></span>
+                      <span>{t('recommendedFood', language)} <strong>{item.foodSuggestion}</strong></span>
                     </div>
                   )}
 
@@ -238,7 +239,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
                   {item.safetyTip && (
                     <div className="text-[11px] text-emerald-800 flex items-center space-x-1.5 pt-1 font-medium">
                       <ShieldAlert className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
-                      <span>🛡️ Safety Tip: {item.safetyTip}</span>
+                      <span>🛡️ {t('safetyTipLabel', language)} {item.safetyTip}</span>
                     </div>
                   )}
 
@@ -256,7 +257,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           <div className="bg-[#181112] p-4 rounded-3xl border border-[#ea580c]/30 shadow-xl">
             <h3 className="text-sm font-bold text-[#faf6f0] mb-3 flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-[#ea580c]" />
-              <span>🧭 Itinerary Route Map</span>
+              <span>{t('routeMapTitle', language)}</span>
             </h3>
             <div className="h-72 w-full rounded-2xl overflow-hidden">
               <MapComponent itineraryStops={currentStops} />
@@ -267,33 +268,33 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           <div className="bg-white p-5 rounded-3xl border border-[#e2d7c7] shadow-sm space-y-4">
             <h3 className="text-base font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
               <IndianRupee className="w-4 h-4 text-emerald-700" />
-              <span>Smart Budget Breakdown</span>
+              <span>{t('budgetBreakdownTitle', language)}</span>
             </h3>
 
             <div className="space-y-3 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-[#5c4a4e] font-medium">Food & Meals</span>
+                <span className="text-[#5c4a4e] font-medium">{t('foodMeals', language)}</span>
                 <span className="font-bold text-[#1c1214]">₹{food.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#5c4a4e] font-medium">Transport & Rickshaw</span>
+                <span className="text-[#5c4a4e] font-medium">{t('transportRickshaw', language)}</span>
                 <span className="font-bold text-[#1c1214]">₹{transport.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#5c4a4e] font-medium">Entry Fees</span>
+                <span className="text-[#5c4a4e] font-medium">{t('entryFees', language)}</span>
                 <span className="font-bold text-[#1c1214]">₹{entryFees.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#5c4a4e] font-medium">Activities & Experiences</span>
+                <span className="text-[#5c4a4e] font-medium">{t('activitiesExp', language)}</span>
                 <span className="font-bold text-[#1c1214]">₹{activities.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#5c4a4e] font-medium">Shopping & Souvenirs</span>
+                <span className="text-[#5c4a4e] font-medium">{t('shoppingSouvenirs', language)}</span>
                 <span className="font-bold text-[#1c1214]">₹{shopping.toLocaleString()}</span>
               </div>
 
               <div className="pt-3 border-t border-[#e2d7c7] flex items-center justify-between font-bold text-sm">
-                <span className="text-[#701a28]">Total Estimated Cost</span>
+                <span className="text-[#701a28]">{t('totalEstCost', language)}</span>
                 <span className="text-emerald-700 text-base font-extrabold">₹{totalEstCost.toLocaleString()}</span>
               </div>
             </div>
@@ -303,7 +304,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           <div className="bg-[#f0f9f4] p-5 rounded-3xl border border-emerald-200 space-y-2 text-xs text-emerald-900 font-medium">
             <h4 className="font-bold text-emerald-950 flex items-center space-x-1.5">
               <Leaf className="w-4 h-4 text-emerald-700" />
-              <span>Sustainable Tourism Impact</span>
+              <span>{t('sustainableImpactTitle', language)}</span>
             </h4>
             <p>✓ Supporting authentic coppersmith craftsmen in Kasba Peth</p>
             <p>✓ Walkable monument cluster between Shaniwar Wada & Lal Mahal</p>

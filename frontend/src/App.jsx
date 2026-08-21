@@ -12,6 +12,7 @@ import AiChatAssistant from './components/AiChatAssistant';
 import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 import SplashScreen from './components/SplashScreen';
+import LocalGuidesPage from './pages/LocalGuidesPage';
 
 import { PUNE_DESTINATIONS } from './data/puneData';
 import { t } from './data/translations';
@@ -285,6 +286,11 @@ export default function App() {
         {/* SAFETY TAB */}
         {activeTab === 'safety' && (
           <SafetySection currentLang={currentLang} />
+        )}
+
+        {/* LOCAL GUIDES DISCOVERY TAB */}
+        {activeTab === 'guides' && (
+          <LocalGuidesPage currentLang={currentLang} />
         )}
 
         {/* SAVED TRIPS & FAVORITES TAB */}

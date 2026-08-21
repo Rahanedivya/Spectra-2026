@@ -96,6 +96,17 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               <ShieldAlert className="w-4 h-4 text-[#087F7B]" />
               <span>{t('navSafety', currentLang)}</span>
             </button>
+            <button
+              onClick={() => setActiveTab('guides')}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
+                activeTab === 'guides'
+                  ? 'bg-[#741C35] text-white shadow-md'
+                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
+              }`}
+            >
+              <Compass className="w-4 h-4 text-[#E87516]" />
+              <span>Local Guides</span>
+            </button>
           </nav>
 
           {/* Right Action Items */}

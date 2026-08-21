@@ -54,7 +54,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
-      
+
       {/* Top Sticky Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -67,7 +67,7 @@ export default function App() {
 
       {/* Main Body Routing */}
       <main className="flex-grow">
-        
+
         {/* HOME TAB */}
         {activeTab === 'home' && (
           <div>

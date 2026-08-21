@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function MapComponent({ 
-  destinations = [], 
-  itineraryStops = [], 
-  selectedSite = null, 
-  onSelectSite = () => {}, 
-  center = [18.5196, 73.8553], 
-  zoom = 12 
+export default function MapComponent({
+  destinations = [],
+  itineraryStops = [],
+  selectedSite = null,
+  onSelectSite = () => { },
+  center = [18.5196, 73.8553],
+  zoom = 12
 }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -49,7 +49,7 @@ export default function MapComponent({
     // Custom Icon Generator
     const createCustomIcon = (category, isItinerary = false, stopIndex = 0) => {
       const color = isItinerary ? '#f59e0b' : category === 'Forts' ? '#ef4444' : category === 'Food' ? '#f97316' : '#3b82f6';
-      
+
       const svgIcon = `
         <div style="
           background-color: ${color};

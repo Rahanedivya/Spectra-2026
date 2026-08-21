@@ -105,61 +105,90 @@ router.get("/destinations", (req, res) => {
   });
 });
 
-// POST /api/plan-trip — AI Itinerary Generator
+// POST /api/plan-trip — AI Smart Trip Planner Route
 router.post("/plan-trip", async (req, res) => {
-  const { city = "Pune", days = 2, budget = 5000, companions = "Family", interests = [], language = "English", prompt } = req.body;
+  const {
+    city = "Pune",
+    days = 2,
+    budget = 5000,
+    travelType = "Family",
+    interests = ["Heritage", "Food"],
+    language = "English"
+  } = req.body;
+
+  // Input Validation
+  const numDays = parseInt(days, 10);
+  const numericBudget = Number(budget);
+
+  if (isNaN(numDays) || numDays < 1 || numDays > 30) {
+    return res.status(400).json({
+      success: false,
+      error: "Number of days must be between 1 and 30."
+    });
+  }
+
+  if (isNaN(numericBudget) || numericBudget <= 0) {
+    return res.status(400).json({
+      success: false,
+      error: "Budget must be a positive number in INR."
+    });
+  }
+
+  if (!Array.isArray(interests) || interests.length === 0) {
+    return res.status(400).json({
+      success: false,
+      error: "At least one interest must be selected."
+    });
+  }
+
   const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY;
 
   if (apiKey) {
     try {
-      const promptText = `You are HeritageAI, an expert AI travel planner for Pune, Maharashtra, India.
-Generate a detailed JSON itinerary for a ${days}-day trip to Pune for a ${companions} group with a total budget of ₹${budget}.
-Interests: ${interests.join(", ")}.
-Output language requested: ${language}.
-User special request: "${prompt || 'Authentic Peshwa heritage and food'}".
+      const promptText = `You are an expert Pune travel planner and cultural tourism guide.
+Generate a structured personalized JSON itinerary for a ${numDays}-day trip to ${city}, Maharashtra for a ${travelType} group with a total budget of ₹${numericBudget}.
+Selected Interests: ${interests.join(", ")}.
+Target Language for text values: ${language}.
 
-Format your response EXACTLY as a valid JSON object with the following structure:
+Prioritize realistic Pune destinations such as Shaniwar Wada, Lal Mahal, Aga Khan Palace, Sinhagad Fort, Pataleshwar Cave Temple, Raja Dinkar Kelkar Museum, Shinde Chhatri, Vishrambaug Wada, Tulshibaug, and Mahatma Phule Mandai.
+
+IMPORTANT INSTRUCTIONS:
+- Keep all JSON keys in English.
+- Translate only the text content values into ${language}.
+- Return an itinerary containing exactly ${numDays} day objects in the "days" array.
+
+Format your response STRICTLY as valid JSON:
 {
-  "success": true,
-  "city": "Pune, Maharashtra",
-  "daysCount": ${days},
-  "budget": ${budget},
-  "language": "${language}",
-  "sustainabilityScore": 89,
-  "experienceScore": 95,
-  "budgetBreakdown": {
-    "transport": 1200,
-    "food": 1400,
-    "entryFees": 500,
-    "experiences": 700,
-    "totalCost": 3800,
-    "remainingBudget": 1200
-  },
-  "sustainabilityPerks": [
-    "✓ Supporting Kasba Peth heritage copper craft masters",
-    "✓ Optimized low-carbon walking route between Shaniwar Wada & Laxmi Road",
-    "✓ Encouraging public Pune Metro & EV auto-rickshaw transit"
-  ],
-  "itinerary": [
+  "summary": "High-level summary in ${language}",
+  "days": [
     {
       "day": 1,
-      "theme": "Day 1 Theme Title in ${language}",
-      "stops": [
+      "activities": [
         {
           "time": "09:00 AM",
-          "title": "Shaniwar Wada",
-          "siteId": "shaniwar-wada",
+          "place": "Shaniwar Wada",
           "category": "Heritage",
-          "lat": 18.5196,
-          "lng": 73.8553,
           "activity": "Activity description in ${language}",
-          "cost": 25,
-          "travelTime": "20 mins",
-          "distance": "3.2 km"
+          "reason": "Why visit based on user interests in ${language}",
+          "duration": "2 hours",
+          "estimatedCost": 25,
+          "transport": "Auto / Cab / Public Transport",
+          "foodSuggestion": "Food suggestion in ${language}",
+          "safetyTip": "Safety tip in ${language}"
         }
       ]
     }
-  ]
+  ],
+  "budgetBreakdown": {
+    "food": 1200,
+    "transport": 1000,
+    "entryFees": 500,
+    "activities": 500,
+    "shopping": 300,
+    "total": 3500
+  },
+  "travelTips": [ "Tip 1 in ${language}", "Tip 2 in ${language}" ],
+  "safetyTips": [ "Safety tip 1 in ${language}", "Safety tip 2 in ${language}" ]
 }`;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
@@ -174,16 +203,20 @@ Format your response EXACTLY as a valid JSON object with the following structure
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[0]);
-          return res.json(parsed);
+          return res.json({
+            success: true,
+            isFallback: false,
+            ...parsed
+          });
         }
       }
     } catch (err) {
-      console.warn("AI API call exception, using Pune fallback engine:", err.message);
+      console.warn("AI API call failed, using Pune fallback engine:", err.message);
     }
   }
 
-  // Fallback Generator
-  return res.json(buildFallbackResponse({ days, budget, companions, interests, language }));
+  // Fallback Itinerary
+  return res.json(generateFallbackItinerary({ days: numDays, budget: numericBudget, travelType, interests, language }));
 });
 
 // POST /api/ask-ai — Natural Language Assistant
@@ -229,108 +262,138 @@ Keep the answer engaging, accurate, and under 120 words.`;
   return res.json({ success: true, answer });
 });
 
-function buildFallbackResponse({ days = 2, budget = 5000, companions = "Family", interests = [], language = "English" }) {
-  const dCount = parseInt(days, 10) || 2;
-  const bAmt = parseInt(budget, 10) || 5000;
+function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Family", interests = [], language = "English" }) {
+  const isMarathi = language === "Marathi";
+  const isHindi = language === "Hindi";
+  const numDays = Math.max(1, parseInt(days, 10) || 2);
 
-  const day1Title = language === 'Marathi' ? "पेशवेकालीन वारसा आणि पुणेरी मिसळ आस्वाद" : language === 'Hindi' ? "पेशवा कालीन विरासत और पुणेरी भोजन" : "Imperial Peshwa Heritage & Misal Tour";
-  const day2Title = language === 'Marathi' ? "सिंहगड किल्ला पराक्रम आणि केळकर संग्रहालय" : language === 'Hindi' ? "सिंहगढ़ किला और केलकर संग्रहालय" : "Sinhagad Fortress & Kelkar Artifacts";
+  const summary = isMarathi
+    ? `पुणे शहरासाठी ${numDays} दिवसांची विशेष सांस्कृतिक व ऐतिहासिक सफर (${travelType} प्रवास). एकूण अंदाजपत्रक ₹${budget}.`
+    : isHindi
+    ? `पुणे शहर के लिए ${numDays} दिवसीय सांस्कृतिक और ऐतिहासिक यात्रा (${travelType} समूह)। कुल बजट ₹${budget}।`
+    : `Customized ${numDays}-day cultural and heritage itinerary for Pune designed for ${travelType} travelers within a ₹${budget} budget.`;
+
+  const sitePool = [
+    {
+      place: isMarathi ? "शनिवार वाडा" : isHindi ? "शनिवार वाड़ा" : "Shaniwar Wada",
+      category: "Heritage",
+      activity: isMarathi ? "१७३२ मधील भव्य पेशवेकालीन वाडा व दिल्ली दरवाजाची ऐतिहासिक पाहणी." : "Explore the 1732 Peshwa seat of Maratha power, Dilli Darwaza, and lotus fountains.",
+      reason: isMarathi ? "मराठा साम्राज्याची ऐतिहासिक राजधानी पाहणे." : "Matches user interest in heritage and Maratha history.",
+      duration: "2 hours",
+      estimatedCost: 25,
+      transport: "Auto / Cab / Public Transport",
+      foodSuggestion: isMarathi ? "बेडेकर मिसळ (शनिवार पेठ)" : "Fiery Puneri Misal Pav at Bedekar Misal",
+      safetyTip: isMarathi ? "दगडी पायऱ्यांवर जपून चाला." : "Follow monument guidelines and keep valuables secure."
+    },
+    {
+      place: isMarathi ? "लाल महाल" : isHindi ? "लाल महल" : "Lal Mahal",
+      category: "History",
+      activity: isMarathi ? "छत्रपती शिवाजी महाराज यांचे बालपण व ऐतिहासिक वास्तू." : "Visit Shivaji Maharaj's boyhood home and view historical Maratha war paintings.",
+      reason: isMarathi ? "शिवछत्रपतींच्या पराक्रमाची भूमी." : "Birthplace of Hindavi Swarajya ideology.",
+      duration: "1 hour",
+      estimatedCost: 20,
+      transport: "5 min walk from Shaniwar Wada",
+      foodSuggestion: isMarathi ? "सुजाता मस्तानी" : "Cooling Mango Mastani at Sujata Mastani",
+      safetyTip: "Keep belongings safe in busy street markets."
+    },
+    {
+      place: isMarathi ? "राजा दिनकर केळकर संग्रहालय" : isHindi ? "राजा दिनकर केलकर संग्रहालय" : "Raja Dinkar Kelkar Museum",
+      category: "Museums",
+      activity: isMarathi ? "२०,००० दुर्मिळ भारतीय वस्तू आणि मस्तानी महालाचे दृश्य." : "View over 20,000 rare everyday Indian antiques and the reconstructed Mastani Mahal.",
+      reason: isMarathi ? "दुर्मिळ भारतीय हस्तकला संग्रह." : "Masterpiece of Indian craftsmanship.",
+      duration: "2 hours",
+      estimatedCost: 100,
+      transport: "Cab / Rickshaw",
+      foodSuggestion: isMarathi ? "चितळे बाकरवडी" : "Takeaway Chitale Bakarwadi snacks",
+      safetyTip: "Bag storage available at entrance counter."
+    },
+    {
+      place: isMarathi ? "सिंहगड किल्ला" : isHindi ? "सिंहगढ़ किला" : "Sinhagad Fort",
+      category: "Forts",
+      activity: isMarathi ? "नरवीर तानाजी मालुसरे यांच्या पराक्रमाची भूमी व सह्याद्रीचे दृश्य." : "Trek the historic 1670 Maratha cliff fortress 4,300 ft above sea level.",
+      reason: isMarathi ? "मराठा शौर्याचा इतिहास." : "Sahyadri mountain trekking and Maratha history.",
+      duration: "3 hours",
+      estimatedCost: 50,
+      transport: "Shared Taxi / Private Car",
+      foodSuggestion: isMarathi ? "गडावरील गरमागरम पिठलं भाकरी" : "Hot mountain Pithla Bhakri & Matka Curd",
+      safetyTip: "Stay on designated trails; avoid steep cliff edges."
+    },
+    {
+      place: isMarathi ? "आगाखान पॅलेस" : isHindi ? "आगा खान पैलेस" : "Aga Khan Palace",
+      category: "History",
+      activity: isMarathi ? "महात्मा गांधींची नजरकैद व स्वातंत्र्यलढ्याचे स्मारक." : "Explore Gandhian Quit India movement history, Italian arches, and quiet gardens.",
+      reason: isMarathi ? "भारतीय स्वातंत्र्यलढ्याचा इतिहास." : "National monument of freedom struggle.",
+      duration: "2 hours",
+      estimatedCost: 25,
+      transport: "Cab / Auto",
+      foodSuggestion: "Kalyani Nagar local snacks",
+      safetyTip: "Remove footwear near Samadhi zone."
+    },
+    {
+      place: isMarathi ? "पाताळेश्वर गुंफा मंदिर" : isHindi ? "पातालेश्वर गुफा मंदिर" : "Pataleshwar Cave Temple",
+      category: "Heritage",
+      activity: isMarathi ? "८ व्या शतकातील राष्ट्रकूट काळातील कातळात कोरलेले मंदिर." : "8th-century Rashtrakuta period monolithic basalt rock-cut cave temple.",
+      reason: "Ancient monolithic rock-cut cave architecture.",
+      duration: "1.5 hours",
+      estimatedCost: 0,
+      transport: "JM Road Pune Metro / Auto",
+      foodSuggestion: "Wadeshwar JM Road Sabudana Vada",
+      safetyTip: "Remove shoes outside temple cavern."
+    }
+  ];
+
+  const daysArr = [];
+
+  for (let d = 1; d <= numDays; d++) {
+    const act1 = sitePool[(d - 1) % sitePool.length];
+    const act2 = sitePool[d % sitePool.length];
+    const act3 = sitePool[(d + 1) % sitePool.length];
+
+    const themeTitle = isMarathi
+      ? `दिवस ${d}: सांस्कृतिक व ऐतिहासिक सफारी`
+      : isHindi
+      ? `दिन ${d}: सांस्कृतिक और ऐतिहासिक यात्रा`
+      : `Day ${d}: Heritage & Cultural Experience`;
+
+    daysArr.push({
+      day: d,
+      theme: themeTitle,
+      activities: [
+        { ...act1, time: "09:00 AM" },
+        { ...act2, time: "01:30 PM" },
+        { ...act3, time: "04:30 PM" }
+      ]
+    });
+  }
+
+  const estFood = numDays * 550;
+  const estTrans = numDays * 450;
+  const estEntry = numDays * 150;
+  const estAct = numDays * 200;
+  const estShop = numDays * 250;
+  const total = estFood + estTrans + estEntry + estAct + estShop;
 
   return {
     success: true,
     isFallback: true,
-    city: "Pune, Maharashtra",
-    daysCount: dCount,
-    budget: bAmt,
-    language,
-    sustainabilityScore: 91,
-    experienceScore: 96,
+    fallbackNotice: "AI is temporarily unavailable. Showing a curated Pune itinerary.",
+    summary,
+    days: daysArr,
     budgetBreakdown: {
-      transport: dCount * 450,
-      food: dCount * 650,
-      entryFees: dCount * 180,
-      experiences: dCount * 300,
-      totalCost: dCount * 1580,
-      remainingBudget: Math.max(0, bAmt - (dCount * 1580))
+      food: estFood,
+      transport: estTrans,
+      entryFees: estEntry,
+      activities: estAct,
+      shopping: estShop,
+      total: total
     },
-    sustainabilityPerks: [
-      "✓ Supporting authentic coppersmith craftsmen in Kasba Peth",
-      "✓ Walkable monument cluster between Shaniwar Wada & Lal Mahal",
-      "✓ Direct patronage of local traditional sweet & misal vendors"
+    travelTips: [
+      isMarathi ? "सकाळी ०८:०० वाजेपूर्वी सिंहगड किल्ल्याची यात्रा सुरू करा." : "Start early in the morning to avoid afternoon heat.",
+      isMarathi ? "पुणे मेट्रो आणि ऑटो रिक्षा वापरल्यास वाहतूक कोंडी टाळता येते." : "Use Pune Metro for seamless connection between city centers."
     ],
-    itinerary: [
-      {
-        day: 1,
-        theme: day1Title,
-        stops: [
-          {
-            time: "09:00 AM",
-            title: language === 'Marathi' ? "शनिवार वाडा" : language === 'Hindi' ? "शनिवार वाड़ा" : "Shaniwar Wada",
-            siteId: "shaniwar-wada",
-            category: "Heritage",
-            lat: 18.5196,
-            lng: 73.8553,
-            activity: language === 'Marathi' ? "१७३२ मधील पेशवेकालीन वाडा व दिल्ली दरवाजा पाहणे." : "1732 Peshwa Fort exploration and Dilli Darwaza architecture.",
-            cost: 25,
-            travelTime: "20 mins",
-            distance: "3.2 km"
-          },
-          {
-            time: "01:00 PM",
-            title: language === 'Marathi' ? "पुणेरी मिसळ पाव भोजनास्वाद" : "Bedekar Puneri Misal Pav",
-            siteId: "misal-pav",
-            category: "Food",
-            lat: 18.5200,
-            lng: 73.8550,
-            activity: language === 'Marathi' ? "झणझणीत रस्सा मिसळ व सुजाता मस्तानी डेझर्ट." : "Authentic fiery sprouted moth bean curry with Sujata Mastani.",
-            cost: 160,
-            travelTime: "10 mins",
-            distance: "0.8 km"
-          },
-          {
-            time: "03:30 PM",
-            title: language === 'Marathi' ? "राजा दिनकर केळकर संग्रहालय" : "Raja Dinkar Kelkar Museum",
-            siteId: "kelkar-museum",
-            category: "Museums",
-            lat: 18.5109,
-            lng: 73.8542,
-            activity: language === 'Marathi' ? "२०,००० दुर्मिळ वस्तू आणि मस्तानी महाल पाहणे." : "View 20,000 Indian antiques and reconstructed Mastani Mahal.",
-            cost: 100,
-            travelTime: "15 mins",
-            distance: "1.4 km"
-          }
-        ]
-      },
-      {
-        day: 2,
-        theme: day2Title,
-        stops: [
-          {
-            time: "08:00 AM",
-            title: language === 'Marathi' ? "सिंहगड किल्ला" : "Sinhagad Fort",
-            siteId: "sinhagad-fort",
-            category: "Forts",
-            lat: 18.3663,
-            lng: 73.7559,
-            activity: language === 'Marathi' ? "तानाजी मालुसरे यांच्या पराक्रमाची भूमी व गडावर गरमागरम पिठलं भाकरी." : "Historic 1670 Maratha battle fortress & traditional mountain Pithla Bhakri.",
-            cost: 50,
-            travelTime: "45 mins",
-            distance: "28 km"
-          },
-          {
-            time: "02:00 PM",
-            title: language === 'Marathi' ? "आगाखान पॅलेस" : "Aga Khan Palace",
-            siteId: "aga-khan-palace",
-            category: "History",
-            lat: 18.5529,
-            lng: 73.9015,
-            activity: language === 'Marathi' ? "महात्मा गांधींची समाधी व १९४२ भारत छोडो आंदोलनाचे स्मारक." : "Gandhian freedom movement memorial and serene Italian arch architecture.",
-            cost: 25,
-            travelTime: "40 mins",
-            distance: "22 km"
-          }
-        ]
-      }
+    safetyTips: [
+      isMarathi ? "गर्दीच्या पेठ भागात पाकीट व मोबाईल जपून ठेवा." : "Keep personal belongings secure in crowded market areas.",
+      isMarathi ? "गडावर जाताना पुरेसे पिण्याचे पाणी सोबत ठेवा." : "Carry carry-on water bottles while hiking hill forts."
     ]
   };
 }

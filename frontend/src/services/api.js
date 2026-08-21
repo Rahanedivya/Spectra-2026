@@ -51,7 +51,7 @@ export const getDestinations = async () => {
 
 // Client-side fallback generator for 100% reliable demo execution
 function generateFallbackItinerary(params) {
-  const { days = 2, budget = 5000, companions = 'Family', interests = ['Heritage', 'Food'], language = 'English' } = params;
+  const { days = 2, budget = 5000, travelType = 'Family', interests = ['Heritage', 'Food'], language = 'English' } = params;
   const numDays = parseInt(days, 10) || 2;
   const numericBudget = parseInt(budget, 10) || 5000;
   
@@ -70,15 +70,14 @@ function generateFallbackItinerary(params) {
   const itemsPerDay = 3;
 
   for (let d = 1; d <= numDays; d++) {
-    const dayStops = [];
+    const dayActivities = [];
     const startIndex = ((d - 1) * itemsPerDay) % pool.length;
     
-    // Morning stop
+    // Morning activity
     const morningSite = pool[startIndex] || PUNE_DESTINATIONS[0];
-    dayStops.push({
+    dayActivities.push({
       time: "09:00 AM",
-      title: language === 'Marathi' ? morningSite.marathiName : language === 'Hindi' ? morningSite.hindiName : morningSite.name,
-      siteId: morningSite.id,
+      place: language === 'Marathi' ? morningSite.marathiName : language === 'Hindi' ? morningSite.hindiName : morningSite.name,
       category: morningSite.category,
       lat: morningSite.lat,
       lng: morningSite.lng,
@@ -86,17 +85,19 @@ function generateFallbackItinerary(params) {
         ? `सकाळी ${morningSite.marathiName} ची ऐतिहासिक सफर आणि मराठाकालीन वास्तुकला दर्शन.` 
         : language === 'Hindi'
         ? `सुबह ${morningSite.hindiName} का भ्रमण और मराठा स्थापत्य कला का अवलोकन।`
-        : `Morning historical tour of ${morningSite.name} and explore Peshwa era architecture.`,
-      cost: morningSite.costNum || 25,
-      travelTime: "20 mins",
-      distance: "3.2 km"
+        : `Explore the historic ${morningSite.name} and admire Peshwa era architecture.`,
+      reason: language === 'Marathi' ? "मराठा साम्राज्याचा वारसा पाहणे." : "Matches user interest in heritage and Maratha history.",
+      duration: "2 hours",
+      estimatedCost: morningSite.costNum || 25,
+      transport: "Auto / Cab / Public Transport",
+      foodSuggestion: language === 'Marathi' ? "बेडेकर मिसळ (शनिवार पेठ)" : "Bedekar Puneri Misal Pav",
+      safetyTip: language === 'Marathi' ? "दगडी पायऱ्यांवर जपून चाला." : "Follow monument guidelines and keep valuables secure."
     });
 
-    // Afternoon lunch stop
-    dayStops.push({
+    // Afternoon lunch activity
+    dayActivities.push({
       time: "01:00 PM",
-      title: language === 'Marathi' ? "पारंपारिक पुणेरी मिसळ व भोजनास्वाद" : language === 'Hindi' ? "पारंपरिक पुणेरी थाली और मिसळ" : "Authentic Maharashtrian Lunch & Misal",
-      siteId: "misal-pav",
+      place: language === 'Marathi' ? "पारंपारिक पुणेरी मिसळ व भोजनास्वाद" : language === 'Hindi' ? "पारंपरिक पुणेरी थाली और मिसळ" : "Authentic Maharashtrian Lunch & Misal",
       category: "Food",
       lat: morningSite.lat + 0.005,
       lng: morningSite.lng + 0.005,
@@ -105,17 +106,19 @@ function generateFallbackItinerary(params) {
         : language === 'Hindi'
         ? "प्रसिद्ध बेडेकर मिसळ और पारंपरिक पुणेरी मस्तानी का आनंद।"
         : "Enjoy iconic Puneri Misal Pav at Bedekar / Kattakirrr followed by Sujata Mastani.",
-      cost: 180,
-      travelTime: "15 mins",
-      distance: "1.5 km"
+      reason: "Authentic local gastronomy experience.",
+      duration: "1 hour",
+      estimatedCost: 180,
+      transport: "Walkable in Sadashiv Peth",
+      foodSuggestion: "Sujata Mango Mastani",
+      safetyTip: "Hydrate well after spicy condiments."
     });
 
-    // Afternoon heritage museum stop
+    // Afternoon heritage museum activity
     const afternoonSite = pool[(startIndex + 1) % pool.length] || PUNE_DESTINATIONS[1];
-    dayStops.push({
+    dayActivities.push({
       time: "03:30 PM",
-      title: language === 'Marathi' ? afternoonSite.marathiName : language === 'Hindi' ? afternoonSite.hindiName : afternoonSite.name,
-      siteId: afternoonSite.id,
+      place: language === 'Marathi' ? afternoonSite.marathiName : language === 'Hindi' ? afternoonSite.hindiName : afternoonSite.name,
       category: afternoonSite.category,
       lat: afternoonSite.lat,
       lng: afternoonSite.lng,
@@ -124,68 +127,50 @@ function generateFallbackItinerary(params) {
         : language === 'Hindi'
         ? `${afternoonSite.hindiName} में दुर्लभ हस्तशिल्प और ऐतिहासिक दीर्घाओं का अवलोकन।`
         : `Explore rare collections and heritage galleries at ${afternoonSite.name}.`,
-      cost: afternoonSite.costNum || 50,
-      travelTime: "25 mins",
-      distance: "4.1 km"
-    });
-
-    // Evening local bazaar / cultural walk
-    const eveningSite = pool[(startIndex + 2) % pool.length] || PUNE_DESTINATIONS[2];
-    dayStops.push({
-      time: "06:30 PM",
-      title: language === 'Marathi' ? `${eveningSite.marathiName} व तुळशीबाग खरेदी` : language === 'Hindi' ? `${eveningSite.hindiName} और तुलसीबाग बाज़ार` : `${eveningSite.name} & Evening Cultural Walk`,
-      siteId: eveningSite.id,
-      category: "Culture",
-      lat: eveningSite.lat,
-      lng: eveningSite.lng,
-      activity: language === 'Marathi'
-        ? "स्थानिक पेठ बाजारात तांबट आळी हस्तकला व चितळे बाकरवडी खरेदी."
-        : language === 'Hindi'
-        ? "स्थानीय पेठ बाज़ार में हस्तशिल्प और चितले बाकरवड़ी खरीदारी।"
-        : "Stroll through traditional Peth markets, view Tambat Ali metalcraft, and buy Chitale Bakarwadi.",
-      cost: 200,
-      travelTime: "20 mins",
-      distance: "2.8 km"
+      reason: "Masterpiece of Indian craftsmanship.",
+      duration: "2 hours",
+      estimatedCost: afternoonSite.costNum || 50,
+      transport: "Cab / Rickshaw",
+      foodSuggestion: "Chitale Bakarwadi snacks",
+      safetyTip: "Bag storage available at entrance counter."
     });
 
     itineraryDays.push({
       day: d,
       theme: d === 1 ? "Imperial Peshwa Heritage & Classic Flavors" : "Fortresses, Museums & Local Artisans",
-      stops: dayStops
+      activities: dayActivities
     });
   }
 
   const estFood = numDays * 600;
   const estTransport = numDays * 400;
   const estEntry = numDays * 200;
-  const estExperiences = numDays * 300;
-  const totalCost = estFood + estTransport + estEntry + estExperiences;
-  const remaining = Math.max(0, numericBudget - totalCost);
+  const estActivities = numDays * 200;
+  const estShopping = numDays * 300;
+  const totalCost = estFood + estTransport + estEntry + estActivities + estShopping;
 
   return {
     success: true,
     isFallback: true,
-    city: "Pune, Maharashtra",
-    daysCount: numDays,
-    budget: numericBudget,
-    language,
-    sustainabilityScore: 89,
-    experienceScore: 94,
+    fallbackNotice: "AI is temporarily unavailable. Showing a curated Pune itinerary.",
+    summary: `Customized ${numDays}-day cultural and heritage itinerary for Pune for ${travelType} group within a ₹${numericBudget} budget.`,
+    days: itineraryDays,
     budgetBreakdown: {
-      transport: estTransport,
       food: estFood,
+      transport: estTransport,
       entryFees: estEntry,
-      experiences: estExperiences,
-      totalCost: totalCost,
-      remainingBudget: remaining
+      activities: estActivities,
+      shopping: estShopping,
+      total: totalCost
     },
-    sustainabilityPerks: [
-      "✓ Support 100% authentic local Peshwa heritage artisans in Kasba Peth",
-      "✓ Low-carbon cluster route between Shaniwar Wada & Laxmi Road",
-      "✓ Traditional plastic-free banana leaf & kulhad food joints",
-      "✓ EV auto-rickshaw & public Metro transit recommended"
+    travelTips: [
+      "Start early in the morning to avoid afternoon heat.",
+      "Use Pune Metro for seamless connection between city centers."
     ],
-    itinerary: itineraryDays
+    safetyTips: [
+      "Keep personal belongings secure in crowded market areas.",
+      "Carry water bottles while visiting heritage monuments."
+    ]
   };
 }
 

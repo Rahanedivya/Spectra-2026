@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import MapComponent from './MapComponent';
-import { PUNE_DESTINATIONS } from '../data/puneData';
-import { Calendar, Clock, IndianRupee, MapPin, Leaf, Star, Sparkles, Bookmark, RotateCcw, Printer, Share2, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, IndianRupee, MapPin, Leaf, Star, Sparkles, Bookmark, RotateCcw, Printer, Car, Utensils, ShieldAlert } from 'lucide-react';
 
 export default function ItineraryView({ itineraryData, onReset, onSave }) {
   const [activeDay, setActiveDay] = useState(1);
@@ -22,10 +21,11 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
   const currentDayData = itinerary.find(d => d.day === activeDay) || itinerary[0];
 
   // Map stops for route polylines
-  const allStopsForMap = itinerary.flatMap(d => d.stops);
+  const currentStops = currentDayData?.activities || currentDayData?.stops || [];
+  const allStopsForMap = itinerary.flatMap(d => d.activities || d.stops || []);
 
   const handleSave = () => {
-    onSave(itineraryData);
+    if (onSave) onSave(itineraryData);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   };
@@ -35,7 +35,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
   };
 
   return (
-    <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+    <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 font-sans">
       
       {/* Top Banner Header */}
       <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
@@ -55,7 +55,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           </h1>
 
           <p className="text-slate-300 text-xs sm:text-sm mt-1">
-            {daysCount} Days • Allocated Budget: ₹{budget.toLocaleString()} • Curated Heritage & Food
+            {daysCount} Days • Total Budget: ₹{budget.toLocaleString()}
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
             }`}
           >
             <Bookmark className="w-3.5 h-3.5" />
-            <span>{savedSuccess ? 'Saved to Profile! ✓' : 'Save Itinerary'}</span>
+            <span>{savedSuccess ? 'Saved! ✓' : 'Save Itinerary'}</span>
           </button>
 
           <button
@@ -92,56 +92,29 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
 
       </div>
 
-      {/* Metrics Row: Sustainability Score + Experience Score + Budget Remaining */}
+      {/* Metrics Row: Budget Breakdown Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        
-        {/* Sustainability Score */}
-        <div className="glass-card p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex items-center space-x-4">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 font-extrabold text-2xl flex items-center justify-center border border-emerald-500/40">
-            🌱
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-semibold block">Sustainable Travel Score</span>
-            <div className="flex items-baseline space-x-1">
-              <span className="text-2xl font-extrabold text-emerald-400">{sustainabilityScore}</span>
-              <span className="text-xs text-slate-400">/ 100</span>
-            </div>
-            <span className="text-[10px] text-emerald-300/80 font-medium">Eco-friendly cluster routes</span>
-          </div>
+        <div className="glass-card p-5 rounded-2xl border border-slate-800 bg-slate-900/80">
+          <span className="text-xs text-slate-400 font-semibold block mb-1">Your Total Budget</span>
+          <span className="text-2xl font-extrabold text-white">₹{budget.toLocaleString()}</span>
         </div>
 
-        {/* Experience Score */}
-        <div className="glass-card p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 flex items-center space-x-4">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-300 font-extrabold text-2xl flex items-center justify-center border border-amber-500/40">
-            ⭐
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-semibold block">Cultural Heritage Score</span>
-            <div className="flex items-baseline space-x-1">
-              <span className="text-2xl font-extrabold text-amber-300">{experienceScore}</span>
-              <span className="text-xs text-slate-400">/ 100</span>
-            </div>
-            <span className="text-[10px] text-amber-300/80 font-medium">Peshwa architecture & culinary</span>
-          </div>
+        <div className="glass-card p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5">
+          <span className="text-xs text-amber-300/80 font-semibold block mb-1">Total Estimated Cost</span>
+          <span className="text-2xl font-extrabold text-amber-400">
+            ₹{(budgetBreakdown.total || budgetBreakdown.totalCost || 0).toLocaleString()}
+          </span>
         </div>
 
-        {/* Budget Status */}
-        <div className="glass-card p-5 rounded-2xl border border-orange-500/30 bg-orange-500/5 flex items-center space-x-4">
-          <div className="w-14 h-14 rounded-2xl bg-orange-500/20 text-orange-400 font-extrabold text-2xl flex items-center justify-center border border-orange-500/40">
-            💰
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-semibold block">Est. Remaining Savings</span>
-            <div className="flex items-baseline space-x-1">
-              <span className="text-2xl font-extrabold text-orange-400">₹{(budgetBreakdown.remainingBudget || 0).toLocaleString()}</span>
-            </div>
-            <span className="text-[10px] text-slate-400 font-medium">Total Cost: ₹{(budgetBreakdown.totalCost || 0).toLocaleString()}</span>
-          </div>
+        <div className="glass-card p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5">
+          <span className="text-xs text-emerald-300/80 font-semibold block mb-1">Remaining Budget</span>
+          <span className="text-2xl font-extrabold text-emerald-400">
+            ₹{(budgetBreakdown.remainingBudget || Math.max(0, budget - (budgetBreakdown.total || budgetBreakdown.totalCost || 0))).toLocaleString()}
+          </span>
         </div>
-
       </div>
 
-      {/* Main Content Layout: Left Timeline + Right Route Map & Budget */}
+      {/* Main Content Layout: Left Timeline + Right Route Map */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Left 2 Cols: Day Selector & Timeline */}
@@ -169,59 +142,90 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           {currentDayData && (
             <div className="glass-panel p-4 rounded-2xl border border-amber-500/20">
               <h3 className="text-base font-bold text-amber-300">
-                Day {currentDayData.day}: {currentDayData.theme}
+                Day {currentDayData.day}: {currentDayData.theme || 'Pune Cultural Exploration'}
               </h3>
             </div>
           )}
 
-          {/* Daily Stops Timeline */}
-          <div className="space-y-4 relative before:absolute before:inset-0 before:left-5 before:w-0.5 before:bg-slate-800">
-            {currentDayData && currentDayData.stops.map((stop, idx) => (
-              <div 
-                key={idx}
-                className="relative pl-12 glass-card p-5 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-colors"
-              >
-                {/* Timeline Dot */}
-                <div className="absolute left-3 top-6 w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-bold text-[10px] flex items-center justify-center shadow-md">
-                  {idx + 1}
-                </div>
+          {/* Daily Activities Timeline */}
+          <div className="space-y-4">
+            {currentStops.map((item, idx) => {
+              const placeName = item.place || item.title || item.name;
+              const costVal = item.estimatedCost !== undefined ? item.estimatedCost : item.cost;
 
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
-                      {stop.time}
-                    </span>
-                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-900 px-2 py-0.5 rounded">
-                      {stop.category}
-                    </span>
+              return (
+                <div 
+                  key={idx}
+                  className="glass-card p-5 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-colors space-y-3"
+                >
+                  {/* Top Bar: Start Time + Category */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+                        {item.time || "09:00 AM"}
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider bg-slate-900 px-2.5 py-1 rounded border border-slate-800">
+                        🏛️ {item.category || "Heritage"}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex items-center space-x-3 text-[11px] text-slate-400">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-amber-400" />
-                      {stop.travelTime}
-                    </span>
-                    <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                      <IndianRupee className="w-3 h-3" />
-                      ₹{stop.cost}
-                    </span>
+                  {/* Place Name */}
+                  <h4 className="text-xl font-extrabold text-white">
+                    {placeName}
+                  </h4>
+
+                  {/* Activity Description */}
+                  {item.activity && (
+                    <p className="text-slate-300 text-xs leading-relaxed font-normal">
+                      {item.activity}
+                    </p>
+                  )}
+
+                  {/* Reason */}
+                  {item.reason && (
+                    <p className="text-[11px] text-amber-300/90 italic bg-amber-500/5 p-2 rounded-lg border border-amber-500/10">
+                      💡 Why visit: {item.reason}
+                    </p>
+                  )}
+
+                  {/* Activity Information Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 text-[11px] border-t border-slate-800/80">
+                    <div>
+                      <span className="text-slate-400 block font-medium">🕐 Visit Duration</span>
+                      <span className="font-bold text-slate-200">{item.duration || "1.5 hours"}</span>
+                    </div>
+
+                    <div>
+                      <span className="text-slate-400 block font-medium">💰 Estimated Cost</span>
+                      <span className="font-bold text-emerald-400">₹{costVal !== undefined ? costVal : 25}</span>
+                    </div>
+
+                    <div>
+                      <span className="text-slate-400 block font-medium">🚗 Suggested Transport</span>
+                      <span className="font-bold text-slate-200">{item.transport || "Auto / Cab / Public Transport"}</span>
+                    </div>
                   </div>
+
+                  {/* Food Suggestion */}
+                  {item.foodSuggestion && (
+                    <div className="text-[11px] text-orange-300 flex items-center space-x-1.5 pt-1">
+                      <Utensils className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                      <span>Recommended Food: <strong>{item.foodSuggestion}</strong></span>
+                    </div>
+                  )}
+
+                  {/* Safety Tip */}
+                  {item.safetyTip && (
+                    <div className="text-[11px] text-emerald-400 flex items-center space-x-1.5 pt-1">
+                      <ShieldAlert className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                      <span>🛡️ Safety Tip: {item.safetyTip}</span>
+                    </div>
+                  )}
+
                 </div>
-
-                <h4 className="text-lg font-bold text-white mb-1">
-                  {stop.title}
-                </h4>
-
-                <p className="text-slate-300 text-xs leading-relaxed mb-3">
-                  {stop.activity}
-                </p>
-
-                <div className="flex items-center space-x-2 text-[11px] text-slate-400 pt-2 border-t border-slate-800/60">
-                  <MapPin className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Proximity Distance: {stop.distance} from previous hub</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </div>
@@ -236,54 +240,47 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
               <span>🧭 Itinerary Route Map</span>
             </h3>
             <div className="h-72 w-full rounded-2xl overflow-hidden">
-              <MapComponent itineraryStops={currentDayData ? currentDayData.stops : []} />
+              <MapComponent itineraryStops={currentStops} />
             </div>
           </div>
 
           {/* Smart Budget Breakdown */}
-          <div className="glass-card p-5 rounded-3xl border border-slate-800 space-y-4">
-            <h3 className="text-base font-bold text-white flex items-center space-x-2">
-              <IndianRupee className="w-4 h-4 text-emerald-400" />
-              <span>Smart Budget Breakdown</span>
-            </h3>
+          {budgetBreakdown && (
+            <div className="glass-card p-5 rounded-3xl border border-slate-800 space-y-4">
+              <h3 className="text-base font-bold text-white flex items-center space-x-2">
+                <IndianRupee className="w-4 h-4 text-emerald-400" />
+                <span>Smart Budget Breakdown</span>
+              </h3>
 
-            <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Transport & Rickshaw / Metro</span>
-                <span className="font-bold text-slate-200">₹{(budgetBreakdown.transport || 0).toLocaleString()}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Food & Traditional Meals</span>
-                <span className="font-bold text-slate-200">₹{(budgetBreakdown.food || 0).toLocaleString()}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Heritage Monument Entry Fees</span>
-                <span className="font-bold text-slate-200">₹{(budgetBreakdown.entryFees || 0).toLocaleString()}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Experiences & Artisan Crafts</span>
-                <span className="font-bold text-slate-200">₹{(budgetBreakdown.experiences || 0).toLocaleString()}</span>
-              </div>
+              <div className="space-y-3 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Food & Meals</span>
+                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.food || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Transport & Rickshaw</span>
+                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.transport || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Entry Fees</span>
+                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.entryFees || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Activities & Experiences</span>
+                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.activities || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Shopping & Souvenirs</span>
+                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.shopping || 0).toLocaleString()}</span>
+                </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-between font-bold text-sm">
-                <span className="text-amber-300">Total Est. Cost</span>
-                <span className="text-emerald-400 text-base">₹{(budgetBreakdown.totalCost || 0).toLocaleString()}</span>
+                <div className="pt-3 border-t border-slate-800 flex items-center justify-between font-bold text-sm">
+                  <span className="text-amber-300">Total Estimated Cost</span>
+                  <span className="text-emerald-400 text-base">₹{(budgetBreakdown.total || budgetBreakdown.totalCost || 0).toLocaleString()}</span>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Sustainability Perks */}
-          <div className="glass-card p-5 rounded-3xl border border-emerald-500/20 bg-emerald-500/5">
-            <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Leaf className="w-4 h-4" />
-              <span>Sustainability Commitments</span>
-            </h4>
-            <ul className="space-y-1.5 text-xs text-slate-300">
-              {sustainabilityPerks.map((perk, idx) => (
-                <li key={idx} className="leading-snug">{perk}</li>
-              ))}
-            </ul>
-          </div>
+          )}
 
         </div>
 

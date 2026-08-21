@@ -8,10 +8,10 @@ export default function AiChatAssistant({ currentLang = 'English' }) {
     {
       sender: 'ai',
       text: currentLang === 'Marathi'
-        ? "नमस्कार! मी तुमचा HeritageAI सांस्कृतिक पर्यटन सहाय्यक आहे. ऐतिहासिक वास्तू, गड-किल्ले, किंवा खाद्यपदार्थांबद्दल मला काहीही विचारा!"
+        ? "नमस्कार! मी तुमचा Atithya AI सांस्कृतिक पर्यटन सहाय्यक आहे. ऐतिहासिक वास्तू, गड-किल्ले, किंवा खाद्यपदार्थांबद्दल मला काहीही विचारा!"
         : currentLang === 'Hindi'
-        ? "नमस्ते! मैं आपका HeritageAI सांस्कृतिक पर्यटन सहायक हूँ। ऐतिहासिक इमारतों, किलों या व्यंजनों के बारे में कुछ भी पूछें!"
-        : "Hello! I am your HeritageAI Cultural Tourism Assistant. Ask me anything about Indian heritage sites, Sahyadri forts, historical wadas, or regional cuisine!"
+        ? "नमस्ते! मैं आपका Atithya AI सांस्कृतिक पर्यटन सहायक हूँ। ऐतिहासिक इमारतों, किलों या व्यंजनों के बारे में कुछ भी पूछें!"
+        : "Hello! I am your Atithya AI Cultural Tourism Assistant. Ask me anything about Indian heritage sites, Sahyadri forts, historical wadas, or regional cuisine!"
     }
   ]);
   const [inputPrompt, setInputPrompt] = useState('');
@@ -60,7 +60,7 @@ export default function AiChatAssistant({ currentLang = 'English' }) {
           className="btn-saffron px-5 py-3.5 shadow-2xl flex items-center space-x-2 animate-bounce cursor-pointer text-xs"
         >
           <Sparkles className="w-4 h-4 fill-white" />
-          <span>✨ Ask HeritageAI</span>
+          <span>✨ Ask Atithya AI</span>
         </button>
       )}
 
@@ -76,7 +76,7 @@ export default function AiChatAssistant({ currentLang = 'English' }) {
               </div>
               <div>
                 <h4 className="text-sm font-bold text-white flex items-center space-x-1 font-heritage">
-                  <span>Ask HeritageAI</span>
+                  <span>Ask Atithya AI</span>
                   <span className="text-[10px] bg-[#E87516] text-white px-1.5 py-0.5 rounded font-mono uppercase font-extrabold">AI</span>
                 </h4>
                 <p className="text-[10px] text-[#F8D8AD]">Multilingual Travel Companion • {currentLang}</p>
@@ -125,7 +125,7 @@ export default function AiChatAssistant({ currentLang = 'English' }) {
             {loading && (
               <div className="flex items-center space-x-2 text-[#741C35] text-xs italic font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-[#E87516] animate-spin" />
-                <span>HeritageAI is thinking...</span>
+                <span>Atithya AI is thinking...</span>
               </div>
             )}
 
@@ -154,7 +154,7 @@ export default function AiChatAssistant({ currentLang = 'English' }) {
               type="text"
               value={inputPrompt}
               onChange={(e) => setInputPrompt(e.target.value)}
-              placeholder={`Ask HeritageAI in ${currentLang}...`}
+              placeholder={`Ask Atithya AI in ${currentLang}...`}
               className="flex-grow bg-[#FAF1E4] border border-[#E8DCCB] rounded-xl px-3 py-2 text-[#332A27] placeholder-[#6F625D] text-xs font-medium focus:outline-none focus:border-[#E87516]"
             />
             <button

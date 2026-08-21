@@ -21,8 +21,8 @@ export default function Footer({ setActiveTab, currentLang = 'English' }) {
               <Landmark className="w-6 h-6 text-[#741C35]" />
             </div>
             <div>
-              <span className="font-heritage text-2xl font-bold text-white">HeritageAI</span>
-              <span className="text-[#D4A72C] text-xs font-mono font-bold block uppercase tracking-wider">Smart Cultural Tourism for India</span>
+              <span className="font-heritage text-2xl font-bold text-white">Atithya AI</span>
+              <span className="text-[#D4A72C] text-xs font-mono font-bold block uppercase tracking-wider">Atithi Devo Bhava</span>
             </div>
           </div>
           <p className="text-xs leading-relaxed text-[#F8D8AD]/90">

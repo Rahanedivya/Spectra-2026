@@ -93,7 +93,7 @@ const PUNE_SITES = [
 router.get("/test", (req, res) => {
   res.json({
     success: true,
-    message: "HeritageAI Pune API server is operational 🚀",
+    message: "Atithya AI API server is operational 🚀",
   });
 });
 
@@ -245,7 +245,7 @@ router.post("/ask-ai", async (req, res) => {
 
   if (apiKey) {
     try {
-      const systemInstructionText = `You are HeritageAI, an expert cultural tourism guide and intelligent conversational assistant for Pune and Maharashtra, India.
+      const systemInstructionText = `You are Atithya AI, an expert cultural tourism guide and intelligent conversational assistant for Pune and Maharashtra, India.
 Key instructions:
 - Understand the user's specific question, intent, and nuance, and provide a direct, relevant, and engaging response.
 - Answer specifically to what the user asked without repeating canned or generic introductions.
@@ -342,12 +342,12 @@ function generateSmartAiAnswer(prompt = "", context = null, language = "English"
   // Greetings
   if (query.match(/^(hi|hello|hey|namaste|नमस्कार|नमस्ते|hola|greetings)/i)) {
     if (isMarathi) {
-      return "नमस्कार! मी तुमचा HeritageAI सांस्कृतिक पर्यटन सहाय्यक आहे. शनिवार वाडा, सिंहगड, किंवा पुणेरी खाद्यान्नाबद्दल मला काहीही विचारा!";
+      return "नमस्कार! मी तुमचा Atithya AI सांस्कृतिक पर्यटन सहाय्यक आहे. शनिवार वाडा, सिंहगड, किंवा पुणेरी खाद्यान्नाबद्दल मला काहीही विचारा!";
     }
     if (isHindi) {
-      return "नमस्ते! मैं आपका HeritageAI सांस्कृतिक पर्यटन सहायक हूँ। शनिवार वाड़ा, सिंहगढ़ किले या पुणे के व्यंजनों के बारे में कुछ भी पूछें!";
+      return "नमस्ते! मैं आपका Atithya AI सांस्कृतिक पर्यटन सहायक हूँ। शनिवार वाड़ा, सिंहगढ़ किले या पुणे के व्यंजनों के बारे में कुछ भी पूछें!";
     }
-    return "Hello! I am your HeritageAI Cultural Tourism Assistant. Ask me anything about Indian heritage sites, Peshwa history, Sahyadri forts, or local cuisine!";
+    return "Hello! I am your Atithya AI Cultural Tourism Assistant. Ask me anything about Indian heritage sites, Peshwa history, Sahyadri forts, or local cuisine!";
   }
 
   // Shaniwar Wada
@@ -426,13 +426,13 @@ function generateSmartAiAnswer(prompt = "", context = null, language = "English"
 
   // General Fallback
   if (isMarathi) {
-    return `HeritageAI पुणे: "${prompt}" बद्दल अधिक माहितीसाठी आपण शनिवार वाडा, सिंहगड किल्ला किंवा आगाखान पॅलेसला भेट देऊ शकता. तुम्हाला आणखी काय जाणून घ्यायचे आहे?`;
+    return `Atithya AI पुणे: "${prompt}" बद्दल अधिक माहितीसाठी आपण शनिवार वाडा, सिंहगड किल्ला किंवा आगाखान पॅलेसला भेट देऊ शकता. तुम्हाला आणखी काय जाणून घ्यायचे आहे?`;
   }
   if (isHindi) {
-    return `HeritageAI पुणे: "${prompt}" के संदर्भ में आप शनिवार वाड़ा या सिंहगढ़ किले का भ्रमण कर सकते हैं। आप अन्य क्या जानना चाहते हैं?`;
+    return `Atithya AI पुणे: "${prompt}" के संदर्भ में आप शनिवार वाड़ा या सिंहगढ़ किले का भ्रमण कर सकते हैं। आप अन्य क्या जानना चाहते हैं?`;
   }
 
-  return `HeritageAI Pune: Regarding "${prompt}", Pune offers rich Maratha history, Sahyadri fortresses, and vibrant culinary experiences like Misal Pav and Mastani. Feel free to ask about timings, ticket fees, history, or food!`;
+  return `Atithya AI: Regarding "${prompt}", Pune offers rich Maratha history, Sahyadri fortresses, and vibrant culinary experiences like Misal Pav and Mastani. Feel free to ask about timings, ticket fees, history, or food!`;
 }
 
 function generateFallbackItinerary({ days = 2, budget = 5000, travelType = "Family", interests = [], language = "English" }) {

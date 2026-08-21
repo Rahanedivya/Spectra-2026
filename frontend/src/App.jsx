@@ -103,7 +103,7 @@ export default function App() {
                 </h2>
                 
                 <p className="text-[#6F625D] text-base leading-relaxed font-medium">
-                  From Maratha fortresses in Pune to imperial palaces in Jaipur and ancient ghats in Varanasi — HeritageAI brings India's cultural stories to life with AI trip planning and multilingual narration.
+                  From Maratha fortresses in Pune to imperial palaces in Jaipur and ancient ghats in Varanasi — Atithya AI brings India's cultural stories to life with AI trip planning and multilingual narration.
                 </p>
 
                 {/* City Selector Pills */}
@@ -174,7 +174,7 @@ export default function App() {
                     Plan Your <span className="text-[#E87516]">Cultural Journey</span>
                   </h2>
                   <p className="text-[#6F625D] text-sm leading-relaxed font-normal">
-                    Select your custom days, budget, interests, and language. HeritageAI generates dynamic routes, cost breakdowns, and authentic cultural stops in seconds.
+                    Select your custom days, budget, interests, and language. Atithya AI generates dynamic routes, cost breakdowns, and authentic cultural stops in seconds.
                   </p>
                 </div>
 
@@ -243,7 +243,7 @@ export default function App() {
                   Your Cultural Journey <span className="text-[#E87516]">Starts Here.</span>
                 </h2>
                 <p className="text-[#6F625D] text-base max-w-2xl mx-auto font-medium">
-                  Experience imperial heritage, Sahyadri fortresses, authentic cuisine, and local craft culture with HeritageAI.
+                  Experience imperial heritage, Sahyadri fortresses, authentic cuisine, and local craft culture with Atithya AI.
                 </p>
                 <button
                   onClick={() => setActiveTab('planner')}

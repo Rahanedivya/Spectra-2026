@@ -215,5 +215,5 @@ function generateFallbackAiAnswer(prompt, context, language) {
     return "Sinhagad Fort is fantastic for families with moderate fitness. There is a vehicle road all the way to the top parking lot, followed by a gentle 15-minute stone staircase walk.";
   }
 
-  return `HeritageAI Pune Assistant: Pune offers a vibrant blend of Peshwa heritage, Sahyadri forts, rich museums, and authentic Maharashtrian cuisine. For your query: "${prompt}", we recommend exploring the historical Peth area and savoring local delicacies!`;
+  return `Atithya AI Assistant: Pune offers a vibrant blend of Peshwa heritage, Sahyadri forts, rich museums, and authentic Maharashtrian cuisine. For your query: "${prompt}", we recommend exploring the historical Peth area and savoring local delicacies!`;
 }

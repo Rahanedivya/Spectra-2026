@@ -12,7 +12,7 @@ export default function AuthModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMsg(isLogin ? "Successfully signed in! Welcome back to HeritageAI Pune." : "Account created successfully! Welcome to HeritageAI Pune.");
+    setMsg(isLogin ? "Successfully signed in! Welcome back to Atithya AI." : "Account created successfully! Welcome to Atithya AI.");
     setTimeout(() => {
       setMsg('');
       onClose();
@@ -37,7 +37,7 @@ export default function AuthModal({ isOpen, onClose }) {
             <Sparkles className="w-6 h-6" />
           </div>
           <h3 className="text-2xl font-extrabold text-white">
-            {isLogin ? 'Welcome Back to HeritageAI' : 'Create HeritageAI Account'}
+            {isLogin ? 'Welcome Back to Atithya AI' : 'Create Atithya AI Account'}
           </h3>
           <p className="text-xs text-slate-400 mt-1">
             Save your customized Pune itineraries, favorites, and preference settings.
@@ -103,7 +103,7 @@ export default function AuthModal({ isOpen, onClose }) {
             type="submit"
             className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20"
           >
-            {isLogin ? 'Sign In to HeritageAI' : 'Create Free Account'}
+            {isLogin ? 'Sign In to Atithya AI' : 'Create Free Account'}
           </button>
         </form>
 

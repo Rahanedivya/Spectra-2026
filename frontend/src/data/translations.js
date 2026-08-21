@@ -7,10 +7,10 @@ export const Translations = {
     navTaste: "Taste Pune",
     navSafety: "Smart Safety",
     navSignIn: "Sign In",
-    tagline: "Discover Pune. Experience Its Heritage.",
+    tagline: "Atithi Devo Bhava",
     
     // Hero
-    heroBadge: "Smart Cultural & Heritage Tourism Platform • Pune, Maharashtra",
+    heroBadge: "Atithi Devo Bhava • Smart Cultural Tourism Platform for India",
     heroTitlePrefix: "Discover Pune",
     heroTitleSuffix: "Beyond the Tourist Map.",
     heroSubtitle: "Your AI-powered cultural companion for heritage, food, experiences and unforgettable journeys.",
@@ -38,7 +38,7 @@ export const Translations = {
 
     aiSectionBadge: "AI-Powered Itinerary Engine",
     aiSectionTitle: "Let AI Plan Your Pune Journey",
-    aiSectionDesc: "Select your custom days, budget, interests, and language. HeritageAI generates dynamic routes, cost breakdowns, and authentic cultural stops in seconds.",
+    aiSectionDesc: "Select your custom days, budget, interests, and language. Atithya AI generates dynamic routes, cost breakdowns, and authentic cultural stops in seconds.",
     aiSectionBtn: "✨ Build Your Pune Journey",
 
     travelSmarterBadge: "Integrated Digital Tourism Stack",
@@ -53,7 +53,7 @@ export const Translations = {
     feat3Desc: "Fort terrain advisories, weather guidelines, and verified 1-click emergency contacts.",
 
     finalCtaTitle: "Your Pune Story Starts Here.",
-    finalCtaDesc: "Experience Peshwa heritage, Sahyadri fortresses, authentic misal, and local craft culture with HeritageAI Pune.",
+    finalCtaDesc: "Experience Peshwa heritage, Sahyadri fortresses, authentic misal, and local craft culture with Atithya AI.",
     finalCtaBtn: "✨ Plan My Pune Trip Now",
 
     // Explore Page
@@ -74,7 +74,7 @@ export const Translations = {
     // Planner Page
     plannerBadge: "AI Multi-Step Travel Engine",
     plannerTitle: "Build Your Pune Journey",
-    plannerSub: "Tell us what you love. HeritageAI will plan the rest.",
+    plannerSub: "Tell us what you love. Atithya AI will plan the rest.",
     stepLabel: "Step",
     step1Title: "Step 1: Destination",
     step2Title: "Step 2: How many days will you spend in Pune?",
@@ -143,9 +143,9 @@ export const Translations = {
     noSavedTrips: "No saved AI itineraries yet.",
 
     // Footer
-    footerDesc: "Discover Pune. Experience Its Heritage. Reimagining Indian cultural tourism through digital AI innovation.",
+    footerDesc: "Atithi Devo Bhava • Reimagining Indian cultural tourism through digital AI innovation.",
     builtFor: "Built for Spectra 2026 AI Innovation",
-    copyright: "© 2026 HeritageAI Pune. Discover Pune. Experience Its Heritage."
+    copyright: "© 2026 Atithya AI. Atithi Devo Bhava."
   },
 
   Marathi: {
@@ -156,10 +156,10 @@ export const Translations = {
     navTaste: "पुणेरी स्वाद",
     navSafety: "सुरक्षा व हेल्पलाइन",
     navSignIn: "साइन इन करा",
-    tagline: "पुणे शोधा. तिचा ऐतिहासिक वारसा अनुभवा.",
+    tagline: "अतिथी देवो भव",
     
     // Hero
-    heroBadge: "स्मार्ट सांस्कृतिक व ऐतिहासिक पर्यटन प्लॅटफॉर्म • पुणे, महाराष्ट्र",
+    heroBadge: "अतिथी देवो भव • स्मार्ट सांस्कृतिक व ऐतिहासिक पर्यटन प्लॅटफॉर्म",
     heroTitlePrefix: "पर्यटन नकाशाच्या पलीकडे",
     heroTitleSuffix: "पुणे शहर शोधा.",
     heroSubtitle: "पुण्याच्या ऐतिहासिक वास्तू, गड-किल्ले, पुणेरी जेवण आणि संस्कृतीचा अनुभव घेणारा तुमचा AI सहाय्यक.",
@@ -187,7 +187,7 @@ export const Translations = {
 
     aiSectionBadge: "AI प्रवास नियोजन इंजिन",
     aiSectionTitle: "AI ला करू द्या तुमचे पुणे प्रवास नियोजन",
-    aiSectionDesc: "तुमचे दिवस, अंदाजपत्रक, आवडी आणि भाषा निवडा. HeritageAI काही सेकंदात तुमच्यासाठी योग्य मार्ग आणि खर्चाचा आराखडा तयार करेल.",
+    aiSectionDesc: "तुमचे दिवस, अंदाजपत्रक, आवडी आणि भाषा निवडा. Atithya AI काही सेकंदात तुमच्यासाठी योग्य मार्ग आणि खर्चाचा आराखडा तयार करेल.",
     aiSectionBtn: "✨ तुमची पुणे सफर आखा",
 
     travelSmarterBadge: "डिजिटल पर्यटन तंत्रज्ञान",
@@ -202,7 +202,7 @@ export const Translations = {
     feat3Desc: "सिंहगड किल्ला सुरक्षेचे नियम आणि पुणे पोलीस व महानगरपालिकेचे हेल्पलाइन नंबर्स.",
 
     finalCtaTitle: "तुमची पुणे सफर इथे सुरू होते.",
-    finalCtaDesc: "पेशवेकालीन वारसा, सह्याद्रीचे किल्ले, झणझणीत मिसळ आणि पुणेरी संस्कृतीचा अनुभव HeritageAI सोबत घ्या.",
+    finalCtaDesc: "पेशवेकालीन वारसा, सह्याद्रीचे किल्ले, झणझणीत मिसळ आणि पुणेरी संस्कृतीचा अनुभव Atithya AI सोबत घ्या.",
     finalCtaBtn: "✨ आताच पुणे सफर आखा",
 
     // Explore Page
@@ -223,7 +223,7 @@ export const Translations = {
     // Planner Page
     plannerBadge: "AI बहु-टप्प्यांचे प्रवास इंजिन",
     plannerTitle: "तुमची पुणे सफर आखा",
-    plannerSub: "तुम्हाला काय आवडते ते सांगा. बाकी सर्व काम HeritageAI करेल.",
+    plannerSub: "तुम्हाला काय आवडते ते सांगा. बाकी सर्व काम Atithya AI करेल.",
     stepLabel: "टप्पा",
     step1Title: "टप्पा १: गंतव्यस्थान",
     step2Title: "टप्पा २: तुम्ही पुण्यात किती दिवस घालवणार आहात?",
@@ -292,9 +292,9 @@ export const Translations = {
     noSavedTrips: "अजून एकही AI प्लॅन जतन केलेला नाही.",
 
     // Footer
-    footerDesc: "पुणे शोधा. तिचा ऐतिहासिक वारसा अनुभवा. डिजिटल AI तंत्रज्ञानाद्वारे पर्यटन अधिक सोपे.",
+    footerDesc: "अतिथी देवो भव • डिजिटल AI तंत्रज्ञानाद्वारे पर्यटन अधिक सोपे.",
     builtFor: "Spectra 2026 AI स्पर्धेसाठी विकसित",
-    copyright: "© २०२६ HeritageAI पुणे. पुणे शोधा. तिचा ऐतिहासिक वारसा अनुभवा."
+    copyright: "© २०२६ Atithya AI. अतिथी देवो भव."
   },
 
   Hindi: {
@@ -305,10 +305,10 @@ export const Translations = {
     navTaste: "पुणे का स्वाद",
     navSafety: "सुरक्षा एवं हेल्पलाइन",
     navSignIn: "साइन इन करें",
-    tagline: "पुणे को जानें। इसकी विरासत का अनुभव करें।",
+    tagline: "अतिथि देवो भव",
     
     // Hero
-    heroBadge: "स्मार्ट सांस्कृतिक एवं ऐतिहासिक पर्यटन प्लेटफॉर्म • पुणे, महाराष्ट्र",
+    heroBadge: "अतिथि देवो भव • स्मार्ट सांस्कृतिक एवं ऐतिहासिक पर्यटन प्लेटफॉर्म",
     heroTitlePrefix: "पर्यटन मानचित्र से परे",
     heroTitleSuffix: "पुणे की खोज करें।",
     heroSubtitle: "पुणे की ऐतिहासिक इमारतों, किलों, पारंपरिक भोजन और संस्कृति का अनुभव कराने वाला आपका AI साथी।",
@@ -336,7 +336,7 @@ export const Translations = {
 
     aiSectionBadge: "AI यात्रा योजना इंजन",
     aiSectionTitle: "AI को करने दें आपकी पुणे यात्रा की योजना",
-    aiSectionDesc: "अपने दिन, बजट, रुचियां और भाषा चुनें। HeritageAI कुछ ही सेकंड में आपके लिए सटीक मार्ग और बजट तैयार करेगा।",
+    aiSectionDesc: "अपने दिन, बजट, रुचियां और भाषा चुनें। Atithya AI कुछ ही सेकंड में आपके लिए सटीक मार्ग और बजट तैयार करेगा।",
     aiSectionBtn: "✨ अपनी पुणे यात्रा बनाएं",
 
     travelSmarterBadge: "डिजिटल पर्यटन तकनीक",
@@ -351,7 +351,7 @@ export const Translations = {
     feat3Desc: "सिंहगढ़ किला सुरक्षा नियम और पुणे पुलिस एवं नगर निगम के आपातकालीन संपर्क।",
 
     finalCtaTitle: "आपकी पुणे यात्रा यहीं से शुरू होती है।",
-    finalCtaDesc: "पेशवा विरासत, किलों, प्रसिद्ध मिसल और संस्कृति का अनुभव HeritageAI के साथ करें।",
+    finalCtaDesc: "पेशवा विरासत, किलों, प्रसिद्ध मिसल और संस्कृति का अनुभव Atithya AI के साथ करें।",
     finalCtaBtn: "✨ अभी अपनी यात्रा शुरू करें",
 
     // Explore Page
@@ -372,7 +372,7 @@ export const Translations = {
     // Planner Page
     plannerBadge: "AI बहु-चरणीय यात्रा इंजन",
     plannerTitle: "अपनी पुणे यात्रा बनाएं",
-    plannerSub: "हमें बताएं कि आपको क्या पसंद है। बाकी काम HeritageAI करेगा।",
+    plannerSub: "हमें बताएं कि आपको क्या पसंद है। बाकी काम Atithya AI करेगा।",
     stepLabel: "चरण",
     step1Title: "चरण 1: गंतव्य",
     step2Title: "चरण 2: आप पुणे में कितने दिन बिताएंगे?",
@@ -441,9 +441,9 @@ export const Translations = {
     noSavedTrips: "अभी कोई AI योजना नहीं सहेजी गई है।",
 
     // Footer
-    footerDesc: "पुणे को जानें। इसकी विरासत का अनुभव करें। डिजिटल AI तकनीक के माध्यम से पर्यटन को आसान बनाना।",
+    footerDesc: "अतिथि देवो भव। डिजिटल AI तकनीक के माध्यम से पर्यटन को आसान बनाना।",
     builtFor: "Spectra 2026 AI नवाचार के लिए निर्मित",
-    copyright: "© 2026 HeritageAI पुणे। पुणे को जानें। इसकी विरासत का अनुभव करें।"
+    copyright: "© 2026 Atithya AI। अतिथि देवो भव।"
   }
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X, Landmark } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X, Landmark, Users, ChevronDown } from 'lucide-react';
 import { t } from '../data/translations';
 
 export default function Navbar({ activeTab, setActiveTab, currentLang, setCurrentLang, onOpenAuth, savedCount = 0 }) {
@@ -12,210 +12,222 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
     { code: 'Hindi', label: 'हिंदी (HI)', flag: '🇮🇳' }
   ];
 
+  const navItems = [
+    { id: 'home', label: t('navHome', currentLang), icon: Compass },
+    { id: 'explore', label: t('navExplore', currentLang), icon: MapPin, color: 'text-[#087F7B]' },
+    { id: 'planner', label: t('navPlanner', currentLang), icon: Sparkles, isSpecial: true },
+    { id: 'food', label: t('navTaste', currentLang), icon: Utensils, color: 'text-[#E87516]' },
+    { id: 'guides', label: 'Local Guides', icon: Users, color: 'text-[#087F7B]' },
+    { id: 'safety', label: t('navSafety', currentLang), icon: ShieldAlert, color: 'text-[#667A3A]' }
+  ];
+
   return (
-    <header className="sticky top-0 z-50 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E8DCCB] text-[#332A27] shadow-sm font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          
-          {/* Logo & Brand (India-Scalable) */}
-          <div 
-            onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
-            className="flex items-center space-x-3 cursor-pointer group"
-          >
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#741C35] to-[#E87516] p-0.5 shadow-md group-hover:scale-105 transition-transform duration-300">
-              <div className="w-full h-full bg-[#FFF8EC] rounded-[10px] flex items-center justify-center">
-                <Landmark className="w-6 h-6 text-[#741C35]" />
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-heritage text-2xl font-bold tracking-wide text-[#741C35]">HeritageAI</span>
-                <span className="bg-[#E87516]/15 border border-[#E87516]/30 text-[#E87516] text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-extrabold">
-                  India
-                </span>
-              </div>
-              <p className="text-[11px] text-[#6F625D] font-medium tracking-tight">
-                {t('tagline', currentLang)}
-              </p>
-            </div>
-          </div>
+    <header className="sticky top-0 z-50 font-sans shadow-md">
+      
+      {/* Top Heritage Micro Bar */}
+      <div className="bg-[#741C35] text-[#FFF8EC] text-[11px] py-1 px-4 text-center font-serif tracking-wider font-semibold border-b border-[#D4A72C]/40 flex items-center justify-between">
+        <div className="hidden sm:flex items-center space-x-2">
+          <span>🚩</span>
+          <span>Smart Cultural & Heritage Tourism Platform</span>
+        </div>
 
-          {/* Nav Links (Desktop - Light Theme) */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            <button
-              onClick={() => setActiveTab('home')}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                activeTab === 'home'
-                  ? 'bg-[#741C35] text-white shadow-md'
-                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
-              }`}
-            >
-              {t('navHome', currentLang)}
-            </button>
-            <button
-              onClick={() => setActiveTab('explore')}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
-                activeTab === 'explore'
-                  ? 'bg-[#741C35] text-white shadow-md'
-                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
-              }`}
-            >
-              <MapPin className="w-4 h-4 text-[#087F7B]" />
-              <span>{t('navExplore', currentLang)}</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('planner')}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
-                activeTab === 'planner'
-                  ? 'bg-[#E87516] text-white font-bold shadow-md'
-                  : 'bg-[#E87516]/10 text-[#E87516] border border-[#E87516]/30 hover:bg-[#E87516]/20'
-              }`}
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>{t('navPlanner', currentLang)}</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('food')}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
-                activeTab === 'food'
-                  ? 'bg-[#741C35] text-white shadow-md'
-                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
-              }`}
-            >
-              <Utensils className="w-4 h-4 text-[#E87516]" />
-              <span>{t('navTaste', currentLang)}</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('safety')}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
-                activeTab === 'safety'
-                  ? 'bg-[#741C35] text-white shadow-md'
-                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
-              }`}
-            >
-              <ShieldAlert className="w-4 h-4 text-[#087F7B]" />
-              <span>{t('navSafety', currentLang)}</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('guides')}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
-                activeTab === 'guides'
-                  ? 'bg-[#741C35] text-white shadow-md'
-                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
-              }`}
-            >
-              <Compass className="w-4 h-4 text-[#E87516]" />
-              <span>Local Guides</span>
-            </button>
-          </nav>
+        <div className="mx-auto sm:mx-0 font-sans font-bold flex items-center space-x-3 text-[10px]">
+          <span className="text-[#D4A72C]">EN • MR • HI Audio Storytelling</span>
+          <span className="text-[#FAF1E4]">|</span>
+          <span className="text-white">Spectra 2026 AI Innovation</span>
+        </div>
 
-          {/* Right Action Items */}
-          <div className="flex items-center space-x-3">
-            
-            {/* Saved Trips Counter */}
-            <button
-              onClick={() => setActiveTab('saved')}
-              className="relative p-2.5 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] text-[#741C35] hover:border-[#E87516] transition-colors cursor-pointer shadow-sm"
-              title="Saved Trips & Favorites"
-            >
-              <Bookmark className="w-5 h-5" />
-              {savedCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-[#E87516] text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                  {savedCount}
-                </span>
-              )}
-            </button>
-
-            {/* Language Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setLangDropdown(!langDropdown)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] text-[#741C35] text-xs font-semibold hover:border-[#741C35] transition-colors cursor-pointer shadow-sm"
-              >
-                <Globe className="w-4 h-4 text-[#087F7B]" />
-                <span>{languages.find(l => l.code === currentLang)?.flag} {currentLang}</span>
-              </button>
-
-              {langDropdown && (
-                <div className="absolute right-0 mt-2 w-44 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] shadow-xl py-1 z-50 animate-in fade-in">
-                  {languages.map(lang => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setCurrentLang(lang.code);
-                        setLangDropdown(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
-                        currentLang === lang.code
-                          ? 'bg-[#741C35] text-white'
-                          : 'text-[#332A27] hover:bg-[#F8D8AD]/30'
-                      }`}
-                    >
-                      <span>{lang.label}</span>
-                      <span>{lang.flag}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Account / Login */}
-            <button
-              onClick={onOpenAuth}
-              className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#087F7B] hover:bg-[#066663] text-white text-xs font-semibold shadow-md transition-colors cursor-pointer"
-            >
-              <User className="w-4 h-4 text-white" />
-              <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
-            </button>
-
-            {/* Mobile Hamburger Toggle */}
-            <button
-              onClick={() => setMobileMenu(!mobileMenu)}
-              className="lg:hidden p-2 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] text-[#741C35]"
-            >
-              {mobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-
-          </div>
-
+        <div className="hidden md:block text-[#D4A72C] text-[10px]">
+          Discover India • Experience Its Heritage
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenu && (
-        <div className="lg:hidden bg-[#FFF8EC] border-b border-[#E8DCCB] px-4 pt-2 pb-6 space-y-2 text-sm font-semibold">
-          <button
-            onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'home' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
-          >
-            {t('navHome', currentLang)}
-          </button>
-          <button
-            onClick={() => { setActiveTab('explore'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'explore' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
-          >
-            {t('navExplore', currentLang)}
-          </button>
-          <button
-            onClick={() => { setActiveTab('planner'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl bg-[#E87516] text-white font-bold`}
-          >
-            {t('navPlanner', currentLang)}
-          </button>
-          <button
-            onClick={() => { setActiveTab('food'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'food' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
-          >
-            {t('navTaste', currentLang)}
-          </button>
-          <button
-            onClick={() => { setActiveTab('safety'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'safety' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
-          >
-            {t('navSafety', currentLang)}
-          </button>
+      {/* Main Glassmorphic Sticky Header */}
+      <div className="bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E8DCCB] text-[#332A27]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            
+            {/* Logo & Brand Identity */}
+            <div 
+              onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
+              className="flex items-center space-x-3 cursor-pointer group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#741C35] via-[#881337] to-[#E87516] p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <div className="w-full h-full bg-[#FFF8EC] rounded-[14px] flex items-center justify-center border border-[#E8DCCB]">
+                  <Landmark className="w-6 h-6 text-[#741C35] group-hover:text-[#E87516] transition-colors" />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="font-heritage text-2xl font-extrabold tracking-tight text-[#741C35] group-hover:text-[#E87516] transition-colors">
+                    Atithya AI
+                  </span>
+                  <span className="bg-[#E87516]/15 border border-[#E87516]/30 text-[#E87516] text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-extrabold shadow-sm">
+                    India
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#6F625D] font-medium tracking-tight">
+                  {t('tagline', currentLang)}
+                </p>
+              </div>
+            </div>
+
+            {/* Nav Links (Desktop Navigation Bar) */}
+            <nav className="hidden xl:flex items-center space-x-1.5 bg-[#FAF1E4] p-1.5 rounded-2xl border border-[#E8DCCB] shadow-inner">
+              {navItems.map((item) => {
+                const IconComponent = item.icon;
+                const isActive = activeTab === item.id;
+
+                if (item.isSpecial) {
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-300 flex items-center space-x-1.5 cursor-pointer ${
+                        isActive
+                          ? 'bg-gradient-to-r from-[#E87516] to-[#c2410c] text-white shadow-lg shadow-[#E87516]/30 scale-105'
+                          : 'bg-[#E87516]/15 text-[#E87516] border border-[#E87516]/30 hover:bg-[#E87516] hover:text-white'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5 fill-current animate-pulse" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                }
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
+                      isActive
+                        ? 'bg-[#741C35] text-white shadow-md'
+                        : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#FFF8EC]'
+                    }`}
+                  >
+                    <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'text-white' : item.color || 'text-[#741C35]'}`} />
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Right Action Bar */}
+            <div className="flex items-center space-x-3">
+              
+              {/* Saved Trips & Favorites Counter */}
+              <button
+                onClick={() => setActiveTab('saved')}
+                className={`relative p-2.5 rounded-xl border transition-all cursor-pointer shadow-sm ${
+                  activeTab === 'saved'
+                    ? 'bg-[#741C35] text-white border-[#741C35]'
+                    : 'bg-[#FAF1E4] border-[#E8DCCB] text-[#741C35] hover:border-[#E87516]'
+                }`}
+                title="Saved Trips & Favorites"
+              >
+                <Bookmark className="w-4 h-4" />
+                {savedCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#E87516] text-white font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
+                    {savedCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Language Selector Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setLangDropdown(!langDropdown)}
+                  className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-[#FAF1E4] border border-[#E8DCCB] text-[#741C35] text-xs font-bold hover:border-[#741C35] transition-colors cursor-pointer shadow-sm"
+                >
+                  <Globe className="w-3.5 h-3.5 text-[#087F7B]" />
+                  <span>{languages.find(l => l.code === currentLang)?.flag} {currentLang}</span>
+                  <ChevronDown className="w-3 h-3 text-[#6F625D]" />
+                </button>
+
+                {langDropdown && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-[#FFF8EC] border border-[#E8DCCB] shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2">
+                    <div className="px-3 py-1 text-[10px] font-bold text-[#6F625D] uppercase tracking-wider border-b border-[#E8DCCB]">
+                      Select Language
+                    </div>
+                    {languages.map(lang => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setCurrentLang(lang.code);
+                          setLangDropdown(false);
+                        }}
+                        className={`w-full text-left px-3.5 py-2 text-xs font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                          currentLang === lang.code
+                            ? 'bg-[#741C35] text-white'
+                            : 'text-[#332A27] hover:bg-[#FAF1E4]'
+                        }`}
+                      >
+                        <span>{lang.label}</span>
+                        <span>{lang.flag}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Account / Login */}
+              <button
+                onClick={onOpenAuth}
+                className="flex items-center space-x-1.5 px-4 py-2 rounded-xl btn-teal text-white text-xs font-bold shadow-md cursor-pointer"
+              >
+                <User className="w-3.5 h-3.5 text-white" />
+                <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
+              </button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenu(!mobileMenu)}
+                className="xl:hidden p-2 rounded-xl bg-[#FAF1E4] border border-[#E8DCCB] text-[#741C35]"
+              >
+                {mobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+
+            </div>
+
+          </div>
         </div>
-      )}
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenu && (
+          <div className="xl:hidden bg-[#FFF8EC] border-b border-[#E8DCCB] px-4 pt-2 pb-6 space-y-2 text-xs font-bold animate-in slide-in-from-top-3">
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              const isActive = activeTab === item.id;
+
+              if (item.isSpecial) {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => { setActiveTab(item.id); setMobileMenu(false); }}
+                    className="w-full text-left py-3 px-4 rounded-xl bg-gradient-to-r from-[#E87516] to-[#c2410c] text-white font-extrabold flex items-center space-x-2"
+                  >
+                    <Sparkles className="w-4 h-4 fill-white" />
+                    <span>{item.label}</span>
+                  </button>
+                );
+              }
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveTab(item.id); setMobileMenu(false); }}
+                  className={`w-full text-left py-3 px-4 rounded-xl flex items-center space-x-2 ${
+                    isActive ? 'bg-[#741C35] text-white' : 'text-[#332A27] hover:bg-[#FAF1E4]'
+                  }`}
+                >
+                  <IconComponent className={`w-4 h-4 ${isActive ? 'text-white' : item.color || 'text-[#741C35]'}`} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
     </header>
   );

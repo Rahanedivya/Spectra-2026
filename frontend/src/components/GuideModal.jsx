@@ -20,7 +20,7 @@ export default function GuideModal({ guide, onClose }) {
   const [submitted, setSubmitted] = useState(false);
 
   const getWhatsAppUrl = () => {
-    const textMessage = `🚩 *HeritageAI - New Local Guide Request* 🚩\n\n` +
+    const textMessage = `🚩 *Atithya AI - New Local Guide Request* 🚩\n\n` +
       `*Guide Requested:* ${guide.name} (${guide.city})\n` +
       `*Tourist Name:* ${formData.userName}\n` +
       `*Phone/WhatsApp:* ${formData.phone}\n` +
@@ -185,7 +185,7 @@ export default function GuideModal({ guide, onClose }) {
                 <div>
                   <h5 className="font-bold text-xs">Verified Heritage Tourism Guide</h5>
                   <p className="text-[11px] text-emerald-800 font-medium">
-                    Credentials & identity verified by HeritageAI Smart Tourism Network.
+                    Credentials & identity verified by Atithya AI Smart Tourism Network.
                   </p>
                 </div>
               </div>
@@ -224,7 +224,7 @@ export default function GuideModal({ guide, onClose }) {
                   className="w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xl inline-flex items-center justify-center space-x-2 transition-all cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
-                  <span>Open WhatsApp Chat (+91 8855003659)</span>
+                  <span>Open WhatsApp Chat</span>
                 </a>
               </div>
 

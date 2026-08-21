@@ -56,15 +56,15 @@ export default function SplashScreen({ onFinish }) {
         {/* Brand Name & Tagline */}
         <div className="space-y-2 animate-in slide-in-from-bottom-4 duration-700">
           <h1 className="text-4xl sm:text-5xl font-extrabold font-heritage text-[#741C35] tracking-tight">
-            HeritageAI
+            Atithya AI
           </h1>
 
           <p className="text-sm sm:text-base font-bold text-[#E87516] tracking-wide uppercase font-serif">
-            Smart Cultural Tourism for India
+            Atithi Devo Bhava
           </p>
 
           <p className="text-xs sm:text-sm text-[#6F625D] font-medium italic pt-1">
-            "Discover India. Experience Its Heritage."
+            "Atithi Devo Bhava — Smart Cultural Tourism for India"
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function SplashScreen({ onFinish }) {
         <WarliArt className="w-full h-14 mb-2 opacity-85" color="#741C35" />
         <div className="h-1.5 w-full bg-gradient-to-r from-[#741C35] via-[#E87516] to-[#741C35] rounded-full" />
         <p className="text-[10px] text-center text-[#6F625D] font-medium mt-2">
-          Built for Spectra 2026 AI Innovation • Powered by Indian Heritage AI Engine
+          Built for Spectra 2026 AI Innovation • Powered by Atithya AI Engine
         </p>
       </div>
 

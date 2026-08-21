@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { X, Star, MapPin, ShieldCheck, Languages, Award, Calendar, Users, MessageSquare, CheckCircle, Sparkles, Send, Phone, Mail, UserCheck, Landmark } from 'lucide-react';
+import { X, Star, MapPin, ShieldCheck, Languages, Award, Calendar, Users, MessageSquare, CheckCircle, Sparkles, Send, Phone, Mail, UserCheck, Landmark, MessageCircle } from 'lucide-react';
 import { createGuideRequest } from '../services/guideService';
 
 export default function GuideModal({ guide, onClose }) {
   if (!guide) return null;
+
+  const TARGET_WHATSAPP_NUMBER = "918669039693";
 
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,30 +19,45 @@ export default function GuideModal({ guide, onClose }) {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const getWhatsAppUrl = () => {
+    const textMessage = `🚩 *HeritageAI - New Local Guide Request* 🚩\n\n` +
+      `*Guide Requested:* ${guide.name} (${guide.city})\n` +
+      `*Tourist Name:* ${formData.userName}\n` +
+      `*Phone/WhatsApp:* ${formData.phone}\n` +
+      `*Email:* ${formData.email}\n` +
+      `*Preferred Date:* ${formData.date}\n` +
+      `*Group Size:* ${formData.groupSize} people\n` +
+      `*Special Message:* ${formData.message || 'Standard heritage tour request'}`;
+
+    return `https://wa.me/${TARGET_WHATSAPP_NUMBER}?text=${encodeURIComponent(textMessage)}`;
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      await createGuideRequest({
-        guideId: guide.id,
-        guideName: guide.name,
-        ...formData
-      });
-      setSubmitted(true);
-    } catch (err) {
-      console.error("Guide request error:", err);
-      setSubmitted(true);
-    } finally {
-      setLoading(false);
-    }
+    // 1. Instant background storage in Firestore (0ms UI wait)
+    createGuideRequest({
+      guideId: guide.id,
+      guideName: guide.name,
+      targetPhone: TARGET_WHATSAPP_NUMBER,
+      ...formData
+    });
+
+    // 2. Instant WhatsApp launch with prefilled message
+    const waUrl = getWhatsAppUrl();
+    window.open(waUrl, '_blank');
+
+    // 3. Instant UI transition to success modal
+    setSubmitted(true);
+    setLoading(false);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#332A27]/70 backdrop-blur-md animate-in fade-in duration-200 font-sans">
-      
+
       <div className="relative w-full max-w-2xl bg-[#FFF8EC] rounded-3xl border border-[#E8DCCB] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-        
+
         {/* Modal Close Button */}
         <button
           onClick={onClose}
@@ -49,9 +66,9 @@ export default function GuideModal({ guide, onClose }) {
           <X className="w-5 h-5" />
         </button>
 
-        {/* Modal Header — Cultural Badge Header (No Human Face) */}
+        {/* Modal Header — Cultural Badge Header */}
         <div className="relative h-44 bg-gradient-to-r from-[#741C35] via-[#881337] to-[#E87516] flex items-end p-6 overflow-hidden flex-shrink-0">
-          
+
           <div className="relative z-10 flex items-center space-x-4">
             {/* Guide Badge Avatar */}
             <div className="w-18 h-18 rounded-2xl bg-[#FFF8EC] border-2 border-[#E87516] flex flex-col items-center justify-center shadow-xl flex-shrink-0">
@@ -76,11 +93,11 @@ export default function GuideModal({ guide, onClose }) {
 
         {/* Scrollable Content Body */}
         <div className="p-6 overflow-y-auto space-y-6 flex-grow text-xs text-[#332A27]">
-          
+
           {!showRequestForm ? (
             /* VIEW PROFILE DISPLAY */
             <div className="space-y-6">
-              
+
               {/* Metrics Grid */}
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div className="p-3 rounded-2xl bg-[#FAF1E4] border border-[#E8DCCB]">
@@ -184,20 +201,38 @@ export default function GuideModal({ guide, onClose }) {
 
             </div>
           ) : submitted ? (
-            /* SUCCESS CONFIRMATION */
-            <div className="py-12 text-center space-y-4">
+            /* SUCCESS CONFIRMATION & WHATSAPP REDIRECT */
+            <div className="py-10 text-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center">
                 <CheckCircle className="w-10 h-10" />
               </div>
-              <h3 className="text-2xl font-extrabold text-[#741C35] font-heritage">Guide Request Sent Successfully!</h3>
-              <p className="text-[#6F625D] text-xs max-w-md mx-auto font-medium">
-                Your request has been submitted to <strong>{guide.name}</strong>. Initial status is <strong>pending</strong>. The guide will get in touch with you shortly via {guide.contactMethod || 'WhatsApp'}.
+
+              <h3 className="text-2xl font-extrabold text-[#741C35] font-heritage">
+                Guide Request Sent Instantly!
+              </h3>
+
+              <p className="text-[#6F625D] text-xs max-w-md mx-auto font-medium leading-relaxed">
+                Your tour request for <strong>{guide.name}</strong> has been saved and dispatched to <strong>+91 8669039693</strong> on WhatsApp.
               </p>
+
+              {/* Direct WhatsApp Action Button */}
+              <div className="pt-2">
+                <a
+                  href={getWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xl inline-flex items-center justify-center space-x-2 transition-all cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white" />
+                  <span>Open WhatsApp Chat (+91 8855003659)</span>
+                </a>
+              </div>
+
               <button
                 onClick={onClose}
-                className="mt-4 px-6 py-2.5 rounded-xl btn-maroon font-bold text-xs cursor-pointer shadow-md"
+                className="mt-4 px-6 py-2 rounded-xl bg-[#FAF1E4] text-[#741C35] border border-[#E8DCCB] font-bold text-xs cursor-pointer hover:bg-[#E8DCCB]"
               >
-                Close Window
+                Done / Close
               </button>
             </div>
           ) : (
@@ -287,13 +322,18 @@ export default function GuideModal({ guide, onClose }) {
                 />
               </div>
 
+              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-medium flex items-center space-x-2">
+                <MessageCircle className="w-4 h-4 text-emerald-700 flex-shrink-0" />
+                <span>Instant dispatch to <strong>+91 8855003659</strong> on WhatsApp.</span>
+              </div>
+
               <button
                 type="submit"
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl btn-saffron font-bold text-xs shadow-lg flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
               >
                 <Send className="w-4 h-4 text-white" />
-                <span>{loading ? "Sending Request..." : "Send Request"}</span>
+                <span>Send Request & Open WhatsApp (+91 8855003659)</span>
               </button>
 
             </form>

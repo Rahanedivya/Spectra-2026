@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X, Landmark } from 'lucide-react';
 import { t } from '../data/translations';
 
 export default function Navbar({ activeTab, setActiveTab, currentLang, setCurrentLang, onOpenAuth, savedCount = 0 }) {
@@ -13,41 +13,41 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#181112]/95 backdrop-blur-md border-b border-[#3a1d23] text-[#faf6f0] shadow-xl font-sans">
+    <header className="sticky top-0 z-50 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E8DCCB] text-[#332A27] shadow-sm font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
-          {/* Logo & Brand */}
+          {/* Logo & Brand (India-Scalable) */}
           <div 
             onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
             className="flex items-center space-x-3 cursor-pointer group"
           >
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#701a28] to-[#ea580c] p-0.5 shadow-lg shadow-[#701a28]/30 group-hover:scale-105 transition-transform duration-300">
-              <div className="w-full h-full bg-[#181112] rounded-[10px] flex items-center justify-center">
-                <Compass className="w-6 h-6 text-[#ea580c] animate-pulse-glow" />
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#741C35] to-[#E87516] p-0.5 shadow-md group-hover:scale-105 transition-transform duration-300">
+              <div className="w-full h-full bg-[#FFF8EC] rounded-[10px] flex items-center justify-center">
+                <Landmark className="w-6 h-6 text-[#741C35]" />
               </div>
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-heritage text-2xl font-bold tracking-wide text-[#faf6f0]">HeritageAI</span>
-                <span className="bg-[#ea580c]/20 border border-[#ea580c]/40 text-[#ea580c] text-xs px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-semibold">
-                  Pune
+                <span className="font-heritage text-2xl font-bold tracking-wide text-[#741C35]">HeritageAI</span>
+                <span className="bg-[#E87516]/15 border border-[#E87516]/30 text-[#E87516] text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-extrabold">
+                  India
                 </span>
               </div>
-              <p className="text-[11px] text-[#d6c7b2] font-medium tracking-tight">
+              <p className="text-[11px] text-[#6F625D] font-medium tracking-tight">
                 {t('tagline', currentLang)}
               </p>
             </div>
           </div>
 
-          {/* Nav Links (Desktop) */}
+          {/* Nav Links (Desktop - Light Theme) */}
           <nav className="hidden lg:flex items-center space-x-1">
             <button
               onClick={() => setActiveTab('home')}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${
                 activeTab === 'home'
-                  ? 'bg-[#701a28] text-[#fffdfa] border border-[#881337] shadow-md'
-                  : 'text-[#d6c7b2] hover:text-[#fffdfa] hover:bg-[#28181b]'
+                  ? 'bg-[#741C35] text-white shadow-md'
+                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
               }`}
             >
               {t('navHome', currentLang)}
@@ -56,19 +56,19 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               onClick={() => setActiveTab('explore')}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
                 activeTab === 'explore'
-                  ? 'bg-[#701a28] text-[#fffdfa] border border-[#881337] shadow-md'
-                  : 'text-[#d6c7b2] hover:text-[#fffdfa] hover:bg-[#28181b]'
+                  ? 'bg-[#741C35] text-white shadow-md'
+                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
               }`}
             >
-              <MapPin className="w-4 h-4 text-[#ea580c]" />
+              <MapPin className="w-4 h-4 text-[#087F7B]" />
               <span>{t('navExplore', currentLang)}</span>
             </button>
             <button
               onClick={() => setActiveTab('planner')}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
                 activeTab === 'planner'
-                  ? 'bg-gradient-to-r from-[#ea580c] to-[#c2410c] text-white font-bold shadow-lg shadow-[#ea580c]/25'
-                  : 'bg-[#ea580c]/15 text-[#ea580c] border border-[#ea580c]/30 hover:bg-[#ea580c]/25'
+                  ? 'bg-[#E87516] text-white font-bold shadow-md'
+                  : 'bg-[#E87516]/10 text-[#E87516] border border-[#E87516]/30 hover:bg-[#E87516]/20'
               }`}
             >
               <Sparkles className="w-4 h-4" />
@@ -78,22 +78,22 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
               onClick={() => setActiveTab('food')}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
                 activeTab === 'food'
-                  ? 'bg-[#701a28] text-[#fffdfa] border border-[#881337] shadow-md'
-                  : 'text-[#d6c7b2] hover:text-[#fffdfa] hover:bg-[#28181b]'
+                  ? 'bg-[#741C35] text-white shadow-md'
+                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
               }`}
             >
-              <Utensils className="w-4 h-4 text-[#ea580c]" />
+              <Utensils className="w-4 h-4 text-[#E87516]" />
               <span>{t('navTaste', currentLang)}</span>
             </button>
             <button
               onClick={() => setActiveTab('safety')}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
                 activeTab === 'safety'
-                  ? 'bg-[#701a28] text-[#fffdfa] border border-[#881337] shadow-md'
-                  : 'text-[#d6c7b2] hover:text-[#fffdfa] hover:bg-[#28181b]'
+                  ? 'bg-[#741C35] text-white shadow-md'
+                  : 'text-[#6F625D] hover:text-[#741C35] hover:bg-[#F8D8AD]/40'
               }`}
             >
-              <ShieldAlert className="w-4 h-4 text-emerald-400" />
+              <ShieldAlert className="w-4 h-4 text-[#087F7B]" />
               <span>{t('navSafety', currentLang)}</span>
             </button>
           </nav>
@@ -104,12 +104,12 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
             {/* Saved Trips Counter */}
             <button
               onClick={() => setActiveTab('saved')}
-              className="relative p-2.5 rounded-xl bg-[#231417] border border-[#3a1d23] text-[#d6c7b2] hover:text-[#ea580c] transition-colors cursor-pointer"
+              className="relative p-2.5 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] text-[#741C35] hover:border-[#E87516] transition-colors cursor-pointer shadow-sm"
               title="Saved Trips & Favorites"
             >
               <Bookmark className="w-5 h-5" />
               {savedCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-[#ea580c] text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+                <span className="absolute -top-1.5 -right-1.5 bg-[#E87516] text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md">
                   {savedCount}
                 </span>
               )}
@@ -119,14 +119,14 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
             <div className="relative">
               <button
                 onClick={() => setLangDropdown(!langDropdown)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-[#231417] border border-[#ea580c]/30 text-[#ea580c] text-xs font-semibold hover:border-[#ea580c]/60 transition-colors cursor-pointer"
+                className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] text-[#741C35] text-xs font-semibold hover:border-[#741C35] transition-colors cursor-pointer shadow-sm"
               >
-                <Globe className="w-4 h-4 text-[#ea580c]" />
+                <Globe className="w-4 h-4 text-[#087F7B]" />
                 <span>{languages.find(l => l.code === currentLang)?.flag} {currentLang}</span>
               </button>
 
               {langDropdown && (
-                <div className="absolute right-0 mt-2 w-44 rounded-xl bg-[#231417] border border-[#ea580c]/30 shadow-2xl py-1 z-50 animate-in fade-in">
+                <div className="absolute right-0 mt-2 w-44 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] shadow-xl py-1 z-50 animate-in fade-in">
                   {languages.map(lang => (
                     <button
                       key={lang.code}
@@ -136,8 +136,8 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                       }}
                       className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
                         currentLang === lang.code
-                          ? 'bg-[#701a28] text-white'
-                          : 'text-[#d6c7b2] hover:bg-[#28181b]'
+                          ? 'bg-[#741C35] text-white'
+                          : 'text-[#332A27] hover:bg-[#F8D8AD]/30'
                       }`}
                     >
                       <span>{lang.label}</span>
@@ -151,16 +151,16 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
             {/* Account / Login */}
             <button
               onClick={onOpenAuth}
-              className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white text-xs font-semibold shadow-md transition-colors cursor-pointer"
+              className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#087F7B] hover:bg-[#066663] text-white text-xs font-semibold shadow-md transition-colors cursor-pointer"
             >
-              <User className="w-4 h-4 text-[#ea580c]" />
+              <User className="w-4 h-4 text-white" />
               <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
             </button>
 
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenu(!mobileMenu)}
-              className="lg:hidden p-2 rounded-xl bg-[#231417] text-[#d6c7b2]"
+              className="lg:hidden p-2 rounded-xl bg-[#FFF8EC] border border-[#E8DCCB] text-[#741C35]"
             >
               {mobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -172,34 +172,34 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
 
       {/* Mobile Drawer */}
       {mobileMenu && (
-        <div className="lg:hidden bg-[#181112] border-b border-[#3a1d23] px-4 pt-2 pb-6 space-y-2 text-sm font-semibold">
+        <div className="lg:hidden bg-[#FFF8EC] border-b border-[#E8DCCB] px-4 pt-2 pb-6 space-y-2 text-sm font-semibold">
           <button
             onClick={() => { setActiveTab('home'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'home' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
+            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'home' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
           >
             {t('navHome', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('explore'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'explore' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
+            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'explore' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
           >
             {t('navExplore', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('planner'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#ea580c] to-[#c2410c] text-white font-bold`}
+            className={`w-full text-left py-2.5 px-4 rounded-xl bg-[#E87516] text-white font-bold`}
           >
             {t('navPlanner', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('food'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'food' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
+            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'food' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
           >
             {t('navTaste', currentLang)}
           </button>
           <button
             onClick={() => { setActiveTab('safety'); setMobileMenu(false); }}
-            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'safety' ? 'bg-[#701a28] text-white' : 'text-[#d6c7b2]'}`}
+            className={`w-full text-left py-2.5 px-4 rounded-xl ${activeTab === 'safety' ? 'bg-[#741C35] text-white' : 'text-[#332A27]'}`}
           >
             {t('navSafety', currentLang)}
           </button>

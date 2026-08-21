@@ -13,7 +13,7 @@ import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 
 import { PUNE_DESTINATIONS } from './data/puneData';
-import { Sparkles, MapPin, Heart, Bookmark, Trash2, ArrowRight } from 'lucide-react';
+import { Sparkles, MapPin, Heart, Bookmark, Trash2, ArrowRight, Compass, ShieldAlert, Globe, IndianRupee, Utensils, HeartHandshake } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -53,7 +53,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
+    <div className="min-h-screen bg-[#faf6f0] text-[#2b181b] flex flex-col font-sans selection:bg-[#701a28] selection:text-white">
 
       {/* Top Sticky Navigation */}
       <Navbar
@@ -68,35 +68,54 @@ export default function App() {
       {/* Main Body Routing */}
       <main className="flex-grow">
 
-        {/* HOME TAB */}
+        {/* HOME TAB: Storytelling Journey */}
         {activeTab === 'home' && (
           <div>
-            {/* Cinematic Hero */}
+            
+            {/* SECTION 1: Hero */}
             <Hero
               onStartPlanner={() => setActiveTab('planner')}
               onExplore={() => setActiveTab('explore')}
               onSearchPrompt={handleHeroSearchPrompt}
             />
 
-            {/* Featured Destinations Section */}
-            <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {/* SECTION 2: Why Pune? */}
+            <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-[#e2d7c7]">
+              <div className="max-w-4xl mx-auto text-center space-y-4">
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold">
+                  <Compass className="w-3.5 h-3.5 text-[#ea580c]" />
+                  <span>Cultural & Historic Heart of Maharashtra</span>
+                </div>
+                
+                <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
+                  Why <span className="text-[#ea580c]">Pune?</span>
+                </h2>
+                
+                <p className="text-[#5c4a4e] text-base leading-relaxed font-medium">
+                  Built in 1732 as the seat of the Peshwas, Pune is India's cultural capital — where 300-year-old Maratha fortresses, 8th-century monolithic cave temples, vibrant street food, and traditional artisan guilds meet state-of-the-art AI tourism.
+                </p>
+              </div>
+            </section>
+
+            {/* SECTION 3: Explore Pune's Heritage */}
+            <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-[#e2d7c7]">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
                 <div>
-                  <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold mb-3">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Peshwa Imperial Sites & Heritage</span>
+                  <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
+                    <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
+                    <span>Peshwa Imperial Sites & Fortresses</span>
                   </div>
-                  <h2 className="text-3xl sm:text-5xl font-extrabold text-white">
-                    Featured <span className="font-heritage text-gradient-gold">Pune Destinations</span>
+                  <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
+                    Explore <span className="text-[#ea580c]">Pune's Heritage</span>
                   </h2>
                 </div>
 
                 <button
                   onClick={() => setActiveTab('explore')}
-                  className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs border border-amber-500/30 flex items-center space-x-2 self-start sm:self-auto"
+                  className="px-5 py-2.5 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white font-bold text-xs flex items-center space-x-2 cursor-pointer shadow-md self-start sm:self-auto"
                 >
-                  <span>View All 10 Heritage Sites</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>Explore All Monuments</span>
+                  <ArrowRight className="w-4 h-4 text-[#ea580c]" />
                 </button>
               </div>
 
@@ -115,14 +134,99 @@ export default function App() {
               </div>
             </section>
 
-            {/* Taste Pune Food Showcase */}
+            {/* SECTION 4: Let AI Plan Your Journey */}
+            <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+              <div className="bg-[#181112] p-8 sm:p-12 rounded-3xl border border-[#ea580c]/30 text-[#faf6f0] flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+                <div className="space-y-4 max-w-2xl">
+                  <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28] border border-[#881337] text-[#ea580c] text-xs font-bold">
+                    <Sparkles className="w-4 h-4 fill-[#ea580c]" />
+                    <span>AI-Powered Itinerary Engine</span>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold font-heritage">
+                    Let AI Plan Your <span className="text-[#ea580c]">Pune Journey</span>
+                  </h2>
+                  <p className="text-[#d6c7b2] text-sm leading-relaxed font-normal">
+                    Select your custom days, budget, interests, and language. HeritageAI generates dynamic routes, cost breakdowns, and authentic cultural stops in seconds.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setActiveTab('planner')}
+                  className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#701a28] via-[#881337] to-[#ea580c] text-white font-extrabold text-sm hover:brightness-110 transition-all flex items-center space-x-3 shadow-xl cursor-pointer flex-shrink-0"
+                >
+                  <Sparkles className="w-5 h-5 fill-white" />
+                  <span>✨ Build Your Pune Journey</span>
+                </button>
+              </div>
+            </section>
+
+            {/* SECTION 5: Experience Pune Like a Local (Food) */}
             <FoodDiscovery currentLang={currentLang} />
 
-            {/* Support Local Pune Artisans */}
+            {/* SECTION 6: Travel Smarter */}
+            <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#e2d7c7]">
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#701a28]/10 border border-[#701a28]/30 text-[#701a28] text-xs font-bold mb-3">
+                  <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
+                  <span>Integrated Digital Tourism Stack</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage mb-4">
+                  Travel <span className="text-[#ea580c]">Smarter</span>
+                </h2>
+                <p className="text-[#5c4a4e] text-sm sm:text-base leading-relaxed font-medium">
+                  Designed to solve the complete end-to-end heritage tourism workflow for travelers in India.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
+                  <Globe className="w-8 h-8 text-[#ea580c] mb-3" />
+                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">Multilingual Narration</h3>
+                  <p className="text-xs text-[#5c4a4e] leading-relaxed">
+                    Read and listen to Pune history in English, Marathi, and Hindi with Web Speech API audio stories.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
+                  <IndianRupee className="w-8 h-8 text-emerald-700 mb-3" />
+                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">Smart Travel Budget</h3>
+                  <p className="text-xs text-[#5c4a4e] leading-relaxed">
+                    Dynamic category breakdowns for Food, Transport, Monument Entry Fees, and Experiences.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl border border-[#e2d7c7] shadow-sm">
+                  <ShieldAlert className="w-8 h-8 text-emerald-700 mb-3" />
+                  <h3 className="text-lg font-bold text-[#701a28] font-heritage mb-2">Smart Safety & Helplines</h3>
+                  <p className="text-xs text-[#5c4a4e] leading-relaxed">
+                    Fort terrain advisories, weather guidelines, and verified 1-click emergency contacts.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 7: Support Local Pune */}
             <LocalCommerce />
 
-            {/* Smart Safety Section */}
-            <SafetySection />
+            {/* SECTION 8: Final CTA */}
+            <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+              <div className="bg-white p-10 sm:p-14 rounded-3xl border border-[#e2d7c7] shadow-xl space-y-6">
+                <h2 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] font-heritage">
+                  Your Pune Story <span className="text-[#ea580c]">Starts Here.</span>
+                </h2>
+                <p className="text-[#5c4a4e] text-base max-w-2xl mx-auto font-medium">
+                  Experience Peshwa heritage, Sahyadri fortresses, authentic misal, and local craft culture with HeritageAI Pune.
+                </p>
+                <button
+                  onClick={() => setActiveTab('planner')}
+                  className="px-8 py-4 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white font-extrabold text-sm shadow-xl transition-all inline-flex items-center space-x-3 cursor-pointer"
+                >
+                  <Sparkles className="w-5 h-5 text-[#ea580c]" />
+                  <span>✨ Plan My Pune Trip Now</span>
+                </button>
+              </div>
+            </section>
+
           </div>
         )}
 
@@ -158,20 +262,20 @@ export default function App() {
 
         {/* SAVED TRIPS & FAVORITES TAB */}
         {activeTab === 'saved' && (
-          <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+          <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 font-sans">
             <div>
-              <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-2">
-                My Saved <span className="font-heritage text-gradient-gold">Trips & Favorites</span>
+              <h1 className="text-3xl sm:text-5xl font-extrabold text-[#701a28] mb-2 font-heritage">
+                My Saved <span className="text-[#ea580c]">Trips & Favorites</span>
               </h1>
-              <p className="text-slate-400 text-sm">
+              <p className="text-[#5c4a4e] text-sm font-medium">
                 Bookmark your preferred Pune monuments and AI journeys for easy reference.
               </p>
             </div>
 
             {/* Saved Destinations Grid */}
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-amber-300 flex items-center space-x-2">
-                <Heart className="w-5 h-5 text-rose-400 fill-current" />
+              <h3 className="text-lg font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
+                <Heart className="w-5 h-5 text-[#ea580c] fill-current" />
                 <span>Bookmarked Heritage Sites ({favorites.length})</span>
               </h3>
 
@@ -189,44 +293,44 @@ export default function App() {
                   ))}
                 </div>
               ) : (
-                <div className="glass-card p-8 rounded-2xl border border-slate-800 text-center text-slate-400 text-xs">
-                  No bookmarked heritage sites yet. Browse <button onClick={() => setActiveTab('explore')} className="text-amber-400 font-bold underline">Explore Sites</button> to add your favorites!
+                <div className="bg-white p-8 rounded-2xl border border-[#e2d7c7] text-center text-[#5c4a4e] text-xs font-medium">
+                  No bookmarked heritage sites yet. Browse <button onClick={() => setActiveTab('explore')} className="text-[#701a28] font-bold underline cursor-pointer">Explore Sites</button> to add your favorites!
                 </div>
               )}
             </div>
 
             {/* Saved AI Itineraries */}
-            <div className="space-y-4 pt-6 border-t border-slate-800">
-              <h3 className="text-lg font-bold text-amber-300 flex items-center space-x-2">
-                <Bookmark className="w-5 h-5 text-amber-400" />
+            <div className="space-y-4 pt-6 border-t border-[#e2d7c7]">
+              <h3 className="text-lg font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
+                <Bookmark className="w-5 h-5 text-[#ea580c]" />
                 <span>Saved AI Itineraries ({savedTrips.length})</span>
               </h3>
 
               {savedTrips.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {savedTrips.map(trip => (
-                    <div key={trip.id} className="glass-card p-5 rounded-2xl border border-amber-500/20 space-y-3">
+                    <div key={trip.id} className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="bg-amber-500/20 text-amber-300 font-bold text-xs px-2.5 py-1 rounded-lg border border-amber-500/30">
+                        <span className="bg-[#701a28] text-white font-bold text-xs px-2.5 py-1 rounded-lg">
                           {trip.title}
                         </span>
                         <button
                           onClick={() => setSavedTrips(savedTrips.filter(t => t.id !== trip.id))}
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 cursor-pointer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
 
-                      <p className="text-xs text-slate-300">
+                      <p className="text-xs text-[#3c2b2e] font-medium">
                         {trip.daysCount} Days • Budget: ₹{trip.budget.toLocaleString()} • Sustainability Score: {trip.sustainabilityScore}/100
                       </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="glass-card p-8 rounded-2xl border border-slate-800 text-center text-slate-400 text-xs">
-                  No saved AI itineraries yet. Use the <button onClick={() => setActiveTab('planner')} className="text-amber-400 font-bold underline">✨ AI Trip Planner</button> to create a customized itinerary!
+                <div className="bg-white p-8 rounded-2xl border border-[#e2d7c7] text-center text-[#5c4a4e] text-xs font-medium">
+                  No saved AI itineraries yet. Use the <button onClick={() => setActiveTab('planner')} className="text-[#701a28] font-bold underline cursor-pointer">✨ AI Trip Planner</button> to create a customized itinerary!
                 </div>
               )}
             </div>

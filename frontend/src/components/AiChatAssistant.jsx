@@ -56,65 +56,65 @@ export default function AiChatAssistant({ currentLang }) {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="px-5 py-3.5 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-2xl shadow-amber-500/30 flex items-center space-x-2 animate-bounce"
+          className="px-5 py-3.5 rounded-full bg-gradient-to-r from-[#701a28] via-[#881337] to-[#ea580c] text-white font-bold text-xs hover:brightness-110 transition-all shadow-2xl shadow-[#701a28]/40 flex items-center space-x-2 animate-bounce cursor-pointer border border-[#881337]"
         >
-          <Sparkles className="w-4 h-4 fill-slate-950" />
+          <Sparkles className="w-4 h-4 fill-white text-white" />
           <span>✨ Ask HeritageAI</span>
         </button>
       )}
 
       {/* Chat Window Popup */}
       {isOpen && (
-        <div className="w-[90vw] sm:w-[380px] h-[520px] glass-card rounded-3xl border border-amber-500/40 shadow-2xl flex flex-col overflow-hidden bg-slate-950 animate-in slide-in-from-bottom-5">
+        <div className="w-[90vw] sm:w-[380px] h-[520px] rounded-3xl border border-[#701a28] shadow-2xl flex flex-col overflow-hidden bg-[#181112] text-[#faf6f0] animate-in slide-in-from-bottom-5">
           
           {/* Header */}
-          <div className="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+          <div className="p-4 bg-[#231417] border-b border-[#3a1d23] flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">
-                <Bot className="w-5 h-5" />
+              <div className="w-8 h-8 rounded-xl bg-[#701a28] text-white flex items-center justify-center font-bold text-xs">
+                <Bot className="w-5 h-5 text-[#ea580c]" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-white flex items-center space-x-1">
+                <h4 className="text-sm font-bold text-white flex items-center space-x-1 font-heritage">
                   <span>Ask HeritageAI</span>
-                  <span className="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono">Pune</span>
+                  <span className="text-[10px] bg-[#ea580c]/20 text-[#ea580c] px-1.5 py-0.5 rounded font-mono">Pune</span>
                 </h4>
-                <p className="text-[10px] text-slate-400">Multilingual Companion • {currentLang}</p>
+                <p className="text-[10px] text-[#d6c7b2]">Multilingual Companion • {currentLang}</p>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-xl text-[#d6c7b2] hover:text-white hover:bg-[#3a1d23] transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Messages Body */}
-          <div className="p-4 overflow-y-auto flex-grow space-y-3 text-xs">
+          <div className="p-4 overflow-y-auto flex-grow space-y-3 text-xs bg-[#181112]">
             {messages.map((msg, index) => (
               <div
                 key={index}
                 className={`flex items-start space-x-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.sender === 'ai' && (
-                  <div className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Sparkles className="w-3.5 h-3.5" />
+                  <div className="w-6 h-6 rounded-lg bg-[#701a28] text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />
                   </div>
                 )}
                 
                 <div
                   className={`p-3 rounded-2xl max-w-[80%] leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-amber-500 text-slate-950 font-semibold rounded-tr-none'
-                      : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'
+                      ? 'bg-[#ea580c] text-white font-semibold rounded-tr-none'
+                      : 'bg-[#231417] border border-[#3a1d23] text-[#faf6f0] rounded-tl-none'
                   }`}
                 >
                   {msg.text}
                 </div>
 
                 {msg.sender === 'user' && (
-                  <div className="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-lg bg-[#3a1d23] text-[#d6c7b2] flex items-center justify-center flex-shrink-0 mt-0.5">
                     <User className="w-3.5 h-3.5" />
                   </div>
                 )}
@@ -122,8 +122,8 @@ export default function AiChatAssistant({ currentLang }) {
             ))}
 
             {loading && (
-              <div className="flex items-center space-x-2 text-slate-400 text-xs italic">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+              <div className="flex items-center space-x-2 text-[#d6c7b2] text-xs italic">
+                <Sparkles className="w-3.5 h-3.5 text-[#ea580c] animate-spin" />
                 <span>Thinking...</span>
               </div>
             )}
@@ -132,12 +132,12 @@ export default function AiChatAssistant({ currentLang }) {
           </div>
 
           {/* Sample Questions Pills */}
-          <div className="p-2 bg-slate-900/60 border-t border-slate-800/80 flex items-center space-x-1.5 overflow-x-auto text-[10px]">
+          <div className="p-2 bg-[#231417] border-t border-[#3a1d23] flex items-center space-x-1.5 overflow-x-auto text-[10px]">
             {sampleQuestions.map((q, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSend(q)}
-                className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 hover:text-amber-300 border border-slate-800 whitespace-nowrap"
+                className="px-2.5 py-1 rounded-lg bg-[#181112] text-[#d6c7b2] hover:text-[#ea580c] border border-[#3a1d23] whitespace-nowrap cursor-pointer"
               >
                 {q}
               </button>
@@ -147,21 +147,21 @@ export default function AiChatAssistant({ currentLang }) {
           {/* Input Box */}
           <form
             onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-            className="p-3 bg-slate-900 border-t border-slate-800 flex items-center space-x-2"
+            className="p-3 bg-[#231417] border-t border-[#3a1d23] flex items-center space-x-2"
           >
             <input
               type="text"
               value={inputPrompt}
               onChange={(e) => setInputPrompt(e.target.value)}
               placeholder={`Ask in ${currentLang}...`}
-              className="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-amber-500/40"
+              className="flex-grow bg-[#181112] border border-[#3a1d23] rounded-xl px-3 py-2 text-[#faf6f0] placeholder-[#a89582] text-xs focus:outline-none focus:border-[#ea580c]"
             />
             <button
               type="submit"
               disabled={loading || !inputPrompt.trim()}
-              className="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 disabled:opacity-50 transition-colors"
+              className="p-2 rounded-xl bg-[#701a28] hover:bg-[#881337] text-white font-bold disabled:opacity-50 transition-colors cursor-pointer"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-[#ea580c]" />
             </button>
           </form>
 

@@ -9,9 +9,21 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
   // Normalize days list whether backend returns 'days' or 'itinerary'
   const daysList = itineraryData.days || itineraryData.itinerary || [];
   const daysCount = itineraryData.daysCount || daysList.length || 1;
-  const budget = itineraryData.budget || 5000;
+  const totalBudget = Number(itineraryData.budget) || 5000;
   const language = itineraryData.language || 'English';
-  const budgetBreakdown = itineraryData.budgetBreakdown || {};
+
+  // Dynamic Budget Calculations
+  const rawBreakdown = itineraryData.budgetBreakdown || {};
+  const food = rawBreakdown.food || Math.round(totalBudget * 0.35);
+  const transport = rawBreakdown.transport || Math.round(totalBudget * 0.25);
+  const entryFees = rawBreakdown.entryFees || Math.round(totalBudget * 0.10);
+  const activities = rawBreakdown.activities || Math.round(totalBudget * 0.15);
+  const shopping = rawBreakdown.shopping || Math.round(totalBudget * 0.15);
+
+  const totalEstCost = rawBreakdown.total || rawBreakdown.totalCost || (food + transport + entryFees + activities + shopping);
+  const remainingBudget = rawBreakdown.remainingBudget !== undefined
+    ? rawBreakdown.remainingBudget
+    : Math.max(0, totalBudget - totalEstCost);
 
   const currentDayData = daysList.find(d => d.day === activeDay) || daysList[0];
 
@@ -33,24 +45,24 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
     <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 font-sans">
       
       {/* Top Banner Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-[#181112] p-6 sm:p-8 rounded-3xl border border-[#ea580c]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden shadow-2xl">
         
         <div className="relative z-10">
           <div className="flex items-center space-x-2 mb-2">
-            <span className="bg-amber-500 text-slate-950 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-[#701a28] text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider border border-[#881337]">
               ✨ AI Generated Itinerary
             </span>
-            <span className="bg-slate-900 border border-slate-800 text-amber-300 text-xs px-3 py-1 rounded-full font-semibold">
+            <span className="bg-[#231417] border border-[#ea580c]/40 text-[#ea580c] text-xs px-3 py-1 rounded-full font-semibold">
               {language} Output
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Your Personalized <span className="font-heritage text-gradient-gold">{daysCount}-Day Pune Journey</span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#faf6f0]">
+            Your Personalized <span className="font-heritage text-[#ea580c]">{daysCount}-Day Pune Journey</span>
           </h1>
 
-          <p className="text-slate-300 text-xs sm:text-sm mt-1">
-            {daysCount} {daysCount === 1 ? 'Day' : 'Days'} • Total Budget: ₹{budget.toLocaleString()}
+          <p className="text-[#d6c7b2] text-xs sm:text-sm mt-1">
+            {daysCount} {daysCount === 1 ? 'Day' : 'Days'} • Total Budget: ₹{totalBudget.toLocaleString()}
           </p>
         </div>
 
@@ -58,7 +70,7 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
         <div className="flex items-center flex-wrap gap-3 relative z-10">
           <button
             onClick={onReset}
-            className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold text-xs border border-slate-800 flex items-center space-x-2"
+            className="px-4 py-2.5 rounded-xl bg-[#231417] hover:bg-[#2e1a1e] text-[#d6c7b2] font-bold text-xs border border-[#3a1d23] flex items-center space-x-2 cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Modify Plan</span>
@@ -66,19 +78,19 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
 
           <button
             onClick={handleSave}
-            className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center space-x-2 transition-all shadow-md ${
+            className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center space-x-2 transition-all shadow-md cursor-pointer ${
               savedSuccess
-                ? 'bg-emerald-500 text-slate-950'
-                : 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-[#701a28] hover:bg-[#881337] text-white'
             }`}
           >
-            <Bookmark className="w-3.5 h-3.5" />
+            <Bookmark className="w-3.5 h-3.5 text-[#ea580c]" />
             <span>{savedSuccess ? 'Saved! ✓' : 'Save Itinerary'}</span>
           </button>
 
           <button
             onClick={handlePrint}
-            className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800"
+            className="p-2.5 rounded-xl bg-[#231417] hover:bg-[#2e1a1e] text-[#d6c7b2] border border-[#3a1d23] cursor-pointer"
             title="Print or Export PDF"
           >
             <Printer className="w-4 h-4" />
@@ -88,24 +100,36 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
       </div>
 
       {/* Metrics Row: Budget Breakdown Banner */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card p-5 rounded-2xl border border-slate-800 bg-slate-900/80">
-          <span className="text-xs text-slate-400 font-semibold block mb-1">Your Total Budget</span>
-          <span className="text-2xl font-extrabold text-white">₹{budget.toLocaleString()}</span>
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm">
+          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">Your Total Budget</span>
+          <span className="text-2xl font-extrabold text-[#701a28]">₹{totalBudget.toLocaleString()}</span>
         </div>
 
-        <div className="glass-card p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5">
-          <span className="text-xs text-amber-300/80 font-semibold block mb-1">Total Estimated Cost</span>
-          <span className="text-2xl font-extrabold text-amber-400">
-            ₹{(budgetBreakdown.total || budgetBreakdown.totalCost || 0).toLocaleString()}
+        <div className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm">
+          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">Estimated Cost</span>
+          <span className="text-2xl font-extrabold text-[#ea580c]">
+            ₹{totalEstCost.toLocaleString()}
           </span>
         </div>
 
-        <div className="glass-card p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5">
-          <span className="text-xs text-emerald-300/80 font-semibold block mb-1">Remaining Budget</span>
-          <span className="text-2xl font-extrabold text-emerald-400">
-            ₹{(budgetBreakdown.remainingBudget || Math.max(0, budget - (budgetBreakdown.total || budgetBreakdown.totalCost || 0))).toLocaleString()}
+        <div className="bg-white p-5 rounded-2xl border border-[#e2d7c7] shadow-sm">
+          <span className="text-xs text-[#5c4a4e] font-semibold block mb-1">Remaining Budget</span>
+          <span className="text-2xl font-extrabold text-emerald-700">
+            ₹{remainingBudget.toLocaleString()}
           </span>
+        </div>
+
+        {/* Sustainability Score Widget */}
+        <div className="bg-[#14231a] p-5 rounded-2xl border border-emerald-800/40 text-white shadow-sm flex items-center justify-between">
+          <div>
+            <span className="text-xs text-emerald-300 font-semibold block">Sustainable Travel Score</span>
+            <div className="flex items-center space-x-1 mt-0.5">
+              <span className="text-2xl font-extrabold text-emerald-400">91</span>
+              <span className="text-xs text-emerald-300">/ 100</span>
+            </div>
+          </div>
+          <Leaf className="w-8 h-8 text-emerald-400 opacity-90" />
         </div>
       </div>
 
@@ -116,18 +140,18 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Day Tabs */}
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-4 overflow-x-auto">
+          <div className="flex items-center space-x-2 border-b border-[#e2d7c7] pb-4 overflow-x-auto">
             {daysList.map((dayItem) => (
               <button
                 key={dayItem.day}
                 onClick={() => setActiveDay(dayItem.day)}
-                className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center space-x-2 transition-all ${
+                className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
                   activeDay === dayItem.day
-                    ? 'bg-amber-500 text-slate-950 shadow-lg'
-                    : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    ? 'bg-[#701a28] text-white shadow-md'
+                    : 'bg-white text-[#5c4a4e] hover:text-[#701a28] border border-[#e2d7c7]'
                 }`}
               >
-                <Calendar className="w-3.5 h-3.5" />
+                <Calendar className="w-3.5 h-3.5 text-[#ea580c]" />
                 <span>Day {dayItem.day}</span>
               </button>
             ))}
@@ -135,8 +159,8 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
 
           {/* Active Day Theme */}
           {currentDayData && (
-            <div className="glass-panel p-4 rounded-2xl border border-amber-500/20">
-              <h3 className="text-base font-bold text-amber-300">
+            <div className="bg-[#faf6f0] p-4 rounded-2xl border border-[#e2d7c7]">
+              <h3 className="text-base font-bold text-[#701a28] font-heritage">
                 Day {currentDayData.day}: {currentDayData.theme || 'Pune Cultural Exploration'}
               </h3>
             </div>
@@ -151,69 +175,69 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
               return (
                 <div 
                   key={idx}
-                  className="glass-card p-5 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-colors space-y-3"
+                  className="bg-white p-5 rounded-2xl border border-[#e2d7c7] hover:border-[#ea580c] transition-colors shadow-sm space-y-3"
                 >
                   {/* Top Bar: Start Time + Category */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+                      <span className="text-xs font-bold text-white bg-[#701a28] px-2.5 py-1 rounded-lg">
                         {item.time || "09:00 AM"}
                       </span>
-                      <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider bg-slate-900 px-2.5 py-1 rounded border border-slate-800">
+                      <span className="text-[11px] font-bold text-[#701a28] uppercase tracking-wider bg-[#faf6f0] px-2.5 py-1 rounded border border-[#e2d7c7]">
                         🏛️ {item.category || "Heritage"}
                       </span>
                     </div>
                   </div>
 
                   {/* Place Name */}
-                  <h4 className="text-xl font-extrabold text-white">
+                  <h4 className="text-xl font-extrabold text-[#701a28] font-heritage">
                     {placeName}
                   </h4>
 
                   {/* Activity Description */}
                   {item.activity && (
-                    <p className="text-slate-300 text-xs leading-relaxed font-normal">
+                    <p className="text-[#3c2b2e] text-xs leading-relaxed font-medium">
                       {item.activity}
                     </p>
                   )}
 
                   {/* Reason */}
                   {item.reason && (
-                    <p className="text-[11px] text-amber-300/90 italic bg-amber-500/5 p-2 rounded-lg border border-amber-500/10">
+                    <p className="text-[11px] text-[#701a28] italic bg-[#faf6f0] p-2.5 rounded-lg border border-[#e2d7c7]">
                       💡 Why visit: {item.reason}
                     </p>
                   )}
 
                   {/* Activity Information Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 text-[11px] border-t border-slate-800/80">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 text-[11px] border-t border-[#e2d7c7]">
                     <div>
-                      <span className="text-slate-400 block font-medium">🕐 Visit Duration</span>
-                      <span className="font-bold text-slate-200">{item.duration || "1.5 hours"}</span>
+                      <span className="text-[#8a7679] block font-medium">🕐 Visit Duration</span>
+                      <span className="font-bold text-[#1c1214]">{item.duration || "1.5 hours"}</span>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 block font-medium">💰 Estimated Cost</span>
-                      <span className="font-bold text-emerald-400">₹{costVal !== undefined ? costVal : 25}</span>
+                      <span className="text-[#8a7679] block font-medium">💰 Estimated Cost</span>
+                      <span className="font-bold text-emerald-700">₹{costVal !== undefined ? costVal : 25}</span>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 block font-medium">🚗 Suggested Transport</span>
-                      <span className="font-bold text-slate-200">{item.transport || "Auto / Cab / Public Transport"}</span>
+                      <span className="text-[#8a7679] block font-medium">🚗 Suggested Transport</span>
+                      <span className="font-bold text-[#1c1214]">{item.transport || "Auto / Cab / Public Transport"}</span>
                     </div>
                   </div>
 
                   {/* Food Suggestion */}
                   {item.foodSuggestion && (
-                    <div className="text-[11px] text-orange-300 flex items-center space-x-1.5 pt-1">
-                      <Utensils className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                    <div className="text-[11px] text-[#c2410c] flex items-center space-x-1.5 pt-1 font-semibold">
+                      <Utensils className="w-3.5 h-3.5 text-[#ea580c] flex-shrink-0" />
                       <span>Recommended Food: <strong>{item.foodSuggestion}</strong></span>
                     </div>
                   )}
 
                   {/* Safety Tip */}
                   {item.safetyTip && (
-                    <div className="text-[11px] text-emerald-400 flex items-center space-x-1.5 pt-1">
-                      <ShieldAlert className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                    <div className="text-[11px] text-emerald-800 flex items-center space-x-1.5 pt-1 font-medium">
+                      <ShieldAlert className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
                       <span>🛡️ Safety Tip: {item.safetyTip}</span>
                     </div>
                   )}
@@ -229,9 +253,9 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
         <div className="space-y-6">
           
           {/* Interactive Itinerary Map */}
-          <div className="glass-card p-4 rounded-3xl border border-amber-500/30">
-            <h3 className="text-sm font-bold text-amber-300 mb-3 flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-amber-400" />
+          <div className="bg-[#181112] p-4 rounded-3xl border border-[#ea580c]/30 shadow-xl">
+            <h3 className="text-sm font-bold text-[#faf6f0] mb-3 flex items-center space-x-2">
+              <MapPin className="w-4 h-4 text-[#ea580c]" />
               <span>🧭 Itinerary Route Map</span>
             </h3>
             <div className="h-72 w-full rounded-2xl overflow-hidden">
@@ -240,42 +264,51 @@ export default function ItineraryView({ itineraryData, onReset, onSave }) {
           </div>
 
           {/* Smart Budget Breakdown */}
-          {budgetBreakdown && (
-            <div className="glass-card p-5 rounded-3xl border border-slate-800 space-y-4">
-              <h3 className="text-base font-bold text-white flex items-center space-x-2">
-                <IndianRupee className="w-4 h-4 text-emerald-400" />
-                <span>Smart Budget Breakdown</span>
-              </h3>
+          <div className="bg-white p-5 rounded-3xl border border-[#e2d7c7] shadow-sm space-y-4">
+            <h3 className="text-base font-bold text-[#701a28] flex items-center space-x-2 font-heritage">
+              <IndianRupee className="w-4 h-4 text-emerald-700" />
+              <span>Smart Budget Breakdown</span>
+            </h3>
 
-              <div className="space-y-3 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Food & Meals</span>
-                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.food || 0).toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Transport & Rickshaw</span>
-                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.transport || 0).toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Entry Fees</span>
-                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.entryFees || 0).toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Activities & Experiences</span>
-                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.activities || 0).toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Shopping & Souvenirs</span>
-                  <span className="font-bold text-slate-200">₹{(budgetBreakdown.shopping || 0).toLocaleString()}</span>
-                </div>
+            <div className="space-y-3 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-[#5c4a4e] font-medium">Food & Meals</span>
+                <span className="font-bold text-[#1c1214]">₹{food.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5c4a4e] font-medium">Transport & Rickshaw</span>
+                <span className="font-bold text-[#1c1214]">₹{transport.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5c4a4e] font-medium">Entry Fees</span>
+                <span className="font-bold text-[#1c1214]">₹{entryFees.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5c4a4e] font-medium">Activities & Experiences</span>
+                <span className="font-bold text-[#1c1214]">₹{activities.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5c4a4e] font-medium">Shopping & Souvenirs</span>
+                <span className="font-bold text-[#1c1214]">₹{shopping.toLocaleString()}</span>
+              </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between font-bold text-sm">
-                  <span className="text-amber-300">Total Estimated Cost</span>
-                  <span className="text-emerald-400 text-base">₹{(budgetBreakdown.total || budgetBreakdown.totalCost || 0).toLocaleString()}</span>
-                </div>
+              <div className="pt-3 border-t border-[#e2d7c7] flex items-center justify-between font-bold text-sm">
+                <span className="text-[#701a28]">Total Estimated Cost</span>
+                <span className="text-emerald-700 text-base font-extrabold">₹{totalEstCost.toLocaleString()}</span>
               </div>
             </div>
-          )}
+          </div>
+
+          {/* Sustainability Perks */}
+          <div className="bg-[#f0f9f4] p-5 rounded-3xl border border-emerald-200 space-y-2 text-xs text-emerald-900 font-medium">
+            <h4 className="font-bold text-emerald-950 flex items-center space-x-1.5">
+              <Leaf className="w-4 h-4 text-emerald-700" />
+              <span>Sustainable Tourism Impact</span>
+            </h4>
+            <p>✓ Supporting authentic coppersmith craftsmen in Kasba Peth</p>
+            <p>✓ Walkable monument cluster between Shaniwar Wada & Lal Mahal</p>
+            <p>✓ Direct patronage of local traditional sweet & misal vendors</p>
+          </div>
 
         </div>
 

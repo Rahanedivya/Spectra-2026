@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X, Landmark, Users, ChevronDown } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Bookmark, Globe, User, ShieldAlert, Utensils, Menu, X, Landmark, Users, ChevronDown, LogOut } from 'lucide-react';
 import { t } from '../data/translations';
 
-export default function Navbar({ activeTab, setActiveTab, currentLang, setCurrentLang, onOpenAuth, savedCount = 0 }) {
+export default function Navbar({ activeTab, setActiveTab, currentLang, setCurrentLang, onOpenAuth, currentUser, onSignOut, savedCount = 0 }) {
   const [langDropdown, setLangDropdown] = useState(false);
+  const [userDropdown, setUserDropdown] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
   const languages = [
@@ -38,7 +39,7 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
         </div>
 
         <div className="hidden md:block text-[#D4A72C] text-[10px]">
-          Discover India • Experience Its Heritage
+          Atithi Devo Bhava
         </div>
       </div>
 
@@ -170,14 +171,58 @@ export default function Navbar({ activeTab, setActiveTab, currentLang, setCurren
                 )}
               </div>
 
-              {/* Account / Login */}
-              <button
-                onClick={onOpenAuth}
-                className="flex items-center space-x-1.5 px-4 py-2 rounded-xl btn-teal text-white text-xs font-bold shadow-md cursor-pointer"
-              >
-                <User className="w-3.5 h-3.5 text-white" />
-                <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
-              </button>
+              {/* Account / User Profile Badge */}
+              {currentUser ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setUserDropdown(!userDropdown)}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-[#741C35] text-white text-xs font-bold shadow-md cursor-pointer hover:bg-[#581427] transition-colors"
+                  >
+                    <User className="w-3.5 h-3.5 text-[#E87516]" />
+                    <span className="max-w-[100px] truncate">{currentUser.name}</span>
+                    <ChevronDown className="w-3 h-3 text-[#F8D8AD]" />
+                  </button>
+
+                  {userDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-[#FFF8EC] border border-[#E8DCCB] shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                      <div className="px-4 py-2 border-b border-[#E8DCCB]">
+                        <p className="text-xs font-bold text-[#741C35] truncate">{currentUser.name}</p>
+                        <p className="text-[10px] text-[#6F625D] truncate">{currentUser.email}</p>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab('saved');
+                          setUserDropdown(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs font-bold text-[#332A27] hover:bg-[#FAF1E4] flex items-center space-x-2 cursor-pointer"
+                      >
+                        <Bookmark className="w-3.5 h-3.5 text-[#E87516]" />
+                        <span>My Saved Trips ({savedCount})</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          onSignOut();
+                          setUserDropdown(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs font-bold text-red-700 hover:bg-red-50 flex items-center space-x-2 border-t border-[#E8DCCB] mt-1 pt-2 cursor-pointer"
+                      >
+                        <LogOut className="w-3.5 h-3.5 text-red-600" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={onOpenAuth}
+                  className="flex items-center space-x-1.5 px-4 py-2 rounded-xl btn-teal text-white text-xs font-bold shadow-md cursor-pointer"
+                >
+                  <User className="w-3.5 h-3.5 text-white" />
+                  <span className="hidden sm:inline">{t('navSignIn', currentLang)}</span>
+                </button>
+              )}
 
               {/* Mobile Menu Button */}
               <button
